@@ -12,44 +12,21 @@ app.use(cors());
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- CONEXIÓN A LA BASE DE DATOS actualizada 31 marzo 2026---
-[
-  {
-    "name": "MYSQL_ADDON_DB",
-    "value": "b2epbzrhyannkkocholb"
-  },
-  {
-    "name": "MYSQL_ADDON_HOST",
-    "value": "b2epbzrhyannkkocholb-mysql.services.clever-cloud.com"
-  },
-  {
-    "name": "MYSQL_ADDON_PASSWORD",
-    "value": "Iu9NhmYYOgNWTUaF5vI9"
-  },
-  {
-    "name": "MYSQL_ADDON_PORT",
-    "value": "3306"
-  },
-  {
-    "name": "MYSQL_ADDON_URI",
-    "value": "mysql://ulxfpjzmwec7l5pc:Iu9NhmYYOgNWTUaF5vI9@b2epbzrhyannkkocholb-mysql.services.clever-cloud.com:3306/b2epbzrhyannkkocholb"
-  },
-  {
-    "name": "MYSQL_ADDON_USER",
-    "value": "ulxfpjzmwec7l5pc"
-  },
-  {
-    "name": "MYSQL_ADDON_VERSION",
-    "value": "8.0"
-  }
-]
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pages', 'Inicio.html'));
+
+    app.use(express.static(path.join(__dirname, 'public', 'js')));});
+
+    app.use(express.static(path.join(__dirname, 'public', 'css')));
+
+// --- CONEXIÓN A LA BASE DE DATOS actualizada 31 marzo 2026 ---
 
 const conexion = mysql.createConnection({
-    host: process.env.MYSQL_ADDON_HOST,
-    user: process.env.MYSQL_ADDON_USER,
-    password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB,
-    port: process.env.MYSQL_ADDON_PORT
+    host: 'b2epbzrhyannkkocholb-mysql.services.clever-cloud.com', // MYSQL_ADDON_HOST
+    user: 'ulxfpjzmwec7l5pc',                                   // MYSQL_ADDON_USER
+    password: 'Iu9NhmYYOgNWTUaF5vI9',                            // MYSQL_ADDON_PASSWORD
+    database: 'b2epbzrhyannkkocholb',                           // MYSQL_ADDON_DB
+    port: 3306                                                  // MYSQL_ADDON_PORT
 });
 
 conexion.connect(function(error){
@@ -57,7 +34,7 @@ conexion.connect(function(error){
         console.error('Error detallado:', error.message);
         return;
     }
-    console.log('✅ Conexión exitosa a la base de datos');
+    console.log('✅ Conexión exitosa a la base de datos en Clever Cloud');
 });
 
 // --- RUTAS API ---
