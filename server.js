@@ -13,12 +13,43 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- CONEXIÓN A LA BASE DE DATOS actualizada 31 marzo 2026---
+[
+  {
+    "name": "MYSQL_ADDON_DB",
+    "value": "b2epbzrhyannkkocholb"
+  },
+  {
+    "name": "MYSQL_ADDON_HOST",
+    "value": "b2epbzrhyannkkocholb-mysql.services.clever-cloud.com"
+  },
+  {
+    "name": "MYSQL_ADDON_PASSWORD",
+    "value": "Iu9NhmYYOgNWTUaF5vI9"
+  },
+  {
+    "name": "MYSQL_ADDON_PORT",
+    "value": "3306"
+  },
+  {
+    "name": "MYSQL_ADDON_URI",
+    "value": "mysql://ulxfpjzmwec7l5pc:Iu9NhmYYOgNWTUaF5vI9@b2epbzrhyannkkocholb-mysql.services.clever-cloud.com:3306/b2epbzrhyannkkocholb"
+  },
+  {
+    "name": "MYSQL_ADDON_USER",
+    "value": "ulxfpjzmwec7l5pc"
+  },
+  {
+    "name": "MYSQL_ADDON_VERSION",
+    "value": "8.0"
+  }
+]
+
 const conexion = mysql.createConnection({
-    host: process.env.MYSQLHOST || "localhost",
-    user: process.env.MYSQLUSER || "root",
-    password: process.env.MYSQLPASSWORD || "Brayan",
-    database: process.env.MYSQLDATABASE || "conecta_emprendedores",
-    port: process.env.MYSQLPORT || 3306
+    host: process.env.MYSQL_ADDON_HOST,
+    user: process.env.MYSQL_ADDON_USER,
+    password: process.env.MYSQL_ADDON_PASSWORD,
+    database: process.env.MYSQL_ADDON_DB,
+    port: process.env.MYSQL_ADDON_PORT
 });
 
 conexion.connect(function(error){

@@ -1,23 +1,23 @@
 {
   "name": "conecta-noviembre",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Plataforma para emprendedores e inversionistas",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/STI321/conecta-noviembre.git"
+    "url": "git+https://github.com/metalme/Conecta_emprendedores.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/STI321/conecta-noviembre/issues"
+    "url": "https://github.com/metalme/Conecta_emprendedores/issues"
   },
-  "homepage": "https://github.com/STI321/conecta-noviembre#readme",
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
