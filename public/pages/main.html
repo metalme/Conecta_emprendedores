@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Conecta Emprendedores</title>
+    <link rel="stylesheet" href="../css/estilos_main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <div class="logo-area">
+            <i class="fa-solid fa-rocket large-logo"></i>
+            <p style="text-align: center;">Conecta <br/> Emprendedores</p>
+        </div>
+        <div class="user-profile-sidebar">
+            <img src="https://via.placeholder.com/60" alt="Usuario" class="user-avatar">
+            <p class="usuarioNombre">Emprendedor Pro</p>
+        </div>
+        <ul>
+            <li class="active"><a href="main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href=""><i class="fa-solid fa-folder"></i> Proyectos</a></li>
+            <li><a href=""><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
+            <li><a href=""><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
+            <li><a href="biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
+            <li><a href=""><i class="fa-solid fa-newspaper"></i> Noticias</a></li>
+            <li><a href=""><i class="fa-solid fa-bell"></i> Notificaciones</a></li>
+            <li><a href=""><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
+            <li><a href="mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-container">
+                <span class="search-icon"><i class="fa-solid fa-search"></i></span>
+                <input type="text" placeholder="¿Qué estás buscando hoy?">
+            </div>
+            <div class="top-actions">
+                <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
+                <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+            </div>
+        </header>
+
+        <section class="hero-section">
+            <div class="hero-card">
+                <h1>Bienvenido a <span style="color:#10b981;">Conecta Emprendedores</span></h1>
+                <p>El ecosistema donde las ideas se transforman en negocios exitosos.</p>
+                <button class="btn-primary">Explorar Proyectos <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </section>
+
+        <section class="stats-container">
+            <div class="stat-card">
+                <i class="fa-solid fa-users"></i>
+                <span>Conexiones: 24</span>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Propuestas: 12</span>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Interés: 85%</span>
+            </div>
+        </section>
+
+        <section class="trends-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-fire"></i> Tendencias del Mercado</h2>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-icon investment"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <div class="news-content">
+                        <span class="tag">Inversión</span>
+                        <p>TechGreen Solutions levanta capital semilla.</p>
+                        <span class="news-date">Hace 2 horas</span>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-icon tech"><i class="fa-solid fa-robot"></i></div>
+                    <div class="news-content">
+                        <span class="tag">IA</span>
+                        <p>Nuevas herramientas para automatizar tu Pitch.</p>
+                        <span class="news-date">Hoy</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="library-section">
+            <div class="section-header">
+                <h2>Biblioteca Destacada</h2>
+                <a href="Biblioteca.html" class="view-all">Ver todo <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+            <div class="books-container">
+                <div class="book-card">
+                    <div class="book-cover"><p>Pitch Deck</p></div>
+                    <p class="book-category">Estrategia</p>
+                </div>
+                <div class="book-card">
+                    <div class="book-cover"><p>Legal Tech</p></div>
+                    <p class="book-category">Contratos</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+    function logout() {
+        localStorage.removeItem("usuarioNombre");
+        window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>

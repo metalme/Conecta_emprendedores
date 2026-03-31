@@ -1,0 +1,284 @@
+/* --- VARIABLES GLOBALES --- */
+:root {
+    --bg-color: #111827;
+    --main-bg: #030712;
+    --sidebar-bg: #0f172a;
+    --content-bg: #1f2937;
+    --text-main: #f1f5f9;
+    --text-subtle: #9ca3af;
+    --accent-color: #10b981;
+    --accent-dark: #059669;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--main-bg);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR (TU SOLUCIÓN DE PADDING 20PX) --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    padding: 20px; /* Tu ajuste */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid var(--glass-border);
+    position: fixed;
+    height: 100%;
+    z-index: 100;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.large-logo {
+    font-size: 2.2rem;
+    color: var(--accent-color);
+}
+
+.user-profile-sidebar {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--accent-color);
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar li a {
+    padding: 12px 15px;
+    text-decoration: none;
+    color: var(--text-subtle);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar li.active a, .sidebar li:hover a {
+    background: var(--glass);
+    color: var(--accent-color);
+}
+
+.boton-logout-sidebar {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: auto;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- CONTENIDO PRINCIPAL --- */
+.main-content {
+    margin-left: 250px;
+    flex: 1;
+    padding: 20px 50px; /* Nivelado con sidebar */
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* --- HEADER CON BUSCADOR NETFLIX --- */
+.perfil-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.perfil-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    line-height: 1.1;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Estilo Barra de Búsqueda Netflix */
+.search-bar-netflix {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.search-bar-netflix:focus-within {
+    border-color: var(--text-main);
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.search-bar-netflix i {
+    color: var(--text-main);
+    margin-right: 10px;
+}
+
+.search-bar-netflix input {
+    background: none;
+    border: none;
+    color: white;
+    outline: none;
+    width: 200px;
+}
+
+.btn-icon {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-icon:hover { background: var(--accent-color); }
+
+.btn-logout {
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* --- STATS CARDS --- */
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    flex: 1;
+    background: var(--content-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: 0.3s;
+}
+
+.stat-card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+.stat-card i { font-size: 1.8rem; color: var(--accent-color); }
+.stat-value { font-size: 1.6rem; font-weight: bold; display: block; }
+.stat-label { font-size: 0.8rem; color: var(--text-subtle); text-transform: uppercase; }
+
+/* --- GRID Y LISTAS --- */
+.inversor-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 25px;
+}
+
+.card-perfil {
+    background: var(--content-bg);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+}
+
+.card-perfil h3 { margin-bottom: 20px; font-size: 1.2rem; }
+
+.project-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    margin-top: 15px;
+}
+
+.project-details { flex: 1; }
+.project-name { font-weight: bold; display: block; }
+.project-tag { font-size: 0.8rem; color: var(--accent-color); }
+
+.btn-primary-small {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* --- TABLA --- */
+.inversor-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inversor-table th {
+    text-align: left;
+    color: var(--text-subtle);
+    font-size: 0.8rem;
+    padding-bottom: 15px;
+}
+
+.inversor-table td {
+    padding: 15px 0;
+    border-top: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+}
+
+.tag { color: var(--accent-color); font-weight: bold; }
+.tag-pending { color: var(--text-subtle); }
+
+.news-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

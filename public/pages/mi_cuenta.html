@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Conecta Emprendedores</title>
+    <link rel="stylesheet" href="../css/estilos_mi_cuenta.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-rocket large-logo"></i>
+            <span style="font-weight: bold; font-size: 1.2rem;">Conecta</span>
+        </div>
+
+        <div class="user-profile-sidebar">
+            <img src="https://via.placeholder.com/60" alt="Avatar" class="user-avatar">
+            <div class="user-name" id="display-nombre">Usuario</div>
+            <div class="user-role">Emprendedor</div>
+        </div>
+
+        <ul>
+            <li><a href="main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href=""><i class="fa-solid fa-folder"></i> Proyectos</a></li>
+            <li><a href=""><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
+            <li><a href=""><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
+            <li><a href="biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
+            <li class="active"><a href="mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+        </ul>
+
+
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- HEADER PERFIL CON ACCIONES -->
+        <header class="perfil-header">
+            <div class="header-izquierdo">
+                <h1>Configuración de <span style="color: var(--accent-color);">Perfil</span></h1>
+                <p style="color: var(--text-subtle);">
+                    Gestiona tu información personal y seguridad de la cuenta.
+                </p>
+            </div>
+
+            <div class="top-actions">
+                <button class="btn-icon">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fa-solid fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </header>
+
+        <!-- GRID DE TARJETAS -->
+        <section class="perfil-grid">
+
+            <!-- DATOS PERSONALES -->
+            <div class="card-perfil">
+                <h3><i class="fa-solid fa-id-card"></i> Datos Personales</h3>
+
+                <form id="form-mi-cuenta">
+                    <div class="form-grupo">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="nombre" placeholder="Tu nombre" required>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="correo" disabled title="El correo no se puede cambiar">
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Teléfono</label>
+                        <input type="text" id="telefono" placeholder="Ej: +57 300...">
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Actualizar Datos
+                    </button>
+                </form>
+            </div>
+
+            <!-- SEGURIDAD -->
+            <div class="card-perfil">
+                <h3><i class="fa-solid fa-shield-halved"></i> Seguridad</h3>
+
+                <p style="color: var(--text-subtle); margin-bottom: 20px; font-size: 0.9rem;">
+                    Mantén tu cuenta protegida cambiando tu contraseña periódicamente.
+                </p>
+
+                <div class="form-grupo">
+                    <label>Nueva Contraseña</label>
+                    <input type="password" name="password" id="password" placeholder="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$" title="Mínimo 10 caracteres, mayúscula, minúscula, número y carácter especial" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$" required>
+                </div>
+
+                <button type="button"
+                        onclick="cambiarPassword()"
+                        class="btn-logout"
+                        style="width: 100%; justify-content: center;">
+                    Cambiar Contraseña
+                </button>
+
+                <div id="mensaje-respuesta"
+                     style="margin-top: 15px; font-size: 0.9rem;"></div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<script src="../js/perfil.js"></script>
+</body>
+</html>

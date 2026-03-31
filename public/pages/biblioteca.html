@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Conecta Emprendedores | Hub Inteligente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/biblioteca_estilos.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <h2>Menu</h2>
+            <div class="logo-area">
+                <i class="fa-solid fa-rocket large-logo"></i>
+                <p style="text-align: center;">Conecta <br/> Emprendedores</p>
+
+                </p>
+            </div>
+            <div class="user-profile-sidebar">
+                <img src="https://via.placeholder.com/60" alt="Usuario" class="user-avatar">
+                <p class="usuarioNombre">Emprendedor Pro</p>
+            </div>
+            <ul>
+                <li><a href="main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                <li><i class="fa-solid fa-folder"></i> Proyectos</li>
+                <li><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</li>
+                <li><i class="fa-solid fa-rocket"></i> Emprendedores</li>
+                <li><a href="biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
+                <li><i class="fa-solid fa-newspaper"></i> Noticias</li>
+                <li><i class="fa-solid fa-bell"></i> Notificaciones</li>
+                <li><i class="fa-solid fa-envelope"></i> Mensajes</li>
+                <li><a href="mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <span class="search-icon"><i class="fa-solid fa-search"></i></span>
+                    <input type="text" placeholder="IA: ¿Qué recurso necesitas hoy para tu Pitch Deck?">
+                </div>
+                <div class="top-actions">
+                    <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
+                    <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+                </div>
+            </header>
+
+            <section class="hero-section">
+                <div class="hero-card">
+                    <h1>Bienvenido al Futuro del Emprendimiento</h1>
+                    <p>Hoy hay 12 nuevas propuestas alineadas a tus intereses de Legal Tech.</p>
+                    <button class="btn-primary">Explorar Ecosistema <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </section>
+
+            <section class="library-section">
+                <div class="section-header">
+                    <h2>Biblioteca de Recursos</h2>
+                    <a href="#" class="view-all">Ver todo <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+                <div class="books-container">
+                    <div class="book-card">
+                        <div class="book-cover"><p>Pitch Deck</p><p>V2</p></div>
+                        <p class="book-category">Estrategia</p>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover"><p>Legal Tech</p></div>
+                        <p class="book-category">Contratos</p>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover"><p>Scalability</p></div>
+                        <p class="book-category">Crecimiento</p>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover"><p>Marketing</p><p>Hacks</p></div>
+                        <p class="book-category">Growth</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="trends-section">
+                <div class="section-header">
+                    <h3>Tendencias del Mercado</h3>
+                </div>
+                <div class="news-grid">
+                    <div class="news-card">
+                        <div class="news-icon investment"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div class="news-content">
+                            <span class="tag">Inversión</span>
+                            <p>Nuevas inversiones en startups de Latam crecen 20%.</p>
+                            <span class="news-date">Hoy, 10:30 AM</span>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-icon tech"><i class="fa-solid fa-robot"></i></div>
+                        <div class="news-content">
+                            <span class="tag">Tecnología</span>
+                            <p>IA generativa revoluciona el desarrollo de software.</p>
+                            <span class="news-date">Ayer</span>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-icon startup"><i class="fa-solid fa-rocket"></i></div>
+                        <div class="news-content">
+                            <span class="tag">Startups</span>
+                            <p>Unicornio chileno se expande a México con éxito.</p>
+                            <span class="news-date">Hace 2 días</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script src="../js/modules/biblioteca.js"></script>
+
+<script>
+    function logout() {
+        localStorage.removeItem("usuarioNombre"); // Cambiado para que coincida con biblioteca.js
+        window.location.href = "login.html";
+    }
+    </script>
+</body>
+</html>

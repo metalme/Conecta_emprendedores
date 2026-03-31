@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Inversionistas | Conecta Emprendedores</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos_inversor_exploracion.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i class="fa-solid fa-rocket large-logo"></i>
+                <span style="font-weight: bold; font-size: 1.2rem;">Conecta</span>
+            </div>
+
+            <div class="user-profile-sidebar">
+                <img src="https://via.placeholder.com/60" alt="Avatar Startup" class="user-avatar">
+                <div class="user-name">EcoTech Startup</div>
+                <div class="user-role">Emprendedor</div>
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder"></i> Mis Proyectos</a></li>
+                <li class="active"><a href="#"><i class="fa-solid fa-hand-holding-dollar"></i> Buscar Inversores</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
+                <li><a href="mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+            </ul>
+
+
+        </aside>
+
+        <main class="main-content">
+            <header class="perfil-header">
+                <div class="header-izquierdo">
+                    <h1>Explorar <span style="color: var(--accent-color);">Inversionistas</span></h1>
+                    <p>Encuentra el respaldo financiero que tu proyecto necesita.</p>
+                </div>
+
+                <div class="top-actions">
+                    <div class="search-bar-netflix">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Inversores, sectores, VCs...">
+                    </div>
+                    <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
+                    <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+                </div>
+            </header>
+
+            <section class="stats-container">
+                <div class="stat-card">
+                    <i class="fa-solid fa-eye"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">48</span>
+                        <span class="stat-label">Vistas de Perfil</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Pitch Decks leídos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-handshake-simple"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Intereses de Reunión</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="inversor-grid">
+                
+                <div class="card-perfil">
+                    <h3><i class="fa-solid fa-user-tie"></i> Inversionistas Recomendados</h3>
+                    <div class="project-list">
+                        <div class="project-item">
+                            <div class="news-icon tech"><i class="fa-solid fa-user"></i></div>
+                            <div class="project-details">
+                                <span class="project-name">Elena Capital Partners</span>
+                                <span class="project-tag">Match: 95% • Fintech & SaaS</span>
+                            </div>
+                            <button class="btn-primary-small">Contactar</button>
+                        </div>
+                        <div class="project-item">
+                            <div class="news-icon investment"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="project-details">
+                                <span class="project-name">Nexus Ventures</span>
+                                <span class="project-tag">Match: 88% • Sostenibilidad</span>
+                            </div>
+                            <button class="btn-primary-small">Contactar</button>
+                        </div>
+                        <div class="project-item">
+                            <div class="news-icon tech"><i class="fa-solid fa-user-ninja"></i></div>
+                            <div class="project-details">
+                                <span class="project-name">Javier Solis (Angel)</span>
+                                <span class="project-tag">Match: 82% • E-commerce</span>
+                            </div>
+                            <button class="btn-primary-small">Contactar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-perfil">
+                    <h3><i class="fa-solid fa-satellite-dish"></i> Interés Reciente</h3>
+                    <table class="inversor-table">
+                        <thead>
+                            <tr>
+                                <th>Inversionista</th>
+                                <th>Acción</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Marta Vigil</td>
+                                <td>Vio tu Pitch Deck</td>
+                                <td><span class="tag">Hace 2h</span></td>
+                            </tr>
+                            <tr>
+                                <td>Global Fund VC</td>
+                                <td>Visitó tu perfil</td>
+                                <td><span class="tag-pending">Ayer</span></td>
+                            </tr>
+                            <tr>
+                                <td>Andrés Duarte</td>
+                                <td>Descargó PDF</td>
+                                <td><span class="tag-pending">Hace 3 días</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

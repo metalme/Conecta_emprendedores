@@ -1,0 +1,160 @@
+/* Estilos General */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('oficina\ verde.jpg');
+  background-repeat:space;
+  background-size: cover;
+  background-attachment: fixed;
+  
+}
+
+/* Encabezado */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #A7ECA4;
+  padding: 15px 30px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #253900;
+  font-size: 16px;
+}
+
+.logo img {
+  width: 60px;
+  margin-right: 10px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+.navbar a.active,
+.navbar a:hover {
+  background-color: white;
+  border: 1px solid #06a500;
+  color: #06a500;
+}
+
+/* Botones */
+.Botones {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background-color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn2 {
+  text-decoration: none;
+  color: black;
+}
+
+.btn:hover {
+  background-color: #06a500;
+}
+
+/* HERO (imagen + texto encima) */
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: brightness(65%);
+}
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  padding: 20px;
+  width: 80%;
+}
+
+.hero-text h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.hero-text p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-hero {
+  background-color: white;
+  color: #253900;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* Beneficios */
+.beneficios {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.beneficios h2 {
+  color: #253900;
+  margin-bottom: 20px;
+}
+
+.beneficios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+.beneficio {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* imagen secundaria */
+.imagen-2 {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.imagen-2 img {
+  width: 80%;
+  max-width: 700px;
+  border-radius: 10px;
+}

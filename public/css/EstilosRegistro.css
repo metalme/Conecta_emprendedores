@@ -1,0 +1,181 @@
+/* General */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Columna izquierda */
+.left-side {
+  flex: 1;
+  position: center;
+  background-color: #f4f4f4;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  color: #08CB00;
+}
+
+
+.social-icons {
+  position: absolute;
+  bottom: 20px;
+  left: 25%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+}
+
+.social-icons img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+/* Columna derecha */
+.right-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+
+.login-box {
+  width: 450px;
+  text-align: center;
+}
+
+.logo {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f4f4f4;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.input-group .icon {
+  margin-right: 10px;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+}
+
+/* Botón */
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #0066ff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #004ecc;
+}
+
+/* Registro */
+.register-text {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-text a {
+  color: #0066ff;
+  text-decoration: none;
+}
+
+/* Sidebar oculto */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: -250px; /* Oculto inicialmente */
+  width: 250px;
+  height: 100%;
+  background: #25390000;
+  padding-top: 60px;
+  transition: 0.3s;
+  z-index: 100;
+}
+
+.sidebar.active {
+  left: 0; /* Se muestra cuando tiene la clase active */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  display: block;
+  transition: 0.2s;
+}
+
+.sidebar ul li a:hover {
+  background: #08CB00;
+  border-radius: 5px;
+}

@@ -1,0 +1,155 @@
+/* Estilos General */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #A7ECA4;
+}
+
+/* Encabezado */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #A7ECA4;
+  padding: 15px 30px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #253900;
+  font-size: 16px;
+}
+
+.logo img {
+  width: 60px;
+  margin-right: 10px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+.navbar a.active,
+.navbar a:hover {
+  background-color: white;
+  border: 1px solid #06a500;
+  color: #06a500;
+}
+
+
+/* Botones */
+.Botones {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+text-decoration: none;
+  background-color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn2 {
+text-decoration: none;
+color: black;
+}
+.btn:hover {
+  background-color: #06a500; /* verde más oscuro al pasar el mouse */
+}
+
+
+/* imagen-1 */
+.imagen-1 img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Posicionamiento relativo de la imagen */
+.imagen-1 {
+  position: relative;
+}
+
+/* Contenedor para alinear tarjetas en una fila */
+.holo-container {
+  position: absolute;
+  top: 18%;              /* Súbelo o bájalo ajustando este valor */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  gap: 25px;
+}
+
+/* Tarjeta holográfica */
+.contacto-holo {
+  width: 230px;
+  padding: 18px;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  color: rgb(117, 106, 106);
+  text-align: center;
+
+  box-shadow: 0 0 15px rgba(0, 255, 150, 0.5),
+              0 0 25px rgba(0, 255, 150, 0.3);
+
+  animation: pulso 2.5s infinite ease-in-out;
+}
+
+/* Pulso holográfico */
+@keyframes pulso {
+  0% {
+    box-shadow: 0 0 12px rgba(0, 255, 150, 0.5),
+                0 0 20px rgba(0, 255, 150, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(0, 255, 150, 0.8),
+                0 0 40px rgba(0, 255, 150, 0.6);
+    transform: scale(1.03);
+  }
+  100% {
+    box-shadow: 0 0 12px rgba(0, 255, 150, 0.5),
+                0 0 20px rgba(0, 255, 150, 0.2);
+    transform: scale(1);
+  }
+}
+
+/* Botón holográfico */
+.btn-holo {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: rgba(0, 255, 120, 0.3);
+  border: 1px solid rgba(0, 255, 120, 0.6);
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: 0.3s ease;
+}
+
+.btn-holo:hover {
+  background: rgba(0, 255, 120, 0.6);
+  box-shadow: 0 0 12px rgba(0, 255, 150, 0.7);
+}

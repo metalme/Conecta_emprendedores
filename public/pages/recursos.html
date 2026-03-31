@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title >Conecta Emprendedores</title>
+  <link rel="stylesheet" href="../css/estilos_recursos.css">
+<link rel="icon" href="../assets/img/logo2.png" type="image/x-icon">
+ <!-- Iconos Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header class="header">
+    <div class="logo">
+      <img src="../assets/img/logo.png" alt="Logo Conecta Emprendedores">
+      <span>Conecta<br>Emprendedores</span>
+    </div>
+
+    <nav class="navbar">
+      <ul>
+        <li><a href="Inicio.html" class="active">Inicio</a></li>
+        <li><a href="emprendedores.html">Emprendedores</a></li>
+        <li><a href="inversores.html">Inversores</a></li>
+        <li><a href="recursos.html">Recursos</a></li>
+        <li><a href="sobre_nosotros.html">Sobre Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="Botones">
+      <button class="btn"><a href="login.html" class="btn2">Iniciar Sesión</a></button>
+      <button class="btn"><a href="registro.html" class="btn2">Registrarse</a></button>
+    </div>
+  </header>
+
+  <!-- BLOQUE: Imagen + Recursos con Parallax -->
+  <section class="hero-recursos">
+
+    <!-- Imagen Principal -->
+    <div class="imagen-1 parallax-layer">
+      <img src="../assets/img/foto 1.webp" alt="Personas trabajando en equipo">
+    </div>
+
+    <!-- Sección Recursos Sobre la Imagen -->
+    <div class="recursos-wrapper">
+      <section class="recursos-section" id="recursos">
+        <h2 class="recursos-title">Recursos</h2>
+        <p class="recursos-subtitle">
+          Potencia tus ideas con herramientas profesionales diseñadas para conectar proyectos, inversión y talento.
+        </p>
+
+        <div class="recursos-grid">
+
+          <div class="recurso-item">
+            <i data-lucide="rocket" class="icon"></i>
+            <h3>Perfiles de Emprendedores</h3>
+            <p>Presenta tu proyecto con impacto profesional y conecta con aliados estratégicos.</p>
+          </div>
+
+          <div class="recurso-item">
+            <i data-lucide="briefcase" class="icon"></i>
+            <h3>Panel de Inversionistas</h3>
+            <p>Explora startups por categoría, etapa y potencial de crecimiento.</p>
+          </div>
+
+          <div class="recurso-item">
+            <i data-lucide="sparkles" class="icon"></i>
+            <h3>Conexiones Inteligentes</h3>
+            <p>Un sistema que empareja ideas con capital según objetivos reales.</p>
+          </div>
+
+          <div class="recurso-item">
+            <i data-lucide="shield" class="icon"></i>
+            <h3>Herramientas Empresariales</h3>
+            <p>Plantillas, guías y analíticas para refinar tu modelo de negocio.</p>
+          </div>
+
+
+
+        </div>
+      </section>
+    </div>
+
+  </section>
+
+  <script src="../js/modules/recurso_estilos.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
