@@ -23,7 +23,6 @@ const API_URL = window.location.origin + '/api/emprendedores';
         if (response.ok) {
             alert(result.mensaje);
             formulario.reset();
-            window.location.href = '/pages/plogin.html';
         } else {
             alert("Hubo un error: " + result.error);
         }
