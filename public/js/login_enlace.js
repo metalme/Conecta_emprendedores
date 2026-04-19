@@ -15,9 +15,10 @@ formulario.addEventListener('submit', async (e) => {
         alert("Ingrese un correo válido");
         return;
     }
+const API_URL = window.location.origin + '/api/login';
 
     try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -42,7 +43,7 @@ formulario.addEventListener('submit', async (e) => {
 
             // 3. Mostramos mensaje y redirigimos
             alert(result.mensaje);
-            window.location.href = 'main.html';
+            window.location.href = '/pages/main.html';
 
         } else {
             alert("Error: " + (result.error || "Credenciales incorrectas"));
