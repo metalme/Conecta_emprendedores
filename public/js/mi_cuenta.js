@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Verificación de Seguridad
     if (!usuarioId || usuarioId === "null") {
         alert("Sesión no válida. Redirigiendo...");
-        window.location.href = '/pages/login.html';
+        window.location.href = 'login.html';
         return;
     }
 const API_URL = window.location.origin + '/api/login';
