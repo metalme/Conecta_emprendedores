@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/perfil/${idEmprendedor}`);
+        const response = await fetch(`/api/perfil/${idEmprendedor}`);
         
         if (response.ok) {
             const datos = await response.json();
@@ -34,7 +34,7 @@ formulario.addEventListener('submit', async (e) => {
 
     try {
         // La URL ahora coincide con tu server.js: /api/emprendedores/:id
-        const response = await fetch('http://localhost:3000/api/emprendedores/' + id, {
+        const response = await fetch('/api/emprendedores/' + id, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombre, telefono })
@@ -92,7 +92,7 @@ async function cambiarPassword() {
     
     // 2. Capturamos lo que escribió en el cuadro de contraseña
     // (Asegúrate de que en tu HTML el input tenga id="password")
-    const nuevaPassword = document.getElementById('password').value; 
+    const nuevaPassword = document.getElementById('password').value;
 
     // 3. Validamos que la contraseña sea segura (mínimo 6 caracteres)
     if (nuevaPassword.length < 6) {
@@ -102,7 +102,7 @@ async function cambiarPassword() {
 
     try {
         // 4. Enviamos la nueva clave a la ruta que acabas de crear en tu server.js
-        const response = await fetch(`http://localhost:3000/api/perfil/password/${id}`, {
+        const response = await fetch(`/api/perfil/password/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password: nuevaPassword })
