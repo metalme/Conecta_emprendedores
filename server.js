@@ -14,19 +14,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'Inicio.html'));
+});
 
-    app.use(express.static(path.join(__dirname, 'public', 'js')));});
-
-    app.use(express.static(path.join(__dirname, 'public', 'css')));
 
 // --- CONEXIÓN A LA BASE DE DATOS actualizada 31 marzo 2026 ---
 
 const conexion = mysql.createConnection({
-    host: 'b2epbzrhyannkkocholb-mysql.services.clever-cloud.com', // MYSQL_ADDON_HOST
-    user: 'ulxfpjzmwec7l5pc',                                   // MYSQL_ADDON_USER
-    password: 'Iu9NhmYYOgNWTUaF5vI9',                            // MYSQL_ADDON_PASSWORD
-    database: 'b2epbzrhyannkkocholb',                           // MYSQL_ADDON_DB
-    port: 3306                                                  // MYSQL_ADDON_PORT
+    host: process.env.MYSQL_ADDON_HOST || 'b2epbzrhyannkkocholb-mysql.services.clever-cloud.com',
+    user: process.env.MYSQL_ADDON_USER || 'ulxfpjzmwec7l5pc',
+    password: process.env.MYSQL_ADDON_PASSWORD || 'Iu9NhmYYOgNWTUaF5vI9',
+    database: process.env.MYSQL_ADDON_DB || 'b2epbzrhyannkkocholb',
+    port: process.env.MYSQL_ADDON_PORT || 3306
 });
 
 conexion.connect(function(error){
@@ -168,3 +166,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
 });
+
+
+
+
+

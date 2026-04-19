@@ -6,8 +6,13 @@ formulario.addEventListener('submit', async (e) => {
     const formData = new FormData(formulario);
     const data = Object.fromEntries(formData);
 
+// Detectar la URL base automáticamente
+// Si estás en Clever Cloud, usará la URL de la app. Si estás en local, usará localhost.
+
+const API_URL = window.location.origin + '/api/emprendedores';
+
     try {
-        const response = await fetch('http://localhost:3000/api/emprendedores', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -18,6 +23,7 @@ formulario.addEventListener('submit', async (e) => {
         if (response.ok) {
             alert(result.mensaje);
             formulario.reset();
+            window.location.href = '/pages/plogin.html';
         } else {
             alert("Hubo un error: " + result.error);
         }
