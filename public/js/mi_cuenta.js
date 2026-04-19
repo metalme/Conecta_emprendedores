@@ -6,12 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Verificación de Seguridad
     if (!usuarioId || usuarioId === "null") {
         alert("Sesión no válida. Redirigiendo...");
-        window.location.href = 'login.html';
+        window.location.href = '/pages/login.html';
         return;
     }
+const API_URL = window.location.origin + '/api/login';
 
     // 2. Cargar datos actuales desde el servidor
-    fetch(`http://localhost:3000/api/emprendedores/${usuarioId}`)
+    fetch(`${API_URL}${usuarioId}`)
         .then(response => {
             if (!response.ok) throw new Error("No se pudo obtener la información");
             return response.json();
@@ -38,8 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
             password: document.getElementById('password').value // Si está vacío, el servidor debe manejarlo
         };
 
+        const API_URL = window.location.origin + '/api/login';
         try {
-            const response = await fetch(`http://localhost:3000/api/emprendedores/${usuarioId}`, {
+            const response = await fetch(`${API_URL}${usuarioId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosActualizados)
