@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html';
         return;
     }
-const API_URL = window.location.origin + '/api/login';
+const API_PERFIL = window.location.origin + '/api/perfil/';
+const API_UPDATE = window.location.origin + '/api/emprendedores/';
+
 
     // 2. Cargar datos actuales desde el servidor
-    fetch(`${API_URL}${usuarioId}`)
+    fetch(`${API_PERFIL}${usuarioId}`)
         .then(response => {
             if (!response.ok) throw new Error("No se pudo obtener la información");
             return response.json();
@@ -39,9 +41,8 @@ const API_URL = window.location.origin + '/api/login';
             password: document.getElementById('password').value // Si está vacío, el servidor debe manejarlo
         };
 
-        const API_URL = window.location.origin + '/api/login';
         try {
-            const response = await fetch(`${API_URL}${usuarioId}`, {
+            const response = await fetch(`${API_UPDATE}${usuarioId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosActualizados)
