@@ -1,3 +1,9 @@
+// Simulación de mensajes para la interfaz de chat
+const miId = localStorage.getItem("id_emprendedor");
+let receptorId = null;
+
+
+
 // Datos simulados (como si vinieran de backend)
 const chats = {
     "Carlos Inversionista": [
@@ -31,6 +37,7 @@ chatItems.forEach(item => {
         // obtener nombre
         const nombre = item.querySelector(".chat-name").textContent;
         chatActual = nombre;
+        receptorId = item.getAttribute("data-id");
 
         // cambiar header
         chatHeader.textContent = nombre;
@@ -40,14 +47,25 @@ chatItems.forEach(item => {
     });
 });
 
-/* --- RENDER MENSAJES --- */
-function renderMensajes() {
+// Cargar mensajes del chat actual
+async function renderMensajes() {
+    if (!receptorId) return;
+
+    const res = await fetch(`/api/mensajes/${miId}/${receptorId}`);
+    const data = await res.json();
+
     chatMessages.innerHTML = "";
 
-    chats[chatActual].forEach(msg => {
+    data.forEach(msg => {
         const div = document.createElement("div");
-        div.classList.add("message", msg.tipo);
-        div.textContent = msg.texto;
+
+        if (msg.emisor_id == miId) {
+            div.classList.add("message", "sent");
+        } else {
+            div.classList.add("message", "received");
+        }
+
+        div.textContent = msg.mensaje;
         chatMessages.appendChild(div);
     });
 
@@ -55,18 +73,30 @@ function renderMensajes() {
 }
 
 /* --- ENVIAR MENSAJE --- */
-function enviarMensaje() {
+async function enviarMensaje() {
     const texto = input.value.trim();
-    if (texto === "") return;
+    if (texto === "" || !receptorId) return;
 
-    const nuevoMensaje = { tipo: "sent", texto: texto };
+    await fetch('/api/mensajes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            emisor_id: miId,
+            receptor_id: receptorId,
+            mensaje: texto })
+    });
 
-    chats[chatActual].push(nuevoMensaje);
-
-    renderMensajes();
 
     input.value = "";
+
+    renderMensajes();
 }
+
+// Cargar mensajes del primer chat al iniciar
+document.addEventListener("DOMContentLoaded", () => {
+    const firstChat = document.querySelector(".chat-item");
+    if (firstChat) firstChat.click();
+});
 
 sendBtn.addEventListener("click", enviarMensaje);
 

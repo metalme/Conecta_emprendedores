@@ -3,7 +3,11 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
 
+
+
 const app = express();
+
+
 
 // --- CONFIGURACIONES ---
 app.use(express.json());
@@ -160,6 +164,46 @@ app.get('/api/perfil/:id', (req, res) => {
         }
     });
 });
+
+// --- MENSAJES ---
+
+// ENVIAR MENSAJE
+app.post('/api/mensajes', (req, res) => {
+    const { emisor_id, receptor_id, mensaje } = req.body;
+
+    const sql = 'INSERT INTO mensajes (emisor_id, receptor_id, mensaje) VALUES (?, ?, ?)';
+
+    conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al enviar mensaje' });
+        }
+
+        res.json({ mensaje: 'Mensaje enviado' });
+    });
+});
+
+
+// OBTENER MENSAJES ENTRE DOS USUARIOS
+app.get('/api/mensajes/:user1/:user2', (req, res) => {
+    const { user1, user2 } = req.params;
+
+    const sql = `
+        SELECT * FROM mensajes 
+        WHERE (emisor_id = ? AND receptor_id = ?)
+        OR (emisor_id = ? AND receptor_id = ?)
+        ORDER BY fecha ASC
+    `;
+
+    conexion.query(sql, [user1, user2, user2, user1], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al obtener mensajes' });
+        }
+
+        res.json(results);
+    });
+});
+
 
 // --- AHORA (Listo para la nube) ---
 const PORT = process.env.PORT || 3000;
