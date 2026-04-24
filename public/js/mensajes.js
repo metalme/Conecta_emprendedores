@@ -1,7 +1,7 @@
 // Simulación de mensajes para la interfaz de chat
 const miId = localStorage.getItem("id_emprendedor");
 console.log("Mi ID:", miId);
-
+let receptorId = null;
 
 
 
@@ -110,6 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstChat = document.querySelector(".chat-item");
     if (firstChat) firstChat.click();
 });
+
+// 🔥 ACTUALIZA MENSAJES AUTOMÁTICAMENTE
+setInterval(() => {
+    if (receptorId) {
+        renderMensajes();
+    }
+}, 3000);
 
 sendBtn.addEventListener("click", enviarMensaje);
 
