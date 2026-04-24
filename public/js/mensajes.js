@@ -1,6 +1,7 @@
 // Simulación de mensajes para la interfaz de chat
 const miId = localStorage.getItem("id_emprendedor");
-let receptorId = null;
+console.log("Mi ID:", miId);
+
 
 
 
@@ -38,6 +39,7 @@ chatItems.forEach(item => {
         const nombre = item.querySelector(".chat-name").textContent;
         chatActual = nombre;
         receptorId = item.getAttribute("data-id");
+        console.log("Receptor ID:", receptorId);
 
         // cambiar header
         chatHeader.textContent = nombre;
@@ -47,49 +49,60 @@ chatItems.forEach(item => {
     });
 });
 
-// Cargar mensajes del chat actual
+// Variable para almacenar el ID del receptor
 async function renderMensajes() {
-    if (!receptorId) return;
+    if (!receptorId || !miId) return;
 
-    const res = await fetch(`/api/mensajes/${miId}/${receptorId}`);
-    const data = await res.json();
+    try {
+        const res = await fetch(`/api/mensajes/${miId}/${receptorId}`);
+        const data = await res.json();
 
-    chatMessages.innerHTML = "";
+        chatMessages.innerHTML = "";
 
-    data.forEach(msg => {
-        const div = document.createElement("div");
+        data.forEach(msg => {
+            const div = document.createElement("div");
 
-        if (msg.emisor_id == miId) {
-            div.classList.add("message", "sent");
-        } else {
-            div.classList.add("message", "received");
-        }
+            const esMio = String(msg.emisor_id) === String(miId);
 
-        div.textContent = msg.mensaje;
-        chatMessages.appendChild(div);
-    });
+            div.classList.add("message", esMio ? "sent" : "received");
 
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+            div.textContent = msg.mensaje;
+
+            chatMessages.appendChild(div);
+        });
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    } catch (error) {
+        console.error("Error cargando mensajes:", error);
+    }
 }
 
-/* --- ENVIAR MENSAJE --- */
+// Enviar mensaje
+
 async function enviarMensaje() {
     const texto = input.value.trim();
-    if (texto === "" || !receptorId) return;
 
-    await fetch('/api/mensajes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            emisor_id: miId,
-            receptor_id: receptorId,
-            mensaje: texto })
-    });
+    if (!texto || !receptorId || !miId) return;
 
+    try {
+        await fetch('/api/mensajes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                emisor_id: miId,
+                receptor_id: receptorId,
+                mensaje: texto
+            })
+        });
 
-    input.value = "";
+        input.value = "";
 
-    renderMensajes();
+        await renderMensajes();
+
+    } catch (error) {
+        console.error("Error enviando mensaje:", error);
+    }
 }
 
 // Cargar mensajes del primer chat al iniciar
