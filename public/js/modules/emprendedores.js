@@ -6,20 +6,42 @@ let filtroBusqueda = "";
 ================================ */
 async function obtenerRelacion(userId) {
   try {
-    const res = await fetch(`/api/chat-permitido/${miId}/${userId}`);
-    const data = await res.json();
+    // 1. Verificar si pueden chatear
+    const chatRes = await fetch(`/api/chat-permitido/${miId}/${userId}`);
+    const chatData = await chatRes.json();
 
-    if (data.permitido) {
+    if (chatData.permitido) {
       return { estado: "aceptado" };
+    }
+
+    // 2. Solicitudes que YO recibo
+    const res = await fetch(`/api/solicitudes/${miId}`);
+    const solicitudes = await res.json();
+
+    const pendienteRecibida = solicitudes.find(s => s.emisor_id == userId);
+
+    if (pendienteRecibida) {
+      return { estado: "pendiente_recibida" };
+    }
+
+    // 3. Solicitudes que EL OTRO usuario recibe (o sea las que yo envié)
+    const res2 = await fetch(`/api/solicitudes/${userId}`);
+    const solicitudesDelOtro = await res2.json();
+
+    const enviada = solicitudesDelOtro.find(s => s.emisor_id == miId);
+
+    if (enviada) {
+      return { estado: "pendiente_enviada" };
     }
 
     return null;
 
   } catch (error) {
-    console.error("Error obteniendo relación:", error);
+    console.error("Error relación:", error);
     return null;
   }
 }
+
 
 /* ================================
    CARGAR EMPRENDEDORES
@@ -50,11 +72,17 @@ async function cargarEmprendedores() {
       let boton = "";
 
       if (!relacion) {
-        boton = `<button class="btn-secondary-small btn-agregar">Agregar</button>`;
-      } 
-      else if (relacion.estado === "aceptado") {
-        boton = `<button class="btn-primary-small btn-chat">Chatear</button>`;
-      }
+          boton = `<button class="btn-secondary-small btn-agregar">Agregar</button>`;
+          } 
+          else if (relacion.estado === "pendiente_recibida") {
+          boton = `<button disabled>Pendiente</button>`;
+          }
+else if (relacion.estado === "pendiente_enviada") {
+  boton = `<button disabled>Enviado</button>`;
+}
+else if (relacion.estado === "aceptado") {
+  boton = `<button class="btn-primary-small btn-chat">Chatear</button>`;
+}
 
       const div = document.createElement("div");
       div.classList.add("project-item");
