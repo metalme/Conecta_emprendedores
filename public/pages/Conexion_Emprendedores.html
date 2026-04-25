@@ -47,7 +47,7 @@
                 <div class="top-actions">
                     <div class="search-bar-netflix">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Inversores, sectores, VCs...">
+                        <input type="text" id="buscadorEmprendedores" placeholder="Buscar emprendedores...">
                     </div>
                     <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
                     <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
@@ -79,50 +79,48 @@
             </section>
 
             <div class="inversor-grid">
-            <div class="card-perfil">
-            <h3><i class="fa-solid fa-user-group"></i> Emprendedores Recomendados</h3>
 
+    <!-- CARD 1 -->
+    <div class="card-perfil">
+        <h3><i class="fa-solid fa-user-group"></i> Emprendedores Recomendados</h3>
 
-           <div class="project-list" id="listaEmprendedores"></div>  // Aquí se cargarán los emprendedores recomendados dinámicamente
+        <div class="project-list" id="listaEmprendedores"></div>
+    </div>
 
-    
+    <!-- CARD 2 -->
+    <div class="card-perfil">
+        <h3><i class="fa-solid fa-satellite-dish"></i> Actividad Reciente</h3>
 
+        <table class="inversor-table">
+            <thead>
+                <tr>
+                    <th>Inversionista</th>
+                    <th>Acción</th>
+                    <th>Tiempo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Laura Méndez</td>
+                    <td>Te envió solicitud de amistad</td>
+                    <td><span class="tag">Hace 2h</span></td>
+                </tr>
+                <tr>
+                    <td>Carlos Ramírez</td>
+                    <td>Visitó tu perfil</td>
+                    <td><span class="tag-pending">Ayer</span></td>
+                </tr>
+                <tr>
+                    <td>Sofía Torres</td>
+                    <td>Te escribió un mensaje</td>
+                    <td><span class="tag-pending">Hace 3 días</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
+</div>
 
-<div class="card-perfil">
-                    <h3><i class="fa-solid fa-satellite-dish"></i> Actividad Reciente</h3>
-                    <table class="inversor-table">
-                        <thead>
-                            <tr>
-                                <th>Inversionista</th>
-                                <th>Acción</th>
-                                <th>Tiempo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-        <td>Laura Méndez</td>
-        <td>Te envió solicitud de amistad</td>
-        <td><span class="tag">Hace 2h</span></td>
-    </tr>
-    <tr>
-        <td>Carlos Ramírez</td>
-        <td>Visitó tu perfil</td>
-        <td><span class="tag-pending">Ayer</span></td>
-    </tr>
-    <tr>
-        <td>Sofía Torres</td>
-        <td>Te escribió un mensaje</td>
-        <td><span class="tag-pending">Hace 3 días</span></td>
-    </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </main>
- 
-   </div>
 
 <script src="../js/modules/emprendedores.js"></script>
 </body>
