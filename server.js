@@ -166,23 +166,38 @@ app.get('/api/perfil/:id', (req, res) => {
 });
 
 // --- MENSAJES ---
-
-// ENVIAR MENSAJE
+// RUTA PARA ENVIAR MENSAJE ENTRE USUARIOS (SOLO SI TIENEN UNA SOLICITUD ACEPTADA ENTRE ELLOS)
 app.post('/api/mensajes', (req, res) => {
     const { emisor_id, receptor_id, mensaje } = req.body;
 
-    const sql = 'INSERT INTO mensajes (emisor_id, receptor_id, mensaje) VALUES (?, ?, ?)';
+    const validar = `
+    SELECT * FROM solicitudes 
+    WHERE (
+        (emisor_id = ? AND receptor_id = ?) OR
+        (emisor_id = ? AND receptor_id = ?)
+    )
+    AND estado = 'aceptado'
+    `;
 
-    conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error al enviar mensaje' });
+    conexion.query(validar, [emisor_id, receptor_id, receptor_id, emisor_id], (err, result) => {
+
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        if (result.length === 0) {
+            return res.status(403).json({ error: 'No pueden chatear aún' });
         }
 
-        res.json({ mensaje: 'Mensaje enviado' });
+        // SI ESTÁ PERMITIDO → GUARDA MENSAJE
+        const sql = 'INSERT INTO mensajes (emisor_id, receptor_id, mensaje) VALUES (?, ?, ?)';
+
+        conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
+            if (err) return res.status(500).json({ error: 'Error al enviar mensaje' });
+
+            res.json({ mensaje: 'Mensaje enviado' });
+        });
+
     });
 });
-
 
 // OBTENER MENSAJES ENTRE DOS USUARIOS
 app.get('/api/mensajes/:user1/:user2', (req, res) => {
@@ -201,6 +216,111 @@ app.get('/api/mensajes/:user1/:user2', (req, res) => {
         }
 
         res.json(results);
+    });
+});
+
+app.post('/api/solicitudes', (req, res) => {
+    const { emisor_id, receptor_id } = req.body;
+
+    // ❌ evitar auto solicitud
+    if (emisor_id == receptor_id) {
+        return res.status(400).json({ error: 'No puedes enviarte solicitud a ti mismo' });
+    }
+
+    const sql = `
+    INSERT INTO solicitudes (emisor_id, receptor_id)
+    SELECT ?, ?
+    WHERE NOT EXISTS (
+        SELECT 1 FROM solicitudes 
+        WHERE (
+            (emisor_id = ? AND receptor_id = ?) OR
+            (emisor_id = ? AND receptor_id = ?)
+        )
+    )
+    `;
+
+    conexion.query(
+        sql,
+        [emisor_id, receptor_id, emisor_id, receptor_id, receptor_id, emisor_id],
+        (err, result) => {
+
+            if (err) return res.status(500).json({ error: 'Error' });
+
+            if (result.affectedRows === 0) {
+                return res.json({ mensaje: 'Ya existe una solicitud o relación' });
+            }
+
+            res.json({ mensaje: 'Solicitud enviada' });
+        }
+    );
+});
+
+
+// OBTENER SOLICITUDES PENDIENTES PARA UN USUARIO
+app.get('/api/solicitudes/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `
+    SELECT s.*, e.nombre 
+    FROM solicitudes s
+    JOIN emprendedores e ON s.emisor_id = e.id_emprendedor
+    WHERE s.receptor_id = ? AND s.estado = 'pendiente'
+    `;
+
+    conexion.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        res.json(results);
+    });
+});
+
+
+// ACEPTAR SOLICITUD
+app.put('/api/solicitudes/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `UPDATE solicitudes SET estado = 'aceptado' WHERE id = ?`;
+
+    conexion.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        res.json({ mensaje: 'Aceptado' });
+    });
+});
+
+// RECHAZAR SOLICITUD
+app.put('/api/solicitudes/rechazar/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `UPDATE solicitudes SET estado = 'rechazado' WHERE id = ?`;
+
+    conexion.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        res.json({ mensaje: 'Solicitud rechazada' });
+    });
+});
+
+
+// VERIFICAR SI DOS USUARIOS PUEDEN CHATEAR (SOLO SI TIENEN UNA SOLICITUD ACEPTADA ENTRE ELLOS)
+app.get('/api/chat-permitido/:user1/:user2', (req, res) => {
+    const { user1, user2 } = req.params;
+
+    const sql = `
+    SELECT * FROM solicitudes 
+    WHERE (
+        (emisor_id = ? AND receptor_id = ?) OR
+        (emisor_id = ? AND receptor_id = ?)
+    )
+    AND estado = 'aceptado'
+    `;
+
+
+
+    conexion.query(sql, [user1, user2, user2, user1], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        res.json({ permitido: result.length > 0 });
     });
 });
 

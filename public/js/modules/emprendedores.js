@@ -1,3 +1,10 @@
+let miId = 1; // luego lo reemplazas con el usuario logueado
+
+async function obtenerRelacion(userId) {
+  const res = await fetch(`/api/relacion/${miId}/${userId}`);
+  return await res.json();
+}
+
 /* ================================
    SCROLL REVEAL
 ================================ */
@@ -17,13 +24,13 @@ document.addEventListener("scroll", () => {
   const scroll = window.pageYOffset;
 
   elements.forEach(el => {
-      const speed = el.getAttribute("data-speed");
-      el.style.transform = `translateY(${scroll * speed}px)`;
+    const speed = el.getAttribute("data-speed");
+    el.style.transform = `translateY(${scroll * speed}px)`;
   });
 });
 
 /* ================================
-   PARTÍCULAS SUAVES (VERDES)
+   PARTÍCULAS
 ================================ */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
@@ -49,7 +56,7 @@ class Particle {
     if (this.y < 0) this.y = canvas.height;
   }
   draw() {
-    ctx.fillStyle = "rgba(0, 255, 130, 0.45)"; 
+    ctx.fillStyle = "rgba(0, 255, 130, 0.45)";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
@@ -71,4 +78,83 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
-/* ---- FIN DEL CÓDIGO ---- */
+
+/* ================================
+   CARGAR EMPRENDEDORES
+================================ */
+async function cargarEmprendedores() {
+
+  const res = await fetch('/api/emprendedores');
+
+  if (!res.ok) {
+    console.error("Error al cargar emprendedores");
+    return;
+  }
+
+  const usuarios = await res.json();
+
+  const contenedor = document.getElementById("listaEmprendedores");
+  contenedor.innerHTML = "";
+
+  for (const user of usuarios) {
+
+    if (user.id_emprendedor == miId) continue;
+
+    const relacion = await obtenerRelacion(user.id_emprendedor);
+
+    let boton = "";
+
+    if (!relacion) {
+      boton = `<button class="btn-secondary-small btn-agregar">Agregar</button>`;
+    } 
+    else if (relacion.estado === "pendiente") {
+      boton = `<button disabled>Pendiente</button>`;
+    } 
+    else if (relacion.estado === "aceptado") {
+      boton = `<button class="btn-primary-small btn-chat">Chatear</button>`;
+    }
+
+    const div = document.createElement("div");
+    div.classList.add("project-item");
+
+    div.innerHTML = `
+      <span class="project-name">${user.nombre}</span>
+      ${boton}
+    `;
+
+    // CLICK AGREGAR
+    if (!relacion) {
+      div.querySelector(".btn-agregar").addEventListener("click", async () => {
+
+        await fetch('/api/solicitudes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            emisor_id: miId,
+            receptor_id: user.id_emprendedor
+          })
+        });
+
+        alert("Solicitud enviada");
+        cargarEmprendedores();
+
+      });
+    }
+
+    // CLICK CHAT
+    if (relacion && relacion.estado === "aceptado") {
+      div.querySelector(".btn-chat")?.addEventListener("click", () => {
+        window.location.href = `/pages/mensajes.html?user=${user.id_emprendedor}`;
+      });
+    }
+
+    contenedor.appendChild(div);
+  }
+}
+
+/* ================================
+   INICIAR CUANDO CARGA HTML
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  cargarEmprendedores();
+});
