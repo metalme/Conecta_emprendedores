@@ -98,6 +98,54 @@ async function cargarEmprendedores() {
 }
 
 /* ================================
+   CARGAR SOLICITUDES
+================================ */
+async function cargarSolicitudes() {
+  try {
+    const res = await fetch(`/api/solicitudes/${miId}`);
+    const solicitudes = await res.json();
+
+    console.log("Solicitudes:", solicitudes);
+
+    const contenedor = document.getElementById("listaSolicitudes");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
+
+    solicitudes.forEach(s => {
+      const div = document.createElement("div");
+      div.classList.add("project-item");
+
+      div.innerHTML = `
+        <span class="project-name">${s.nombre}</span>
+        <button class="aceptar">Aceptar</button>
+        <button class="rechazar">Rechazar</button>
+      `;
+
+      // ACEPTAR
+      div.querySelector(".aceptar").addEventListener("click", async () => {
+        await fetch(`/api/solicitudes/${s.id}`, { method: "PUT" });
+        alert("Aceptado");
+        cargarSolicitudes();
+        cargarEmprendedores();
+      });
+
+      // RECHAZAR
+      div.querySelector(".rechazar").addEventListener("click", async () => {
+        await fetch(`/api/solicitudes/rechazar/${s.id}`, { method: "PUT" });
+        alert("Rechazado");
+        cargarSolicitudes();
+      });
+
+      contenedor.appendChild(div);
+    });
+
+  } catch (error) {
+    console.error("Error solicitudes:", error);
+  }
+}
+
+/* ================================
    INICIO + BUSCADOR
 ================================ */
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,4 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   cargarEmprendedores();
+  cargarSolicitudes();
+
 });
