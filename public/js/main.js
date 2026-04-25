@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (respuesta.ok) {
                     // 1. Guardamos el nombre en la memoria del navegador
                     localStorage.setItem("usuarioNombre", resultado.nombre);
+                    localStorage.setItem("id_emprendedor", resultado.id_emprendedor);
                     alert("¡Bienvenido a Conecta Emprendedores!");
                     window.location.href = "main.html";
                 } else {

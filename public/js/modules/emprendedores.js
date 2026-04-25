@@ -1,5 +1,10 @@
-let miId = 1; // ⚠️ luego usar localStorage
-let filtroBusqueda = "";
+let miId = parseInt(localStorage.getItem("id_emprendedor"));
+
+if (!miId) {
+  alert("Sesión no válida");
+  window.location.href = "/pages/login.html";
+}
+console.log("ID actual:", miId);
 
 /* ================================
    RELACIÓN ENTRE USUARIOS
