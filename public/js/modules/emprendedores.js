@@ -118,9 +118,10 @@ async function cargarEmprendedores() {
             btn.innerText = "Agregar";
           }
 
-          setTimeout(() => {
-            cargarEmprendedores();
-          }, 500);
+          //  recargar más tarde para dar tiempo al backend
+              setTimeout(() => {
+              cargarEmprendedores();
+              }, 1500);
 
         });
       }
