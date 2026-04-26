@@ -6,37 +6,39 @@ async function cargarChats() {
         const chatList = document.querySelector(".chat-list");
         chatList.innerHTML = "<h3>Chats</h3>";
 
-        usuarios.forEach(user => {
+        // CAMBIO: Usamos for...of para poder usar await dentro del bucle
+        for (const user of usuarios) {
+            
+            if (String(user.id_emprendedor) === String(miId)) continue;
 
-            // ❌ evitar mostrarte a ti mismo
-            if (String(user.id_emprendedor) === String(miId)) return;
+            // NUEVA VALIDACIÓN: Solo si el chat está permitido (amistad aceptada)
+            const resPermiso = await fetch(`/api/chat-permitido/${miId}/${user.id_emprendedor}`);
+            const dataPermiso = await resPermiso.json();
 
-            const div = document.createElement("div");
-            div.classList.add("chat-item");
-            div.setAttribute("data-id", user.id_emprendedor);
+            if (dataPermiso.permitido) {
+                const div = document.createElement("div");
+                div.classList.add("chat-item");
+                div.setAttribute("data-id", user.id_emprendedor);
 
-            div.innerHTML = `
-                <img src="https://via.placeholder.com/40" class="chat-avatar">
-                <div>
-                    <span class="chat-name">${user.nombre}</span>
-                    <span class="chat-preview">Haz clic para chatear</span>
-                </div>
-            `;
+                div.innerHTML = `
+                    <img src="https://via.placeholder.com/40" class="chat-avatar">
+                    <div>
+                        <span class="chat-name">${user.nombre}</span>
+                        <span class="chat-preview">Haz clic para chatear</span>
+                    </div>
+                `;
 
-            // evento click
-            div.addEventListener("click", () => {
+                div.addEventListener("click", () => {
+                    document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
+                    div.classList.add("active");
+                    receptorId = user.id_emprendedor;
+                    chatHeader.textContent = user.nombre;
+                    renderMensajes();
+                });
 
-                document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
-                div.classList.add("active");
-
-                receptorId = user.id_emprendedor;
-                chatHeader.textContent = user.nombre;
-
-                renderMensajes();
-            });
-
-            chatList.appendChild(div);
-        });
+                chatList.appendChild(div);
+            }
+        }
 
     } catch (error) {
         console.error("Error cargando chats:", error);
@@ -57,8 +59,6 @@ const sendBtn = document.getElementById("sendBtn");
 
 
 
-
-// Variable para almacenar el ID del receptor
 async function renderMensajes() {
     if (!receptorId || !miId) return;
 
@@ -70,12 +70,20 @@ async function renderMensajes() {
 
         data.forEach(msg => {
             const div = document.createElement("div");
-
             const esMio = String(msg.emisor_id) === String(miId);
-
             div.classList.add("message", esMio ? "sent" : "received");
 
-            div.textContent = msg.mensaje;
+            // CAMBIO: Formatear la fecha y hora
+            const fechaObj = new Date(msg.fecha);
+            const hora = fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // CAMBIO: Usar innerHTML para meter el texto y la hora
+            div.innerHTML = `
+                <div class="msg-text">${msg.mensaje}</div>
+                <span class="msg-time" style="font-size: 0.7rem; opacity: 0.7; display: block; text-align: right; margin-top: 4px;">
+                    ${hora}
+                </span>
+            `;
 
             chatMessages.appendChild(div);
         });
@@ -86,6 +94,7 @@ async function renderMensajes() {
         console.error("Error cargando mensajes:", error);
     }
 }
+
 
 // Enviar mensaje
 
