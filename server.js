@@ -325,6 +325,101 @@ app.get('/api/chat-permitido/:user1/:user2', (req, res) => {
 });
 
 
+
+// GUARDAR O ACTUALIZAR PERFIL
+app.post('/api/perfil', (req, res) => {
+    const {
+        id_emprendedor,
+        hero_titulo,
+        hero_subtitulo,
+        hero_imagen,
+        stat1_texto,
+        stat1_valor,
+        stat2_texto,
+        stat2_valor,
+        stat3_texto,
+        stat3_valor,
+        proyectos_json
+    } = req.body;
+
+    const sql = `
+    INSERT INTO perfil_emprendedores
+    (id_emprendedor, hero_titulo, hero_subtitulo, hero_imagen,
+    stat1_texto, stat1_valor,
+    stat2_texto, stat2_valor,
+    stat3_texto, stat3_valor,
+    proyectos_json)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+        hero_titulo = VALUES(hero_titulo),
+        hero_subtitulo = VALUES(hero_subtitulo),
+        hero_imagen = VALUES(hero_imagen),
+        stat1_texto = VALUES(stat1_texto),
+        stat1_valor = VALUES(stat1_valor),
+        stat2_texto = VALUES(stat2_texto),
+        stat2_valor = VALUES(stat2_valor),
+        stat3_texto = VALUES(stat3_texto),
+        stat3_valor = VALUES(stat3_valor),
+        proyectos_json = VALUES(proyectos_json)
+    `;
+
+    conexion.query(sql, [
+        id_emprendedor,
+        hero_titulo,
+        hero_subtitulo,
+        hero_imagen,
+        stat1_texto,
+        stat1_valor,
+        stat2_texto,
+        stat2_valor,
+        stat3_texto,
+        stat3_valor,
+        proyectos_json
+    ], (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error al guardar perfil' });
+        }
+
+        res.json({ mensaje: 'Perfil guardado correctamente' });
+    });
+});
+
+
+
+
+// RUTA PARA OBTENER DATOS DEL PERFIL
+
+app.get('/api/perfil-completo/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `
+    SELECT e.nombre, e.correo, e.telefono,
+           p.*
+    FROM emprendedores e
+    LEFT JOIN perfil_emprendedores p
+    ON e.id_emprendedor = p.id_emprendedor
+    WHERE e.id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error' });
+
+        res.json(result[0]);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 // --- AHORA (Listo para la nube) ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -3,121 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Contenido - Conecta Emprendedores</title>
-    
+    <title>Mi Perfil - Conecta Emprendedores</title>
     <link rel="stylesheet" href="../css/estilos_mi_cuenta.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <style>
-        /* Estilos específicos para el Modo Edición */
-        :root {
-            --accent-color: #10b981; /* Verde esmeralda para acciones de guardado */
-        }
-
-        .editable-section {
-            position: relative;
-            transition: all 0.3s ease;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-
-        /* Indicador visual de que un elemento se puede editar */
-        .editable-active .editable {
-            outline: 2px dashed var(--accent-color);
-            outline-offset: 8px;
-            background: rgba(16, 185, 129, 0.05);
-            cursor: text;
-        }
-
-        /* Botón de edición flotante */
-        .btn-edit-content {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            transition: 0.3s;
-        }
-
-        .btn-edit-content:hover {
-            background: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        /* Overlay para cambiar la foto de perfil */
-        .hero-image-container { position: relative; width: fit-content; margin: 0 auto; }
-        
-        .overlay-upload {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            display: none; /* Oculto por defecto */
-            place-items: center;
-            border-radius: 50%;
-            cursor: pointer;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .editable-active .overlay-upload {
-            display: grid; /* Se muestra solo al editar */
-        }
-
-        #db-hero_imagen {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--glass-border);
-        }
-    </style>
 </head>
 <body>
 
 <div class="app-container">
 
     <aside class="sidebar">
+        <h2>Menu</h2>
         <div class="logo-area">
             <i class="fa-solid fa-rocket large-logo"></i>
-            <span style="font-weight: bold; font-size: 1.2rem; letter-spacing: 1px;">CONECTA</span>
+            <p style="text-align: center;">Conecta <br/> Emprendedores</p>
         </div>
-
         <div class="user-profile-sidebar">
-            <img src="https://via.placeholder.com/60" alt="Avatar" class="user-avatar" id="avatar-sidebar">
-            <div class="user-name" id="display-nombre">Cargando...</div>
-            <div class="user-role">Emprendedor</div>
+            <img src="https://via.placeholder.com/60" alt="Usuario" class="user-avatar">
+            <p class="usuarioNombre">Emprendedor Pro</p>
         </div>
-
-        <nav>
-            <ul>
-                <li><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
-                <li><a href="#"><i class="fa-solid fa-folder"></i> Proyectos</a></li>
-                <li><a href="inversor_exploracion.html"><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
-                <li><a href="/pages/Conexion_Emprendedores.html"><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
-                <li><a href="/pages/biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
-                <li><a href="/pages/mensajes.html"><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
-                <li class="active"><a href="/pages/mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
-            </ul>
-        </nav>
+        <ul>
+            <li ><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href=""><i class="fa-solid fa-folder"></i> Proyectos</a></li>
+            <li><a href="inversor_exploracion.html"><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
+            <li><a href="/pages/Conexion_Emprendedores.html"><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
+            <li><a href="/pages/biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
+            <li><a href=""><i class="fa-solid fa-newspaper"></i> Noticias</a></li>
+            <li><a href=""><i class="fa-solid fa-bell"></i> Notificaciones</a></li>
+            <li><a href="/pages/mensajes.html"><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
+            <li class="active"><a href="/pages/mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+        </ul>
     </aside>
 
     <main class="main-content">
 
-        <header class="perfil-header" style="margin-bottom: 30px;">
+        <header class="perfil-header">
             <div class="header-izquierdo">
-                <h1>Tu Perfil <span style="color: var(--accent-color);">Público</span></h1>
-                <p>Gestiona cómo te presentas ante la comunidad de inversores.</p>
+                <h1>Perfil <span style="color: var(--accent-color);">Profesional</span></h1>
             </div>
             <div class="top-actions">
                 <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
@@ -125,78 +47,141 @@
             </div>
         </header>
 
-        <section class="editable-section" id="sec-hero">
-            <button class="btn-edit-content" onclick="gestionarEdicion('sec-hero')">
-                <i class="fa-solid fa-pen"></i> <span>Editar Sección</span>
-            </button>
-            
-            <div class="hero-profile" style="display: flex; align-items: center; gap: 50px; flex-wrap: wrap;">
-                <div class="hero-text" style="flex: 1; min-width: 300px;">
-                    <h1 class="serif-title editable" id="db-hero_titulo" style="font-size: 3.5rem; margin-bottom: 15px;">Cargando título...</h1>
-                    <p class="hero-subtitle editable" id="db-hero_subtitulo" style="font-size: 1.2rem; color: #ccc; line-height: 1.6;">Cargando descripción biográfica...</p>
-                    <div style="margin-top: 25px;">
-                        <button class="btn-primary">Ver Portafolio</button>
-                    </div>
-                </div>
+        <section class="hero-profile">
+            <div class="hero-text">
 
-                <div class="hero-image-container">
-                    <img src="" id="db-hero_imagen" alt="Foto de Perfil">
-                    <input type="file" id="input-img-hero" style="display:none" accept="image/*" onchange="previewImagen(this)">
-                    <div class="overlay-upload" onclick="document.getElementById('input-img-hero').click()">
-                        <i class="fa-solid fa-camera"></i>
-                    </div>
+        <!-- INPUT EDITABLE -->
+        <input type="text" id="hero_titulo" class="serif-title"
+            placeholder="Ej: Hola, soy Brayan"
+            style="background: transparent; border: none; color: white; width: 100%;">
+
+        <!-- INPUT EDITABLE -->
+        <textarea id="hero_subtitulo" class="hero-subtitle"
+            placeholder="Describe lo que haces..."
+            style="background: transparent; border: none; color: var(--text-subtle); width: 100%; resize: none;"></textarea>
+
+    </div>
+            <div class="hero-image-container">
+
+        <!-- INPUT IMAGEN -->
+        <input type="text" id="hero_imagen"
+            placeholder="URL de tu imagen"
+            style="margin-bottom:10px; width:100%; padding:8px; border-radius:6px;">
+
+        <!-- IMAGEN DINÁMICA -->
+        <img id="preview_imagen"
+            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2"
+            alt="Profile">
+
+    </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-mouse-pointer"></i></div>
+                <h4>Más de 5 sitios web creados</h4>
+                <p style="color: var(--text-subtle);">Para 4 clientes satisfechos</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-heart"></i></div>
+                <h4>Más de 3 años de experiencia</h4>
+                <p style="color: var(--text-subtle);">En web y dispositivos móviles</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <h4>Activista</h4>
+                <p style="color: var(--text-subtle);">Por un mundo más inclusivo</p>
+            </div>
+        </section>
+
+        <section class="approach-section">
+            <div class="approach-image">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Enfoque">
+            </div>
+            <div class="approach-content">
+                <h2 class="serif-title">Mi enfoque</h2>
+                <h3>Colaborativo</h3>
+                <p style="color: var(--text-subtle);">Creo en el poder de la colaboración para crear sitios web excepcionales. Colaboro estrechamente contigo para desarrollar un sitio que no solo refleje tu marca sino que exceda expectativas.</p>
+                <h3>Iterativo</h3>
+                <p style="color: var(--text-subtle);">Adopto un enfoque iterativo en mi trabajo para garantizar que el resultado final se alinee con tu visión creativa y refleje tu identidad única.</p>
+            </div>
+        </section>
+
+        <section class="cases-section">
+            <h2 class="serif-title">Casos de estudios</h2>
+            <div class="cases-grid">
+                <div class="case-card gold">
+                    <h3>Collette Noll<br>Interior Design</h3>
+                    <p>Concepto y creación de sitio web con foco en variedad de servicios y colaboraciones.</p>
+                    <a href="#" class="case-link">Ver proyecto</a>
+                </div>
+                <div class="case-card olive">
+                    <h3>Sofia Pazari<br>Home Goods</h3>
+                    <p>Diseño de sitio web y envases para comercialización de productos originales de belleza.</p>
+                    <a href="#" class="case-link">Ver proyecto</a>
+                </div>
+                <div class="case-card khaki">
+                    <h3>Sauce & Slice<br>Pizzeria</h3>
+                    <p>Desarrollo de identidad de marca y rediseño del sitio web para una pizzería familiar.</p>
+                    <a href="#" class="case-link">Ver proyecto</a>
                 </div>
             </div>
         </section>
 
-        <section class="editable-section" id="sec-stats">
-            <button class="btn-edit-content" onclick="gestionarEdicion('sec-stats')">
-                <i class="fa-solid fa-pen"></i> <span>Editar Logros</span>
-            </button>
-            <div class="stats-grid" id="container-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                </div>
-        </section>
-
-        <div class="perfil-grid" style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px;">
-            
-            <div class="card-perfil" style="background: var(--card-bg); padding: 30px; border-radius: 20px;">
-                <h3><i class="fa-solid fa-id-card" style="color: var(--accent-color);"></i> Datos Personales</h3>
-                <form id="form-mi-cuenta" style="margin-top: 20px;">
+        <div class="config-title">
+            <h2 class="serif-title" style="font-size: 2rem;">Configuración de Cuenta</h2>
+        </div>
+        
+        <section class="perfil-grid">
+            <div class="card-perfil">
+                <h3><i class="fa-solid fa-id-card"></i> Datos Personales</h3>
+                <form id="form-mi-cuenta">
                     <div class="form-grupo">
                         <label>Nombre Completo</label>
                         <input type="text" id="nombre" placeholder="Tu nombre" required>
                     </div>
                     <div class="form-grupo">
                         <label>Correo Electrónico</label>
-                        <input type="email" id="correo" disabled style="opacity: 0.6; cursor: not-allowed;">
+                        <input type="email" id="correo" disabled title="El correo no se puede cambiar">
                     </div>
                     <div class="form-grupo">
-                        <label>Teléfono de Contacto</label>
-                        <input type="text" id="telefono" placeholder="+57 ...">
+                        <label>Teléfono</label>
+                        <input type="text" id="telefono" placeholder="Ej: +57 300...">
                     </div>
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Actualizar Información</button>
+                    <button type="submit" class="btn-primary">Actualizar Datos</button>
                 </form>
             </div>
 
-            <div class="card-perfil" style="background: var(--card-bg); padding: 30px; border-radius: 20px;">
-                <h3><i class="fa-solid fa-shield-halved" style="color: var(--accent-color);"></i> Seguridad</h3>
-                <p style="font-size: 0.9rem; color: #888; margin-bottom: 20px;">Mantén tu cuenta protegida cambiando tu contraseña periódicamente.</p>
-                
+            <div class="card-perfil">
+                <h3><i class="fa-solid fa-shield-halved"></i> Seguridad</h3>
+                <p style="color: var(--text-subtle); margin-bottom: 20px; font-size: 0.9rem;">
+                    Mantén tu cuenta protegida cambiando tu contraseña periódicamente.
+                </p>
                 <div class="form-grupo">
                     <label>Nueva Contraseña</label>
-                    <input type="password" id="password" placeholder="Mínimo 6 caracteres">
+                    <input type="password" id="password" placeholder="Mínimo 10 caracteres" required>
                 </div>
-                <button type="button" onclick="cambiarPassword()" class="btn-logout" style="width: 100%; background: rgba(255,255,255,0.05); justify-content: center;">
-                    <i class="fa-solid fa-lock"></i> Actualizar Contraseña
+                <button type="button" onclick="cambiarPassword()" class="btn-logout" style="width: 100%; justify-content: center;">
+                    Cambiar Contraseña
                 </button>
+                <div id="mensaje-respuesta" style="margin-top: 15px; font-size: 0.9rem;"></div>
             </div>
-
-        </div>
+        </section>
 
     </main>
 </div>
 
+
+
+
+<button onclick="guardarPerfilCompleto()" class="btn-primary">
+    Guardar Perfil Completo
+</button>
+
+
+
 <script src="../js/perfil.js"></script>
+
 
 </body>
 </html>
