@@ -763,3 +763,37 @@ i {
     margin-right: 6px;
 
 }
+
+/* Contenedor interno para organizar foto, texto y botón */
+.chat-item-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.chat-info {
+    flex: 1; /* Esto empuja al botón hacia la derecha */
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-perfil-mini {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-perfil-mini:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
