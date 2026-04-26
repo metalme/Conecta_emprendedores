@@ -21,11 +21,16 @@ async function cargarChats() {
                 div.setAttribute("data-id", user.id_emprendedor);
 
                 div.innerHTML = `
-                    <img src="https://via.placeholder.com/40" class="chat-avatar">
-                    <div>
-                        <span class="chat-name">${user.nombre}</span>
-                        <span class="chat-preview">Haz clic para chatear</span>
-                    </div>
+                <div class="chat-item-content">
+                <img src="https://via.placeholder.com/40" class="chat-avatar">
+                <div class="chat-info">
+                <span class="chat-name">${user.nombre}</span>
+                <span class="chat-preview">Haz clic para chatear</span>
+                </div>
+                <button class="btn-perfil-mini" onclick="event.stopPropagation(); window.location.href='/pages/perfil.html?id=${user.id_emprendedor}'">
+                <i class="fa-solid fa-user"></i>
+                </button>
+                </div>
                 `;
 
                 div.addEventListener("click", () => {
