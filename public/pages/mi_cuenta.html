@@ -7,146 +7,103 @@
     <link rel="stylesheet" href="../css/estilos_mi_cuenta.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos para el Modo Edición */
+        .editable-section { position: relative; padding: 20px; border-radius: 15px; transition: 0.3s; }
+        .editable-active .editable {
+            outline: 2px dashed #10b981;
+            outline-offset: 5px;
+            background: rgba(16, 185, 129, 0.05);
+            cursor: text;
+        }
+        .hero-image-container { position: relative; width: fit-content; }
+        .overlay-upload {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; place-items: center; border-radius: 50%; cursor: pointer; color: white;
+        }
+        .editable-active .overlay-upload { display: grid; }
+        #db-hero_imagen { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; }
+        .btn-edit-content {
+            position: absolute; top: 10px; right: 10px; z-index: 5;
+            background: var(--glass); border: 1px solid var(--accent-color);
+            color: var(--accent-color); padding: 8px 15px; border-radius: 20px; cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
 <div class="app-container">
-
     <aside class="sidebar">
         <div class="logo-area">
             <i class="fa-solid fa-rocket large-logo"></i>
-            <span style="font-weight: bold; font-size: 1.2rem;">Conecta</span>
+            <span style="font-weight: bold;">Conecta</span>
         </div>
-
         <div class="user-profile-sidebar">
             <img src="https://via.placeholder.com/60" alt="Avatar" class="user-avatar">
-            <div class="user-name" id="display-nombre">Adri</div>
+            <div class="user-name" id="display-nombre">Cargando...</div>
             <div class="user-role">Emprendedor</div>
         </div>
-
         <ul>
             <li><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
-            <li><a href=""><i class="fa-solid fa-folder"></i> Proyectos</a></li>
-            <li><a href="inversor_exploracion.html"><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
             <li><a href="/pages/Conexion_Emprendedores.html"><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
-            <li><a href="/pages/biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
-            <li><a href=""><i class="fa-solid fa-newspaper"></i> Noticias</a></li>
-            <li><a href=""><i class="fa-solid fa-bell"></i> Notificaciones</a></li>
-            <li><a href="/pages/mensajes.html"><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
             <li class="active"><a href="/pages/mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
         </ul>
     </aside>
 
     <main class="main-content">
-
         <header class="perfil-header" style="margin-bottom: 20px;">
             <div class="header-izquierdo">
                 <h1>Panel de <span style="color: var(--accent-color);">Contenido</span></h1>
-                <p>Personaliza cómo te ven los demás inversionistas y emprendedores.</p>
+                <p>Personaliza cómo te ven los demás.</p>
             </div>
-            <div class="top-actions">
-                <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
-                <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
-            </div>
+            <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
         </header>
 
         <section class="editable-section" id="sec-hero">
-        <button class="btn-edit-content" onclick="gestionarEdicion('sec-hero')">
-            <i class="fa-solid fa-pen"></i> <span>Editar Hero</span>
-        </button>
-        
-        <div class="hero-profile">
-            <div class="hero-text">
-                <h1 class="serif-title editable" id="db-hero_titulo">Cargando...</h1>
-                <p class="hero-subtitle editable" id="db-hero_subtitulo">Cargando descripción...</p>
-                <button class="btn-adri">Trabaja conmigo</button>
-            </div>
-            <div class="hero-image-container">
-                <img src="" id="db-hero_imagen" alt="Perfil">
-                <input type="file" id="input-img-hero" style="display:none" accept="image/*" onchange="previewImagen(this)">
-                <div class="overlay-upload" onclick="document.getElementById('input-img-hero').click()">
-                    <i class="fa-solid fa-camera"></i>
+            <button class="btn-edit-content" onclick="gestionarEdicion('sec-hero')">
+                <i class="fa-solid fa-pen"></i> <span>Editar Perfil</span>
+            </button>
+            <div class="hero-profile" style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap;">
+                <div class="hero-text" style="flex: 1;">
+                    <h1 class="serif-title editable" id="db-hero_titulo">...</h1>
+                    <p class="hero-subtitle editable" id="db-hero_subtitulo">...</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="editable-section" id="sec-stats">
-        <button class="btn-edit-content" onclick="gestionarEdicion('sec-stats')">
-            <i class="fa-solid fa-pen"></i> <span>Editar Logros</span>
-        </button>
-        <div class="stats-grid" id="container-stats">
-            </div>
-    </section>
-
-    <section class="editable-section" id="sec-projects">
-        <button class="btn-edit-content" onclick="gestionarEdicion('sec-projects')">
-            <i class="fa-solid fa-pen"></i> <span>Editar Proyectos</span>
-        </button>
-        <h2 class="serif-title">Casos de estudio</h2>
-        <div class="cases-grid" id="container-proyectos">
-            </div>
-    </section>
-
-        <section class="perfil-grid" style="margin-top: 50px;">
-            <div class="card-perfil">
-                <h3><i class="fa-solid fa-id-card"></i> Datos de Acceso</h3>
-                <form id="form-mi-cuenta">
-                    <div class="form-grupo">
-                        <label>Nombre en Pantalla</label>
-                        <input type="text" id="nombre" value="Adri" required>
+                <div class="hero-image-container">
+                    <img src="" id="db-hero_imagen" alt="Foto">
+                    <input type="file" id="input-img-hero" style="display:none" onchange="previewImagen(this)">
+                    <div class="overlay-upload" onclick="document.getElementById('input-img-hero').click()">
+                        <i class="fa-solid fa-camera"></i>
                     </div>
-                    <div class="form-grupo">
-                        <label>Correo (No editable)</label>
-                        <input type="email" id="correo" value="adri@ejemplo.com" disabled>
-                    </div>
-                    <button type="submit" class="btn-primary">Guardar Cambios de Cuenta</button>
-                </form>
-            </div>
-
-            <div class="card-perfil">
-                <h3><i class="fa-solid fa-shield-halved"></i> Seguridad</h3>
-                <div class="form-grupo">
-                    <label>Nueva Contraseña</label>
-                    <input type="password" id="password" placeholder="********">
                 </div>
-                <button type="button" onclick="cambiarPassword()" class="btn-logout" style="width: 100%; justify-content: center; background: var(--glass);">Actualizar Contraseña</button>
             </div>
         </section>
 
+        <section class="editable-section" id="sec-stats">
+            <button class="btn-edit-content" onclick="gestionarEdicion('sec-stats')">
+                <i class="fa-solid fa-pen"></i> <span>Editar Logros</span>
+            </button>
+            <div class="stats-grid" id="container-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                </div>
+        </section>
+
+        <section class="perfil-grid" style="margin-top: 40px;">
+            <div class="card-perfil">
+                <h3>Datos de Cuenta</h3>
+                <form id="form-mi-cuenta">
+                    <div class="form-grupo">
+                        <label>Nombre</label>
+                        <input type="text" id="nombre">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Teléfono</label>
+                        <input type="text" id="telefono">
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar Datos de Acceso</button>
+                </form>
+            </div>
+        </section>
     </main>
 </div>
-
-<script>
-    // Función simple para activar/desactivar edición
-    function toggleEdit(sectionId) {
-        const section = document.getElementById(sectionId);
-        const editables = section.querySelectorAll('[contenteditable]');
-        const btn = section.querySelector('.btn-edit-content');
-
-        const isEditing = editables[0].contentEditable === "true";
-
-        editables.forEach(el => {
-            el.contentEditable = !isEditing;
-        });
-
-        if (!isEditing) {
-            section.classList.add('edit-mode-active');
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Cambios';
-            btn.style.background = "var(--accent-color)";
-            btn.style.color = "white";
-        } else {
-            section.classList.remove('edit-mode-active');
-            btn.innerHTML = '<i class="fa-solid fa-pen"></i> Editar';
-            btn.style.background = "var(--glass)";
-            btn.style.color = "var(--accent-color)";
-            
-            // Aquí llamarías a tu API para guardar los datos en la base de datos
-            console.log("Guardando cambios de la sección: " + sectionId);
-            alert("¡Cambios guardados localmente!");
-        }
-    }
-</script>
 
 <script src="../js/perfil.js"></script>
 </body>
