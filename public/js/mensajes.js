@@ -57,6 +57,30 @@ const chatMessages = document.getElementById("chatMessages");
 const input = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 
+// Función para formatear la fecha de manera amigable
+function formatearFechaAmigable(fechaIso) {
+    const fechaMensaje = new Date(fechaIso);
+    const ahora = new Date();
+    
+    // Quitamos horas para comparar solo los días
+    const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+    const ayer = new Date(hoy);
+    ayer.setDate(hoy.getDate() - 1);
+    
+    const fechaComparar = new Date(fechaMensaje.getFullYear(), fechaMensaje.getMonth(), fechaMensaje.getDate());
+
+    const hora = fechaMensaje.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (fechaComparar.getTime() === hoy.getTime()) {
+        return `Hoy ${hora}`;
+    } else if (fechaComparar.getTime() === ayer.getTime()) {
+        return `Ayer ${hora}`;
+    } else {
+        const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return `${fechaMensaje.toLocaleDateString(undefined, opcionesFecha)} ${hora}`;
+    }
+}
+
 
 
 async function renderMensajes() {
