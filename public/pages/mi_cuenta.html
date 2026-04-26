@@ -51,67 +51,42 @@
         </header>
 
         <section class="editable-section" id="sec-hero">
-            <button class="btn-edit-content" onclick="toggleEdit('sec-hero')">
-                <i class="fa-solid fa-pen"></i> Editar Hero
-            </button>
-            <div class="hero-profile">
-                <div class="hero-text">
-                    <h1 class="serif-title" contenteditable="false" id="hero-title">Hola, soy Adri.</h1>
-                    <p class="hero-subtitle" contenteditable="false" id="hero-desc">Ayudo a pequeñas empresas y emprendedores a crear experiencias digitales significativas.</p>
-                    <button class="btn-adri" id="hero-btn-text">Trabaja conmigo</button>
-                </div>
-                <div class="hero-image-container">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" id="hero-img">
+        <button class="btn-edit-content" onclick="gestionarEdicion('sec-hero')">
+            <i class="fa-solid fa-pen"></i> <span>Editar Hero</span>
+        </button>
+        
+        <div class="hero-profile">
+            <div class="hero-text">
+                <h1 class="serif-title editable" id="db-hero_titulo">Cargando...</h1>
+                <p class="hero-subtitle editable" id="db-hero_subtitulo">Cargando descripción...</p>
+                <button class="btn-adri">Trabaja conmigo</button>
+            </div>
+            <div class="hero-image-container">
+                <img src="" id="db-hero_imagen" alt="Perfil">
+                <input type="file" id="input-img-hero" style="display:none" accept="image/*" onchange="previewImagen(this)">
+                <div class="overlay-upload" onclick="document.getElementById('input-img-hero').click()">
+                    <i class="fa-solid fa-camera"></i>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="editable-section" id="sec-stats">
-            <button class="btn-edit-content" onclick="toggleEdit('sec-stats')">
-                <i class="fa-solid fa-pen"></i> Editar Logros
-            </button>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-globe"></i></div>
-                    <h4 contenteditable="false">+5 Sitios Web</h4>
-                    <p style="color: var(--text-subtle);">Proyectos completados</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <h4 contenteditable="false">3 Años Exp.</h4>
-                    <p style="color: var(--text-subtle);">Diseño e Innovación</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
-                    <h4 contenteditable="false">Estratega</h4>
-                    <p style="color: var(--text-subtle);">Enfoque en resultados</p>
-                </div>
+    <section class="editable-section" id="sec-stats">
+        <button class="btn-edit-content" onclick="gestionarEdicion('sec-stats')">
+            <i class="fa-solid fa-pen"></i> <span>Editar Logros</span>
+        </button>
+        <div class="stats-grid" id="container-stats">
             </div>
-        </section>
+    </section>
 
-        <section class="editable-section" id="sec-projects">
-            <button class="btn-edit-content" onclick="toggleEdit('sec-projects')">
-                <i class="fa-solid fa-pen"></i> Editar Proyectos
-            </button>
-            <h2 class="serif-title" style="font-size: 2rem;">Casos de estudio</h2>
-            <div class="cases-grid">
-                <div class="case-card gold">
-                    <h3 contenteditable="false">Diseño de Interiores</h3>
-                    <p>Rediseño total de la identidad visual y plataforma web.</p>
-                    <a href="#" class="case-link"><b>Ver más</b></a>
-                </div>
-                <div class="case-card olive">
-                    <h3 contenteditable="false">Tienda E-commerce</h3>
-                    <p>Optimización de conversión y experiencia de usuario.</p>
-                    <a href="#" class="case-link"><b>Ver más</b></a>
-                </div>
-                <div class="case-card khaki">
-                    <h3 contenteditable="false">Marca Gourmet</h3>
-                    <p>Desarrollo de branding y presencia digital.</p>
-                    <a href="#" class="case-link"><b>Ver más</b></a>
-                </div>
+    <section class="editable-section" id="sec-projects">
+        <button class="btn-edit-content" onclick="gestionarEdicion('sec-projects')">
+            <i class="fa-solid fa-pen"></i> <span>Editar Proyectos</span>
+        </button>
+        <h2 class="serif-title">Casos de estudio</h2>
+        <div class="cases-grid" id="container-proyectos">
             </div>
-        </section>
+    </section>
 
         <section class="perfil-grid" style="margin-top: 50px;">
             <div class="card-perfil">

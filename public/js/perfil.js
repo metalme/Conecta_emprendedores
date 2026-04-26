@@ -119,3 +119,109 @@ async function cambiarPassword() {
         alert("No se pudo conectar con el servidor.");
     }
 }
+
+
+//------------------------- funciones para ediar perfil -------------------------
+
+// Variable global para guardar los datos cargados
+let datosPerfil = {};
+
+// 1. CARGAR DATOS DESDE LA DB
+async function cargarDatosPerfil() {
+    try {
+        const response = await fetch('../api/get_perfil.php'); // Tu archivo PHP/Node
+        datosPerfil = await response.json();
+
+        // Inyectar datos en el Hero
+        document.getElementById('db-hero_titulo').innerText = datosPerfil.hero_titulo;
+        document.getElementById('db-hero_subtitulo').innerText = datosPerfil.hero_subtitulo;
+        document.getElementById('db-hero_imagen').src = datosPerfil.hero_imagen;
+
+        // Inyectar Stats
+        renderStats();
+        
+        // Inyectar Proyectos
+        renderProyectos();
+
+    } catch (error) {
+        console.error("Error al cargar perfil:", error);
+    }
+}
+
+// 2. RENDERIZAR ESTADÍSTICAS
+function renderStats() {
+    const container = document.getElementById('container-stats');
+    container.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h4 class="editable" id="db-stat1_valor">${datosPerfil.stat1_valor}</h4>
+            <p class="editable" id="db-stat1_texto">${datosPerfil.stat1_texto}</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-heart"></i></div>
+            <h4 class="editable" id="db-stat2_valor">${datosPerfil.stat2_valor}</h4>
+            <p class="editable" id="db-stat2_texto">${datosPerfil.stat2_texto}</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <h4 class="editable" id="db-stat3_valor">${datosPerfil.stat3_valor}</h4>
+            <p class="editable" id="db-stat3_texto">${datosPerfil.stat3_texto}</p>
+        </div>
+    `;
+}
+
+// 3. GESTIONAR EDICIÓN (MODO VISUAL VS MODO GUARDAR)
+function gestionarEdicion(sectionId) {
+    const seccion = document.getElementById(sectionId);
+    const boton = seccion.querySelector('.btn-edit-content');
+    const estaEditando = seccion.classList.contains('editable-active');
+
+    if (!estaEditando) {
+        seccion.classList.add('editable-active');
+        seccion.querySelectorAll('.editable').forEach(el => el.contentEditable = true);
+        boton.innerHTML = '<i class="fa-solid fa-save"></i> Guardar Cambios';
+    } else {
+        seccion.classList.remove('editable-active');
+        seccion.querySelectorAll('.editable').forEach(el => el.contentEditable = false);
+        boton.innerHTML = '<i class="fa-solid fa-pen"></i> Editar';
+        
+        guardarSeccion(sectionId);
+    }
+}
+
+// 4. ENVIAR DATOS ACTUALIZADOS AL SERVIDOR
+async function guardarSeccion(sectionId) {
+    // Recolectar datos actuales del DOM
+    const actualizacion = {
+        id_emprendedor: datosPerfil.id_emprendedor, // Importante para el WHERE en SQL
+        hero_titulo: document.getElementById('db-hero_titulo').innerText,
+        hero_subtitulo: document.getElementById('db-hero_subtitulo').innerText,
+        stat1_valor: document.getElementById('db-stat1_valor').innerText,
+        stat1_texto: document.getElementById('db-stat1_texto').innerText,
+        // ... añadir los demás campos
+    };
+
+    try {
+        const response = await fetch('../api/update_perfil.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(actualizacion)
+        });
+        
+        const result = await response.json();
+        if(result.success) alert("¡Perfil actualizado!");
+    } catch (error) {
+        alert("Error al guardar.");
+    }
+}
+
+// Previsualización de imagen antes de subir
+function previewImagen(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => document.getElementById('db-hero_imagen').src = e.target.result;
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', cargarDatosPerfil);
