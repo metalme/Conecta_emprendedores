@@ -71,7 +71,15 @@ async function cargarEmprendedores() {
                 botonHTML = `<button class="btn-primary-small btn-chat" data-id="${user.id_emprendedor}">Chatear</button>`;
             }
 
-            div.innerHTML = `<span class="project-name">${user.nombre}</span>${botonHTML}`;
+            div.innerHTML = `
+            <span class="project-name">${user.nombre}</span>
+            <div class="actions-gap" style="display: flex; gap: 8px;">
+            <button class="btn-perfil btn-secondary-small" data-id="${user.id_emprendedor}">
+            <i class="fa-solid fa-user"></i> Perfil
+            </button>
+            ${botonHTML}
+            </div>
+            `;
             return div;
         });
 
@@ -89,6 +97,13 @@ async function cargarEmprendedores() {
                 div.querySelector(".btn-chat")?.addEventListener("click", (e) => {
                     window.location.href = `/pages/mensajes.html?user=${e.target.dataset.id}`;
                 });
+
+                // Evento Ver Perfil
+                div.querySelector(".btn-perfil")?.addEventListener("click", (e) => {
+                // Buscamos el ID del botón (o del padre si se hizo clic en el icono)
+                const idPerfil = e.target.closest('.btn-perfil').dataset.id;
+                window.location.href = `/pages/perfil.html?id=${idPerfil}`;
+        });
             }
         });
     } catch (error) {
