@@ -24,6 +24,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// --- ACTUALIZAR DATOS AL ENVIAR FORMULARIO ---
+const formulario = document.getElementById('form-mi-cuenta');
+
+formulario.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const id = localStorage.getItem('id_emprendedor');
+    const nombre = document.getElementById('nombre').value;
+    const telefono = document.getElementById('telefono').value;
+
+    try {
+        // La URL ahora coincide con tu server.js: /api/emprendedores/:id
+        const response = await fetch('/api/emprendedores/' + id, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, telefono })
+        });
+
+        // La comprobación DEBE estar dentro del bloque try
+        if (response.ok) {
+            alert("¡Datos actualizados correctamente! ✨");
+        } else {
+            alert("Hubo un error al actualizar");
+        }
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        alert("No se pudo conectar con el servidor");
+    }
+});
 
 // --- FUNCIÓN PARA CERRAR SESIÓN ---
 const btnCerrarSesion = document.querySelector('.btn-cerrar-sesion'); // O usa el ID que tenga tu botón
@@ -58,3 +87,37 @@ function logout() {
     }
 }
 
+// --- ACTUALIZAR CONTRASEÑA (Seguridad) ---
+async function cambiarPassword() {
+    // 1. Obtenemos el ID del usuario que inició sesión
+    const id = localStorage.getItem('id_emprendedor');
+    
+    // 2. Capturamos lo que escribió en el cuadro de contraseña
+    // (Asegúrate de que en tu HTML el input tenga id="password")
+    const nuevaPassword = document.getElementById('password').value;
+
+    // 3. Validamos que la contraseña sea segura (mínimo 6 caracteres)
+    if (nuevaPassword.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+    }
+
+    try {
+        // 4. Enviamos la nueva clave a la ruta que acabas de crear en tu server.js
+        const response = await fetch(`/api/perfil/password/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: nuevaPassword })
+        });
+
+        if (response.ok) {
+            alert("¡Contraseña actualizada con éxito! 🛡️");
+            document.getElementById('password').value = ""; // Limpiamos el cuadro para que no se quede ahí escrita
+        } else {
+            alert("Hubo un error al actualizar la contraseña");
+        }
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        alert("No se pudo conectar con el servidor.");
+    }
+}
