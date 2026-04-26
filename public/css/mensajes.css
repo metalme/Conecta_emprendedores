@@ -1,392 +1,765 @@
 /* --- GLOBAL STYLES (DARK THEME) --- */
+
 :root {
+
     --bg-color: #111827;
+
     --main-bg: #030712;
+
     --sidebar-bg: #0f172a;
+
     --content-bg: #1f2937;
+
     --text-main: #f1f5f9;
+
     --text-subtle: #9ca3af;
+
     --accent-color: #10b981;
+
     --accent-dark: #059669;
+
     --glass: rgba(255, 255, 255, 0.05);
+
     --glass-border: rgba(255, 255, 255, 0.1);
+
     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
+
+
 
 body {
+
     margin: 0;
+
     padding: 0;
+
     font-family: var(--font-family);
+
     background-color: var(--main-bg);
+
     color: var(--text-main);
+
 }
+
+
 
 .app-container {
+
     display: flex;
+
     min-height: 100vh;
+
 }
+
+
 
 /* --- SIDEBAR --- */
+
 .sidebar {
+
     width: 250px;
+
     background-color: var(--sidebar-bg);
+
     padding: 20px;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     border-right: 1px solid var(--glass-border);
+
     position: fixed;
+
     top: 0;
+
     left: 0;
+
     height: 100%;
+
     overflow-y: auto;
+
     z-index: 100;
+
 }
+
+
 
 .logo-area {
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
     margin-bottom: 30px;
+
 }
+
+
 
 .large-logo {
+
     font-size: 2.5rem;
+
     color: var(--accent-color);
+
 }
+
+
 
 .user-profile-sidebar {
+
     text-align: center;
+
     margin-bottom: 30px;
+
     width: 100%;
+
 }
+
+
 
 .user-avatar {
+
     border-radius: 50%;
+
     width: 60px;
+
     height: 60px;
+
     border: 3px solid var(--accent-color);
+
     margin-bottom: 10px;
+
     object-fit: cover;
+
 }
+
+
 
 .user-name {
+
     font-size: 1.1rem;
+
     font-weight: 600;
+
 }
+
+
 
 .user-role {
+
     font-size: 0.85rem;
+
     color: var(--text-subtle);
+
 }
+
+
 
 .sidebar ul {
+
     list-style: none;
+
     padding: 0;
+
     width: 100%;
+
 }
+
+
 
 .sidebar li {
+
     cursor: pointer;
+
     border-radius: 8px;
+
     margin-bottom: 5px;
+
     transition: all 0.2s ease;
+
 }
+
+
 
 .sidebar li a {
+
     padding: 12px 20px;
+
     text-decoration: none;
+
     color: var(--text-subtle);
+
     display: flex;
+
     align-items: center;
+
     gap: 15px;
+
     width: 100%;
+
 }
+
+
 
 .sidebar li:hover, .sidebar li.active {
+
     background-color: var(--glass);
+
 }
+
+
 
 .sidebar li:hover a, .sidebar li.active a {
+
     color: var(--accent-color);
+
 }
+
+
 
 .boton-logout-sidebar {
+
     background-color: var(--accent-color);
+
     color: white;
+
     border: none;
+
     padding: 10px 20px;
+
     border-radius: 8px;
+
     font-weight: 600;
+
     cursor: pointer;
+
     width: 100%;
+
     margin-top: auto;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 10px;
+
     transition: background-color 0.2s;
+
 }
+
+
 
 .boton-logout-sidebar:hover {
+
     background-color: var(--accent-dark);
+
 }
+
+
 
 /* --- MAIN CONTENT & PROFILE GRID --- */
+
 .main-content {
+
     margin-left: 250px;
+
     flex: 1;
+
     padding: 20px 50px;
+
     background-color: var(--main-bg);
+
     animation: fadeIn 0.4s ease-in;
+
 }
+
+
 
 .perfil-header {
+
     margin: 0 0 35px 0 !important;
+
     padding: 0 !important;
+
     display: block;
+
 }
+
+
 
 .perfil-header h1 {
+
 margin: 0 !important;
+
     padding: 0 !important;
+
     font-size: 2.2rem;
+
     font-weight: 700;
+
     /* Ajuste fino: 1.1 suele alinear la parte superior de las mayúsculas
+
        con el borde del contenedor */
+
     line-height: 1.1 !important;
+
     letter-spacing: -0.5px;
+
 }
+
+
 
 /* 4. Ajuste para el párrafo de abajo */
+
 .perfil-header p {
+
 margin: 10px 0 0 0 !important; /* Espacio controlado solo arriba */
+
     color: var(--text-subtle);
+
     font-size: 1rem;
+
 }
+
+
 
 .perfil-grid {
+
     display: grid;
+
     grid-template-columns: 1.5fr 1fr;
+
     gap: 25px;
+
 }
-
-
-
-
-
-
-
 
 
 /* --- ESTILOS PARA EL HEADER Y TOP ACTIONS --- */
 
+
+
 .perfil-header {
+
     display: flex;
+
     justify-content: space-between; /* Empuja las acciones a la derecha */
+
     align-items: flex-start;
+
     margin-bottom: 40px;
+
 }
 
+
 .perfil-header h1 {
+
     margin: 0;
+
     font-size: 2.2rem;
+
     line-height: 1.1;
+
 }
 
 /* Contenedor de botones (Campana y Salir) */
+
 .top-actions {
+
     display: flex;
+
     align-items: center;
+
     gap: 15px;
+
 }
 
+
 /* Botón de Icono (Campana) */
+
 .btn-icon {
+
     background: var(--glass);
+
     border: 1px solid var(--glass-border);
+
     color: var(--text-main);
+
     font-size: 1.2rem;
+
     width: 40px;
+
     height: 40px;
+
     border-radius: 50%;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     cursor: pointer;
+
     transition: all 0.3s ease;
+
 }
 
 .btn-icon:hover {
+
     background: var(--accent-color);
+
     color: white;
+
     transform: scale(1.1);
+
 }
+
+
 
 /* Botón Salir (Estilo Netflix/Moderno) */
+
 .btn-logout {
+
     background: none;
+
     border: 1px solid var(--glass-border);
+
     color: var(--text-main);
+
     padding: 8px 18px;
+
     border-radius: 6px;
+
     font-weight: 600;
+
     cursor: pointer;
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
     transition: all 0.3s;
+
 }
+
+
 
 .btn-logout:hover {
+
     background-color: #ef4444; /* Rojo suave para indicar salida */
+
     border-color: #ef4444;
+
     color: white;
+
 }
+
+
 
 /* Ajuste para que el icono dentro de los botones no tenga margen extra */
+
 .top-actions i {
-    margin-right: 0; 
+
+    margin-right: 0;
+
 }
+
 .btn-logout i {
+
     margin-right: 5px; /* Solo el del botón salir necesita un poco de aire */
+
 }
-
-
 
 
 /* --- MENSAJES --- */
+
 .messages-section {
+
     flex: 1;
+
     display: flex;
+
 }
+
+
 
 .messages-container {
+
     flex: 1;
+
     display: flex;
+
     height: 100%;
+
     border: 1px solid var(--glass-border);
+
     border-radius: 10px;
+
     overflow: hidden;
+
+    height: calc(100vh - 150px); /* Ajusta el 150px según el alto de tu header */
+
+    overflow: hidden; /* Evita que el contenedor padre crezca */
+
 }
+
+
 
 /* --- LISTA DE CHATS --- */
+
 .chat-list {
+
     width: 30%;
+
     background: var(--sidebar-bg);
+
     padding: 15px;
+
     border-right: 1px solid var(--glass-border);
+
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
+
 }
+
+
 
 .chat-item {
+
     display: flex;
+
     gap: 10px;
+
     padding: 10px;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     transition: 0.2s;
+
 }
+
+
 
 .chat-item:hover,
+
 .chat-item.active {
+
     background: var(--glass);
+
 }
+
+
 
 .chat-avatar {
+
     width: 40px;
+
     height: 40px;
+
     border-radius: 50%;
+
 }
+
+
 
 .chat-name {
+
     font-weight: 600;
+
 }
+
+
 
 .chat-preview {
+
     font-size: 0.8rem;
+
     color: var(--text-subtle);
+
 }
+
+
 
 /* --- CHAT DERECHO --- */
+
 .chat-window {
+
     width: 70%;
+
     display: flex;
+
     flex-direction: column;
+
     height: 100%;
+
     background: var(--content-bg);
+
+
+
+     /* Apila elementos verticalmente */
+
+    flex: 1;
+
+   
+
 }
+
+
 
 /* HEADER */
+
 .chat-header {
+
     padding: 15px;
+
     border-bottom: 1px solid var(--glass-border);
+
 }
+
+
 
 /* MENSAJES */
+
 .chat-messages {
+
     flex: 1;
+
     overflow-y: auto;
-    padding: 15px;
+
+    padding: 20px;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
+
 }
+
+
 
 /* BURBUJAS */
+
 .message {
+
     max-width: 60%;
+
     padding: 10px 15px;
+
     border-radius: 12px;
+
     font-size: 0.9rem;
+
 }
+
+
 
 .message.received {
+
     background: var(--glass);
+
     align-self: flex-start;
+
 }
+
+
 
 .message.sent {
+
     background: var(--accent-color);
+
     color: white;
+
     align-self: flex-end;
+
 }
+
+
 
 /* INPUT */
+
 .chat-input {
+
     display: flex;
+
     border-top: 1px solid var(--glass-border);
+
     background: var(--content-bg);
+
 }
+
+
 
 .chat-input input {
+
     flex: 1;
+
     padding: 12px;
+
     border: none;
+
     background: transparent;
+
     color: white;
+
 }
+
+
 
 .chat-input input:focus {
+
     outline: none;
+
 }
+
+
 
 .chat-input button {
+
     background: var(--accent-color);
+
     border: none;
+
     padding: 0 20px;
+
     cursor: pointer;
+
     color: white;
+
     transition: 0.2s;
+
 }
+
+
 
 .chat-input button:hover {
+
     background: var(--accent-dark);
+
 }
 
+
+
 /* ICONOS */
+
 i {
+
     margin-right: 6px;
+
 }
