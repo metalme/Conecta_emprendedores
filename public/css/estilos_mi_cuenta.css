@@ -683,12 +683,159 @@ margin: 10px 0 0 0 !important; /* Espacio controlado solo arriba */
 
     }
 
+} 
+
+
+
+/* --- ADRI DESIGN OVERRIDES --- */
+
+/* Tipografía Serif para títulos */
+.serif-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #f1f5f9; /* Color claro para destacar en fondo oscuro */
+    margin-bottom: 1rem;
+    font-weight: 500;
 }
 
+.centered { text-align: center; margin-bottom: 3rem; }
 
+/* Hero Section */
+.hero-profile {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    padding: 60px 0;
+    min-height: 80vh;
+}
 
+.hero-text { flex: 1; }
+.hero-subtitle {
+    font-size: 1.4rem;
+    color: var(--text-subtle);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
 
-/*------------------------------------------------------*/
+.rounded-portrait {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 120px; /* Bordes muy redondeados como la foto */
+    object-fit: cover;
+}
+
+/* Stats Badges (Imagen 3) */
+.stats-badges {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.badge-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    border: 1px dashed var(--text-subtle);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    position: relative;
+}
+
+/* Enfoque (Imagen 2) */
+.approach-section {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+    padding: 100px 0;
+}
+
+.approach-image .rounded-rect {
+    width: 100%;
+    border-radius: 40px;
+}
+
+.approach-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin: 1.5rem 0 0.5rem;
+}
+
+/* Project Cards (Imagen 4) */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.project-card {
+    padding: 40px;
+    border-radius: 30px;
+    color: #2d3436; /* Texto oscuro para legibilidad sobre fondo pastel */
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Colores de las tarjetas basados en las fotos */
+.gold-bg { background-color: #C5B358; }
+.olive-bg { background-color: #BDB76B; }
+.khaki-bg { background-color: #D2B48C; }
+
+.project-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #1a1a1a; }
+.project-link { 
+    text-decoration: underline; 
+    font-weight: bold; 
+    color: #1a1a1a; 
+    margin-top: 20px;
+}
+
+/* Botones con estilo Adri */
+.btn-primary-adri {
+    background-color: #eec1ad; /* Rosa suave de la Imagen 1 */
+    color: #2d3436;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary-adri:hover {
+    transform: scale(1.05);
+    background-color: #e5a98d;
+}
+
+.btn-secondary-adri {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    padding: 12px 25px;
+    border-radius: 50px;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+/* Ajuste de los formularios para que no rompan la estética */
+.adri-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.config-forms-section {
+    padding-top: 100px;
+    border-top: 1px solid var(--glass-border);
+    margin-top: 50px;
+}
+
 
 
         /* --- ESTILOS ADICIONALES PARA EL REDISEÑO INSPIRADO --- */

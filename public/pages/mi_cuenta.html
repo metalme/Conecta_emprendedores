@@ -7,23 +7,27 @@
     <link rel="stylesheet" href="../css/estilos_mi_cuenta.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
 
 <div class="app-container">
 
     <aside class="sidebar">
-        <h2>Menu</h2>
         <div class="logo-area">
             <i class="fa-solid fa-rocket large-logo"></i>
-            <p style="text-align: center;">Conecta <br/> Emprendedores</p>
+            <span style="font-weight: bold; font-size: 1.2rem;">Conecta</span>
         </div>
+
         <div class="user-profile-sidebar">
-            <img src="https://via.placeholder.com/60" alt="Usuario" class="user-avatar">
-            <p class="usuarioNombre">Emprendedor Pro</p>
+            <img src="https://via.placeholder.com/60" alt="Avatar" class="user-avatar">
+            <div class="user-name" id="display-nombre">Adri</div>
+            <div class="user-role">Emprendedor</div>
         </div>
+
         <ul>
-            <li ><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
             <li><a href=""><i class="fa-solid fa-folder"></i> Proyectos</a></li>
             <li><a href="inversor_exploracion.html"><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
             <li><a href="/pages/Conexion_Emprendedores.html"><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
@@ -43,37 +47,20 @@
             </div>
             <div class="top-actions">
                 <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
+                <a href="/public/pages/perfil.html" class="btn-settings"><i class="fas fa-cog"></i><span>Ajustes</span></a>
                 <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
             </div>
         </header>
 
         <section class="hero-profile">
             <div class="hero-text">
-
-        <!-- INPUT EDITABLE -->
-        <input type="text" id="hero_titulo" class="serif-title"
-            placeholder="Ej: Hola, soy Brayan"
-            style="background: transparent; border: none; color: white; width: 100%;">
-
-        <!-- INPUT EDITABLE -->
-        <textarea id="hero_subtitulo" class="hero-subtitle"
-            placeholder="Describe lo que haces..."
-            style="background: transparent; border: none; color: var(--text-subtle); width: 100%; resize: none;"></textarea>
-
-    </div>
+                <h1 class="serif-title">Hola, soy Adri.</h1>
+                <p class="hero-subtitle">Ayudo a pequeñas empresas y emprendedores a crear experiencias digitales que sean significativas.</p>
+                <button class="btn-adri">Trabaja conmigo</button>
+            </div>
             <div class="hero-image-container">
-
-        <!-- INPUT IMAGEN -->
-        <input type="text" id="hero_imagen"
-            placeholder="URL de tu imagen"
-            style="margin-bottom:10px; width:100%; padding:8px; border-radius:6px;">
-
-        <!-- IMAGEN DINÁMICA -->
-        <img id="preview_imagen"
-            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2"
-            alt="Profile">
-
-    </div>
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" alt="Adri Profile">
+            </div>
         </section>
 
         <section class="stats-section">
@@ -128,60 +115,10 @@
             </div>
         </section>
 
-        <div class="config-title">
-            <h2 class="serif-title" style="font-size: 2rem;">Configuración de Cuenta</h2>
-        </div>
-        
-        <section class="perfil-grid">
-            <div class="card-perfil">
-                <h3><i class="fa-solid fa-id-card"></i> Datos Personales</h3>
-                <form id="form-mi-cuenta">
-                    <div class="form-grupo">
-                        <label>Nombre Completo</label>
-                        <input type="text" id="nombre" placeholder="Tu nombre" required>
-                    </div>
-                    <div class="form-grupo">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="correo" disabled title="El correo no se puede cambiar">
-                    </div>
-                    <div class="form-grupo">
-                        <label>Teléfono</label>
-                        <input type="text" id="telefono" placeholder="Ej: +57 300...">
-                    </div>
-                    <button type="submit" class="btn-primary">Actualizar Datos</button>
-                </form>
-            </div>
-
-            <div class="card-perfil">
-                <h3><i class="fa-solid fa-shield-halved"></i> Seguridad</h3>
-                <p style="color: var(--text-subtle); margin-bottom: 20px; font-size: 0.9rem;">
-                    Mantén tu cuenta protegida cambiando tu contraseña periódicamente.
-                </p>
-                <div class="form-grupo">
-                    <label>Nueva Contraseña</label>
-                    <input type="password" id="password" placeholder="Mínimo 10 caracteres" required>
-                </div>
-                <button type="button" onclick="cambiarPassword()" class="btn-logout" style="width: 100%; justify-content: center;">
-                    Cambiar Contraseña
-                </button>
-                <div id="mensaje-respuesta" style="margin-top: 15px; font-size: 0.9rem;"></div>
-            </div>
-        </section>
 
     </main>
 </div>
 
-
-
-
-<button onclick="guardarPerfilCompleto()" class="btn-primary">
-    Guardar Perfil Completo
-</button>
-
-
-
-<script src="../js/perfil.js"></script>
-
-
+<script src="../js/micuenta.js"></script>
 </body>
 </html>

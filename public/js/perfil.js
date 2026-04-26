@@ -9,28 +9,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch(`/api/perfil-completo/${idEmprendedor}`);
+        const response = await fetch(`/api/perfil/${idEmprendedor}`);
         
-        // NUEVOS DATOS DEL PERFIL (hero)
-
-
-if (document.getElementById('hero_titulo')) {
-    document.getElementById('hero_titulo').value = datos.hero_titulo || "";
-}
-
-if (document.getElementById('hero_subtitulo')) {
-    document.getElementById('hero_subtitulo').value = datos.hero_subtitulo || "";
-}
-
-if (document.getElementById('hero_imagen')) {
-    document.getElementById('hero_imagen').value = datos.hero_imagen || "";
-}
-
-if (document.getElementById('preview_imagen')) {
-    document.getElementById('preview_imagen').src = datos.hero_imagen || "";
-}
-
-
 
 
         if (response.ok) {
@@ -143,54 +123,3 @@ async function cambiarPassword() {
 }
 
 
-
-
-async function guardarPerfilCompleto() {
-    const id = localStorage.getItem('id_emprendedor');
-
-    const data = {
-        id_emprendedor: id,
-        hero_titulo: document.getElementById('hero_titulo').value,
-        hero_subtitulo: document.getElementById('hero_subtitulo').value,
-        hero_imagen: document.getElementById('hero_imagen').value,
-
-        stat1_texto: "Proyectos",
-        stat1_valor: "5+",
-        stat2_texto: "Experiencia",
-        stat2_valor: "3 años",
-        stat3_texto: "Estado",
-        stat3_valor: "Activo",
-
-        proyectos_json: JSON.stringify([
-            {
-                titulo: "Proyecto 1",
-                descripcion: "Descripción del proyecto"
-            }
-        ])
-    };
-
-    const response = await fetch('/api/perfil', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-        alert("Perfil guardado 🚀");
-    } else {
-        alert("Error al guardar");
-    }
-}
-
-
-
-
-
-
-const inputImagen = document.getElementById('hero_imagen');
-
-if (inputImagen) {
-    inputImagen.addEventListener('input', function() {
-        document.getElementById('preview_imagen').src = this.value;
-    });
-}
