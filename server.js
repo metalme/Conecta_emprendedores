@@ -326,22 +326,12 @@ app.get('/api/chat-permitido/:user1/:user2', (req, res) => {
 
 
 
-// OBTENER NOTIFICACIONES PENDIENTES (Solicitudes y Mensajes no leídos)
-app.get('/api/conteo-notificaciones/:usuarioId', (req, res) => {
-    const usuarioId = req.params.usuarioId;
 
-    // Consulta para contar solicitudes pendientes y mensajes nuevos
-    const sql = `
-        SELECT 
-            (SELECT COUNT(*) FROM solicitudes WHERE receptor_id = ? AND estado = 'pendiente') AS solicitudes,
-            (SELECT COUNT(*) FROM mensajes WHERE receptor_id = ? AND leido = 0) AS mensajes
-    `;
 
-    conexion.query(sql, [usuarioId, usuarioId], (err, result) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener conteo' });
-        res.json(result[0]);
-    });
-});
+
+
+
+
 
 
 
