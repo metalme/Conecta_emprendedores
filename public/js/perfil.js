@@ -318,6 +318,35 @@ function previewImagen(input) {
 }
 
 
+//------------------------- funciones para indicadores en vivo -------------------------
+async function actualizarIndicadores() {
+    const usuarioId = localStorage.getItem('usuarioId'); // Asegúrate de tener el ID del usuario guardado
+    if (!usuarioId) return;
+
+    try {
+        const res = await fetch(`/api/conteo-notificaciones/${usuarioId}`);
+        const data = await res.json();
+
+        // 1. Enlazar Notificaciones (Solicitudes)
+        const btnNotif = document.querySelector('a[href*="notificaciones"]');
+        if (data.solicitudes > 0) {
+            btnNotif.innerHTML = `Notificaciones <span class="badge" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; margin-left:5px;">${data.solicitudes}</span>`;
+        }
+
+        // 2. Enlazar Mensajes
+        const btnMensajes = document.querySelector('a[href*="mensajes"]');
+        if (data.mensajes > 0) {
+            btnMensajes.innerHTML = `Mensajes <span class="badge" style="background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; margin-left:5px;">${data.mensajes}</span>`;
+        }
+    } catch (error) {
+        console.error("Error actualizando notificaciones", error);
+    }
+}
+
+// Ejecutar cada 30 segundos para que sea "en vivo"
+setInterval(actualizarIndicadores, 30000);
+actualizarIndicadores();
+
 
 
 document.addEventListener('DOMContentLoaded', cargarDatosPerfil);
