@@ -318,9 +318,9 @@ function previewImagen(input) {
 }
 
 
-//------------------------- funciones para indicadores en vivo -------------------------
+//------------------------- funciones para indicadores en vivo ------------------------- revisar esta parte para que se adapte a tu estructura de datos y rutas en el backend
 async function actualizarIndicadores() {
-    const usuarioId = localStorage.getItem('usuarioId'); // Asegúrate de tener el ID del usuario guardado
+    const usuarioId = localStorage.getItem('id_emprendedor'); // Asegúrate de tener el ID del usuario guardado
     if (!usuarioId) return;
 
     try {
