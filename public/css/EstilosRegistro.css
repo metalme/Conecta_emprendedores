@@ -1,4 +1,6 @@
-/* General */
+/* ==========================================================================
+   1. GENERAL Y ESTRUCTURA
+   ========================================================================== */
 body, html {
   margin: 0;
   padding: 0;
@@ -39,7 +41,6 @@ body, html {
   font-size: 24px;
   color: #08CB00;
 }
-
 
 .social-icons {
   position: absolute;
@@ -91,28 +92,95 @@ p {
   color: #666;
 }
 
-/* Inputs */
+/* ==========================================================================
+   2. INPUTS Y CONTENEDORES
+   ========================================================================= */
 .input-group {
+  position: relative;
   display: flex;
   align-items: center;
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 15px;
+  background: #f4f4f4; /* Mantiene tu fondo gris original */
+  border-radius: 8px;  /* Un poco más redondeado para que vaya con el tamaño */
+  margin-bottom: 18px; /* Más separación entre campos grandes */
+  width: 100%;
 }
 
+/* Espaciado del ícono izquierdo centrado verticalmente */
 .input-group .icon {
-  margin-right: 10px;
+  position: absolute;
+  left: 16px;
+  z-index: 5;
+  pointer-events: none;
+  font-size: 1.2em; /* Íconos un poco más grandes para que combinen */
 }
 
+/* Campos de texto extra grandes y robustos */
 .input-group input {
-  border: none;
+  width: 100%;
+  height: 56px; /* ¡Agrandado a 56px para que destaque bastante! */
+  border: none; 
   outline: none;
-  background: transparent;
-  flex: 1;
-  font-size: 14px;
+  background: transparent; 
+  font-size: 17px; /* Letra más grande y cómoda de leer */
+  padding: 14px 15px 14px 46px; /* Ajustamos el espacio para el ícono izquierdo */
+  box-sizing: border-box;
 }
 
+/* ==========================================================================
+   3. CASO ESPECIAL CONTRASEÑA Y OJO CONTRASEÑA
+   ========================================================================== */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Margen derecho para que la contraseña no choque con el ojo */
+.password-container input {
+  padding-right: 50px !important;
+}
+
+/* Posicionar el ojo flotante perfectamente centrado en el input XL */
+.eye-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.5em; /* Ojo más grande y fácil de presionar */
+  z-index: 10;
+  padding: 6px;
+}
+
+/* ==========================================================================
+   4. REQUISITOS DE CONTRASEÑA (Despliegue suave)
+   ========================================================================== */
+.password-requirements.oculto {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  font-size: 0.85em;
+  margin: 0 0 0 5px;
+  text-align: left;
+  color: #666;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Muestra la lista con efecto dinámico al hacer foco */
+.input-group:has(#password:focus) + .password-requirements.oculto {
+  opacity: 1;
+  max-height: 200px;
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+/* Colores de las validaciones */
+.invalid { color: #dc3545; }
+.valid { color: #28a745; }
+
+/* ==========================================================================
+   5. BOTONES Y SIDEBAR
+   ========================================================================== */
 /* Botón */
 .btn {
   width: 100%;
@@ -145,7 +213,7 @@ p {
 .sidebar {
   position: absolute;
   top: 0;
-  left: -250px; /* Oculto inicialmente */
+  left: -250px;
   width: 250px;
   height: 100%;
   background: #25390000;
@@ -155,7 +223,7 @@ p {
 }
 
 .sidebar.active {
-  left: 0; /* Se muestra cuando tiene la clase active */
+  left: 0;
 }
 
 .sidebar ul {
@@ -178,29 +246,4 @@ p {
 .sidebar ul li a:hover {
   background: #08CB00;
   border-radius: 5px;
-}
-/* Estilos para la lista de requisitos de contraseña */
-/* Estado inicial: oculto y transparente */
-.password-requirements.oculto {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out; /* Animación suave al aparecer */
-}
-
-/* Cuando el usuario hace clic en el input de password, la lista aparece */
-.input-group:has(#password:focus) + .password-requirements.oculto {
-  opacity: 1;
-  max-height: 200px; /* Permite que se despliegue hacia abajo */
-  margin-top: 5px;
-  margin-bottom: 15px;
-}
-
-/* Colores para las validaciones dinámicas */
-.invalid {
-  color: #dc3545; /* Rojo */
-}
-
-.valid {
-  color: #28a745; /* Verde */
 }

@@ -1,7 +1,11 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const formulario = document.getElementById('registro_formulario');
-  const passwordInput = document.getElementById('password'); // Capturamos el campo password
+  const passwordInput = document.getElementById('password'); 
+  
+  // ==========================================
+  // ¡AQUÍ ESTABA EL ERROR! Faltaba declarar esta constante:
+  // ==========================================
+  const togglePassword = document.getElementById('toggle-password'); 
 
   // Elementos de la interfaz para los requisitos de contraseña
   const reqLength = document.getElementById("req-length");
@@ -9,6 +13,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const reqNumber = document.getElementById("req-number");
   const reqSpecial = document.getElementById("req-special");
 
+  // ==========================================
+  // LÓGICA DEL OJO (MOSTRAR / OCULTAR)
+  // ==========================================
+  if (togglePassword && passwordInput) {
+    togglePassword.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Intercambiar el tipo de input
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // Cambiar el emoji de apoyo visual
+      togglePassword.textContent = type === 'password' ? '👁' : '🙈'; 
+    });
+  }   
+  
   // ==========================================
   // CAMBIO 1: VALIDACIÓN VISUAL EN TIEMPO REAL
   // ==========================================
@@ -69,10 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (!exprSegura.test(pass)) {
         alert("⚠️ Por favor, asegúrate de cumplir con todos los requisitos de la contraseña antes de registrarte.");
-        return; // Detiene la ejecución aquí
+        return; 
       }
 
-      // Corrección del mapeo de datos (.entries())
       const formData = new FormData(formulario);
       const data = Object.fromEntries(formData.entries());
 
@@ -91,16 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("🎉 ¡Usuario registrado con éxito!");
           formulario.reset();
           
-          // Resetear los estilos de los requisitos de la contraseña
           if(reqLength) {
             [reqLength, reqUpper, reqNumber, reqSpecial].forEach(el => el.className = "invalid");
           }
           
           window.location.href = "/pages/login.html";
         } else {
-          // ==========================================
-          // ALERTAS PERSONALIZADAS E INTELIGENTES
-          // ==========================================
           if (result.error === 'duplicado_documento') {
             alert("⚠️ Error: El número de documento ya está registrado en el sistema.");
           } else if (result.error === 'duplicado_correo') {
