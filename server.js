@@ -2,9 +2,9 @@ const express = require('express');
 const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
-
-
-
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const app = express();
 
 
@@ -368,6 +368,68 @@ app.get('/api/conteo-notificaciones/:usuarioId', (req, res) => {
         res.json(result[0]);
     });
 });
+
+
+// Configurar dónde y cómo se guardarán las fotos
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = './uploads/';
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir); // Crea la carpeta si no existe
+        }
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        // Guardar la foto con un nombre único: idUsuario-timestamp.jpg
+        const userId = req.params.id;
+        const extension = path.extname(file.originalname);
+        cb(null, `avatar-${userId}-${Date.now()}${extension}`);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Hacer pública la carpeta uploads para que el HTML pueda ver las imágenes
+// Añade esto junto a tus otros app.use()
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// 3. RUTA API PARA SUBIR LA FOTO
+// 'foto' es el nombre del campo que enviaremos desde el frontend
+app.put('/api/perfil/foto/:id', upload.single('foto'), async (req, res) => {
+    const idEmprendedor = req.params.id;
+
+    if (!req.file) {
+        return res.status(400).json({ error: "No se seleccionó ninguna imagen." });
+    }
+
+    // Guardamos la ruta relativa en la base de datos (ej: uploads/avatar-1-17158...jpg)
+    const rutaFoto = `uploads/${req.file.filename}`;
+
+    try {
+        // Tu lógica de conexión a la base de datos (ejemplo con tu pool de conexión)
+        const query = "UPDATE emprendedores SET foto_perfil = ? WHERE id = ?"; // Ajusta 'id' según tu llave primaria
+        
+        // Ejecuta tu query aquí (dependiendo de si usas mysql2/promise, pool, etc.)
+        // await pool.query(query, [rutaFoto, idEmprendedor]); 
+
+        res.json({ 
+            mensaje: "¡Foto de perfil actualizada correctamente! ✨", 
+            ruta: rutaFoto 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al guardar en la base de datos." });
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
 

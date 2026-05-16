@@ -467,6 +467,47 @@ margin: 10px 0 0 0 !important; /* Espacio controlado solo arriba */
 }
 
 
+.btn-settings {
+    /* Elimina el subrayado azul por defecto de los enlaces */
+    text-decoration: none; 
+    
+    /* Permite usar padding y bordes correctamente como un botón */
+    display: inline-flex; 
+    align-items: center;
+    gap: 8px; /* Espacio entre el icono de engranaje y la palabra Ajustes */
+    
+    /* Colores de texto y fondo (basados en tu imagen) */
+    color: #ffffff; 
+    background-color: transparent; /* O el fondo oscuro si prefieres asignarlo aquí */
+    
+    /* Estructura del botón (Bordes redondeados) */
+    border: 1px solid #333333; /* Ajusta este color al gris de tu botón Salir */
+    border-radius: 8px; /* Redondeado de las esquinas */
+    
+    /* Espaciado interno (arriba/abajo - izquierda/derecha) */
+    padding: 8px 16px; 
+    
+    /* Tipografía */
+    font-family: sans-serif; /* Cambia por la fuente de tu proyecto */
+    font-weight: bold;
+    font-size: 14px;
+    
+    /* Transición suave para cuando pases el mouse por encima */
+    transition: all 0.3s ease;
+}
+
+/* Cambiar el color del icono directamente si se queda azul */
+.btn-settings i {
+    color: #ffffff; 
+}
+
+/* Efecto opcional al pasar el mouse (hover) */
+.btn-settings:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Brillo sutil */
+    border-color: #555555;
+}
+
+
 
 /* TARJETAS (CARDS) */
 
