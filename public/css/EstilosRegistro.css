@@ -179,3 +179,6 @@ p {
   background: #08CB00;
   border-radius: 5px;
 }
+
+.invalid { color: #dc3545; } /* Rojo */
+.valid { color: #28a745; }   /* Verde */

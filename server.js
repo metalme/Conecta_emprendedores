@@ -64,16 +64,40 @@ app.get('/api/emprendedores/:id', (req, res) => {
     });
 });
 
-// 3. Registrar nuevo (POST)
+
+// 3. Registrar nuevo (POST) con validación de duplicados
 app.post('/api/emprendedores', (req, res) => {
+    const { documento, correo } = req.body;
     const data = req.body;
-    const sql = 'INSERT INTO emprendedores SET ?';
-    conexion.query(sql, data, (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error al insertar' });
+
+    // 1. Validar si el documento ya existe
+    const sqlCheckDoc = 'SELECT id_emprendedor FROM emprendedores WHERE documento = ?';
+    conexion.query(sqlCheckDoc, [documento], (errDoc, resDoc) => {
+        if (errDoc) return res.status(500).json({ error: 'Error interno del servidor' });
+        
+        if (resDoc.length > 0) {
+            return res.status(400).json({ error: 'duplicado_documento', mensaje: 'El número de documento ya está registrado.' });
         }
-        res.status(201).json({ mensaje: '¡Usuario registrado!', id: result.insertId });
+
+        // 2. Validar si el correo ya existe
+        const sqlCheckCorreo = 'SELECT id_emprendedor FROM emprendedores WHERE correo = ?';
+        conexion.query(sqlCheckCorreo, [correo], (errCorreo, resCorreo) => {
+            if (errCorreo) return res.status(500).json({ error: 'Error interno del servidor' });
+
+            if (resCorreo.length > 0) {
+                return res.status(400).json({ error: 'duplicado_correo', mensaje: 'El correo electrónico ya está registrado.' });
+            }
+
+            // 3. Si no están duplicados, proceder con la inserción
+            const sqlInsert = 'INSERT INTO emprendedores SET ?';
+            conexion.query(sqlInsert, data, (errInsert, result) => {
+                if (errInsert) {
+                    console.error(errInsert);
+                    return res.status(500).json({ error: 'Error al insertar el usuario' });
+                }
+                res.status(201).json({ mensaje: '¡Usuario registrado!', id: result.insertId });
+            });
+        });
     });
 });
 
