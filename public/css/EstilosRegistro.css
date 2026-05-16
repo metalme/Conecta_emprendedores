@@ -179,6 +179,28 @@ p {
   background: #08CB00;
   border-radius: 5px;
 }
+/* Estilos para la lista de requisitos de contraseña */
+/* Estado inicial: oculto y transparente */
+.password-requirements.oculto {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out; /* Animación suave al aparecer */
+}
 
-.invalid { color: #dc3545; } /* Rojo */
-.valid { color: #28a745; }   /* Verde */
+/* Cuando el usuario hace clic en el input de password, la lista aparece */
+.input-group:has(#password:focus) + .password-requirements.oculto {
+  opacity: 1;
+  max-height: 200px; /* Permite que se despliegue hacia abajo */
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+/* Colores para las validaciones dinámicas */
+.invalid {
+  color: #dc3545; /* Rojo */
+}
+
+.valid {
+  color: #28a745; /* Verde */
+}
