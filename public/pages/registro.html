@@ -48,7 +48,7 @@
 
 <form id="registro_formulario"> <div class="input-group">
     <span class="icon">👤</span>
-    <input type="text" name="nombre" placeholder="Nombre y apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten caracteres alfabéticos" required>
+    <input type="text" name="nombre" placeholder="Nombre completo" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten caracteres alfabéticos" required>
   </div>
 
 
@@ -72,18 +72,18 @@
     <input type="tel" name="telefono" placeholder="Número de teléfono" required>
   </div>
 
-  <div class="input-group">
-    <span class="icon">🔒</span>
-    <input type="password" id="password" name="password" placeholder="Password" required> 
-  </div>
+  <div class="input-group password-container">
+  <span class="icon">🔒</span>
+  <input type="password" id="password" name="password" placeholder="Password" required>
+  <span id="toggle-password" class="eye-icon">👁</span>
+</div>
 
-<div id="password-box" class="password-requirements oculto" style="font-size: 0.85em; margin: -5px 0 15px 5px; text-align: left; color: #666;">
+<div id="password-box" class="password-requirements oculto">
   <p id="req-length" class="invalid">❌ Mínimo 10 caracteres</p>
   <p id="req-upper" class="invalid">❌ Al menos una letra mayúscula</p>
   <p id="req-number" class="invalid">❌ Al menos un número</p>
   <p id="req-special" class="invalid">❌ Al menos un carácter especial (@$!%*?&)</p>
 </div>
-
 
   <button type="submit" class="btn">registrar →</button>
 </form>
