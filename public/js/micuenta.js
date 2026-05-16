@@ -32,8 +32,8 @@ if (datos.foto_perfil) {
         const imgHero = document.getElementById('user-profile-img'); // Usa el ID del HTML
         const imgSidebar = document.querySelector('.user-profile-sidebar img'); // Busca la imagen del sidebar
         
-        if (imgHero) imgHero.src = `/${datos.foto_perfil}`;
-        if (imgSidebar) imgSidebar.src = `/${datos.foto_perfil}`;
+        if (imgHero) imgHero.src = datos.foto_perfil;
+        if (imgSidebar) imgSidebar.src = datos.foto_perfil;
             }
     }
     } catch (error) {
@@ -187,8 +187,8 @@ if (inputFoto) {
                 const imgHero = document.getElementById('user-profile-img');
                 const imgSidebar = document.querySelector('.user-profile-sidebar img');
                 
-                if (imgHero) imgHero.src = `/${resultado.ruta}`;
-                if (imgSidebar) imgSidebar.src = `/${resultado.ruta}`;
+                if (imgHero) imgHero.src = resultado.foto;
+                if (imgSidebar) imgSidebar.src = resultado.foto;
             } else {
                 alert("Error al subir la imagen en el servidor.");
             }
