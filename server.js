@@ -3,9 +3,57 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
 
+const multer = require('multer');
+const fs = require('fs');
+
 
 
 const app = express();
+
+
+
+const storage = multer.diskStorage({
+
+    destination: (req, file, cb) => {
+
+        const dir = './uploads/';
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        cb(null, dir);
+    },
+
+    filename: (req, file, cb) => {
+
+        const userId = req.params.id;
+        const extension = path.extname(file.originalname);
+
+        cb(null, `avatar-${userId}-${Date.now()}${extension}`);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB
+    },
+
+    fileFilter: (req, file, cb) => {
+
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Solo se permiten imágenes'));
+        }
+    }
+});
+
+
+
+
 
 
 
@@ -15,6 +63,8 @@ app.use(cors());
 
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'Inicio.html'));
@@ -373,7 +423,43 @@ app.get('/api/conteo-notificaciones/:usuarioId', (req, res) => {
 
 
 
+// SUBIR FOTO DE PERFIL
+app.put('/api/perfil/foto/:id', upload.single('foto'), (req, res) => {
 
+    const idEmprendedor = req.params.id;
+
+    if (!req.file) {
+        return res.status(400).json({
+            error: "No se seleccionó ninguna imagen."
+        });
+    }
+
+    const rutaFoto = `uploads/${req.file.filename}`;
+
+    const query = `
+        UPDATE emprendedores 
+        SET foto_perfil = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(query, [rutaFoto, idEmprendedor], (err) => {
+
+        if (err) {
+            console.error(err);
+
+            return res.status(500).json({
+                error: "Error al guardar en la base de datos."
+            });
+        }
+
+        res.json({
+            mensaje: "Foto actualizada correctamente",
+            ruta: rutaFoto
+        });
+
+    });
+
+});
 
 
 
