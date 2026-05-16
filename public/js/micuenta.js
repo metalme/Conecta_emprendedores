@@ -18,11 +18,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(document.getElementById('nombre')) document.getElementById('nombre').value = datos.nombre;
             if(document.getElementById('correo')) document.getElementById('correo').value = datos.correo;
             if(document.getElementById('telefono')) document.getElementById('telefono').value = datos.telefono;
-        }
+       
+       // === NUEVA LÓGICA PARA EL SALUDO HERO ===
+            const heroNombre = document.getElementById('hero-nombre-usuario');
+            if (heroNombre && datos.nombre) {
+                // Separamos el nombre por espacios para mostrar solo el primer nombre (opcional)
+                const primerNombre = datos.nombre.split(' ')[0]; 
+                // Formateamos la primera letra en mayúscula
+                heroNombre.innerText = primerNombre.charAt(0).toUpperCase() + primerNombre.slice(1);
+            }
+       
+if (datos.foto_perfil) {
+        const imgHero = document.getElementById('user-profile-img'); // Usa el ID del HTML
+        const imgSidebar = document.querySelector('.user-profile-sidebar img'); // Busca la imagen del sidebar
+        
+        if (imgHero) imgHero.src = `/${datos.foto_perfil}`;
+        if (imgSidebar) imgSidebar.src = `/${datos.foto_perfil}`;
+            }
+    }
     } catch (error) {
         console.error("Error al cargar perfil:", error);
     }
 });
+
+ // --- 0. PONER NOMBRE EN EL SIDEBAR ---
+    const sidebarTitulo = document.querySelector(".sidebar h2");
+    const nombreUsuario = localStorage.getItem("usuarioNombre");
+
+    if (sidebarTitulo && nombreUsuario) {
+        // Ponemos la primera letra en mayúscula
+        const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
+
+        // Cambiamos el texto por el nombre formateado
+        sidebarTitulo.innerText = nombreFormateado;
+
+        // Le aplicamos el color verde de tu marca
+        sidebarTitulo.style.color = "#22c55e";
+    }
+
+    const heroNombreJS = document.getElementById('hero-nombre-usuario');
+if (heroNombreJS && nombreUsuario) {
+    const primerNombre = nombreUsuario.split(' ')[0];
+    heroNombreJS.innerText = primerNombre.charAt(0).toUpperCase() + primerNombre.slice(1);
+}
 
 // --- ACTUALIZAR DATOS AL ENVIAR FORMULARIO ---
 const formulario = document.getElementById('form-mi-cuenta');
@@ -120,4 +158,43 @@ async function cambiarPassword() {
         console.error("Error de conexión:", error);
         alert("No se pudo conectar con el servidor.");
     }
+}
+
+
+// --- 📸 ESCUCHAR Y SUBIR NUEVA FOTO DE PERFIL ---
+const inputFoto = document.getElementById('input-foto-perfil');
+
+if (inputFoto) {
+    inputFoto.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const idEmprendedor = localStorage.getItem('id_emprendedor');
+        const formData = new FormData();
+        formData.append('foto', file);
+
+        try {
+            const response = await fetch(`/api/perfil/foto/${idEmprendedor}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                const resultado = await response.json();
+                alert(resultado.mensaje);
+
+                // === ACTUALIZACIÓN INMEDIATA USANDO TUS SELECTORES ===
+                const imgHero = document.getElementById('user-profile-img');
+                const imgSidebar = document.querySelector('.user-profile-sidebar img');
+                
+                if (imgHero) imgHero.src = `/${resultado.ruta}`;
+                if (imgSidebar) imgSidebar.src = `/${resultado.ruta}`;
+            } else {
+                alert("Error al subir la imagen en el servidor.");
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+            alert("No se pudo conectar con el servidor.");
+        }
+    });
 }
