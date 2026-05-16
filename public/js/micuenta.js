@@ -65,32 +65,37 @@ if (heroNombreJS && nombreUsuario) {
 // --- ACTUALIZAR DATOS AL ENVIAR FORMULARIO ---
 const formulario = document.getElementById('form-mi-cuenta');
 
-formulario.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const id = localStorage.getItem('id_emprendedor');
-    const nombre = document.getElementById('nombre').value;
-    const telefono = document.getElementById('telefono').value;
+if (formulario) {
+    formulario.addEventListener('submit', async (e) => {
 
-    try {
-        // La URL ahora coincide con tu server.js: /api/emprendedores/:id
-        const response = await fetch('/api/emprendedores/' + id, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, telefono })
-        });
+        e.preventDefault();
 
-        // La comprobación DEBE estar dentro del bloque try
-        if (response.ok) {
-            alert("¡Datos actualizados correctamente! ✨");
-        } else {
-            alert("Hubo un error al actualizar");
+        const id = localStorage.getItem('id_emprendedor');
+        const nombre = document.getElementById('nombre').value;
+        const telefono = document.getElementById('telefono').value;
+
+        try {
+
+            const response = await fetch('/api/emprendedores/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, telefono })
+            });
+
+            if (response.ok) {
+                alert("¡Datos actualizados correctamente! ✨");
+            } else {
+                alert("Hubo un error al actualizar");
+            }
+
+        } catch (error) {
+
+            console.error("Error de conexión:", error);
+            alert("No se pudo conectar con el servidor");
+
         }
-    } catch (error) {
-        console.error("Error de conexión:", error);
-        alert("No se pudo conectar con el servidor");
-    }
-});
+    });
+}
 
 // --- FUNCIÓN PARA CERRAR SESIÓN ---
 const btnCerrarSesion = document.querySelector('.btn-cerrar-sesion'); // O usa el ID que tenga tu botón
