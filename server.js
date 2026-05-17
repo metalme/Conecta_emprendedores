@@ -127,8 +127,8 @@ app.get('/api/emprendedores/:id', (req, res) => {
     const { id } = req.params;
 
     const sql = `
-        SELECT * 
-        FROM emprendedores 
+        SELECT *
+        FROM emprendedores
         WHERE id_emprendedor = ?
     `;
 
@@ -162,8 +162,8 @@ app.post('/api/emprendedores', (req, res) => {
 
     // VALIDAR DOCUMENTO
     const sqlCheckDoc = `
-        SELECT id_emprendedor 
-        FROM emprendedores 
+        SELECT id_emprendedor
+        FROM emprendedores
         WHERE documento = ?
     `;
 
@@ -184,8 +184,8 @@ app.post('/api/emprendedores', (req, res) => {
 
         // VALIDAR CORREO
         const sqlCheckCorreo = `
-            SELECT id_emprendedor 
-            FROM emprendedores 
+            SELECT id_emprendedor
+            FROM emprendedores
             WHERE correo = ?
         `;
 
@@ -238,7 +238,7 @@ app.put('/api/emprendedores/:id', (req, res) => {
     const { nombre, telefono } = req.body;
 
     const sql = `
-        UPDATE emprendedores 
+        UPDATE emprendedores
         SET nombre = ?, telefono = ?
         WHERE id_emprendedor = ?
     `;
@@ -371,7 +371,7 @@ app.get('/api/perfil/:id', (req, res) => {
     const id = req.params.id;
 
     const query = `
-        SELECT nombre, correo, telefono, foto_perfil
+        SELECT nombre, correo, telefono, foto_perfil, descripcion
         FROM emprendedores
         WHERE id_emprendedor = ?
     `;
@@ -455,8 +455,10 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
     conexion.query(sql, [descripcion, id], (err) => {
 
         if (err) {
+            console.error(err);
+
             return res.status(500).json({
-                error: err.message
+                error: 'Error al guardar descripción'
             });
         }
 
@@ -477,7 +479,7 @@ app.post('/api/mensajes', (req, res) => {
     const { emisor_id, receptor_id, mensaje } = req.body;
 
     const validar = `
-    SELECT * FROM solicitudes 
+    SELECT * FROM solicitudes
     WHERE (
         (emisor_id = ? AND receptor_id = ?) OR
         (emisor_id = ? AND receptor_id = ?)
