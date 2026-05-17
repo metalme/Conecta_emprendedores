@@ -371,7 +371,7 @@ app.get('/api/perfil/:id', (req, res) => {
     const id = req.params.id;
 
     const query = `
-        SELECT nombre, correo, telefono, foto_perfil, descripcion
+        SELECT nombre, correo, telefono, foto_perfil
         FROM emprendedores
         WHERE id_emprendedor = ?
     `;

@@ -166,6 +166,16 @@ async function cambiarPassword() {
 }
 
 
+const heroDescripcion = document.getElementById('hero-descripcion');
+
+if (heroDescripcion && datos.descripcion) {
+    heroDescripcion.innerText = datos.descripcion;
+}
+
+
+
+
+
 // --- 📸 ESCUCHAR Y SUBIR NUEVA FOTO DE PERFIL ---
 const inputFoto = document.getElementById('input-foto-perfil');
 
@@ -202,4 +212,56 @@ if (inputFoto) {
             alert("No se pudo conectar con el servidor.");
         }
     });
+}
+
+// ================================
+// EDITAR DESCRIPCIÓN HERO
+// ================================
+
+const btnEditarDescripcion = document.getElementById('btn-editar-descripcion');
+
+if (btnEditarDescripcion) {
+
+    btnEditarDescripcion.addEventListener('click', async () => {
+
+        const nuevaDescripcion = prompt("Escribe tu nueva descripción:");
+
+        if (!nuevaDescripcion) return;
+
+        const id = localStorage.getItem('id_emprendedor');
+
+        try {
+
+            const response = await fetch(`/api/perfil/descripcion/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    descripcion: nuevaDescripcion
+                })
+            });
+
+            if (response.ok) {
+
+                document.getElementById('hero-descripcion').innerText = nuevaDescripcion;
+
+                alert("Descripción actualizada ✨");
+
+            } else {
+
+                alert("Error al actualizar descripción");
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Error de conexión");
+
+        }
+
+    });
+
 }
