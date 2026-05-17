@@ -371,7 +371,7 @@ app.get('/api/perfil/:id', (req, res) => {
     const id = req.params.id;
 
     const query = `
-        SELECT nombre, correo, telefono, foto_perfil
+        SELECT nombre, correo, telefono, foto_perfil, descripcion,
         FROM emprendedores
         WHERE id_emprendedor = ?
     `;
@@ -432,6 +432,36 @@ app.put('/api/perfil/foto/:id', upload.single('foto'), (req, res) => {
         res.json({
             mensaje: 'Foto subida correctamente',
             foto: fotoURL
+        });
+    });
+});
+
+
+// ================================
+// ACTUALIZAR DESCRIPCIÓN
+// ================================
+
+app.put('/api/perfil/descripcion/:id', (req, res) => {
+
+    const { id } = req.params;
+    const { descripcion } = req.body;
+
+    const sql = `
+        UPDATE emprendedores
+        SET descripcion = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [descripcion, id], (err) => {
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Descripción actualizada'
         });
     });
 });
