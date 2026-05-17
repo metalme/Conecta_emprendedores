@@ -3,13 +3,64 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
 
-
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const app = express();
 
 
+// ================================
+// CLOUDINARY
+// ================================
 
-// --- CONFIGURACIONES ---
+cloudinary.config({
+    cloud_name: 'dq5yzzlf5',
+api_key: '753224185718589',
+api_secret: 'qkAFahLXu7rKIdlPQp-9Y_mL-cU'
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+
+    params: {
+        folder: 'fotos_perfil',
+
+        allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+
+        transformation: [
+            {
+                width: 500,
+                height: 500,
+                crop: 'fill',
+                gravity: 'face'
+            }
+        ]
+    }
+});
+
+const upload = multer({
+    storage: storage,
+
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    },
+
+    fileFilter: (req, file, cb) => {
+
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Solo se permiten imágenes'));
+        }
+    }
+});
+
+
+// ================================
+// CONFIGURACIONES
+// ================================
+
 app.use(express.json());
 app.use(cors());
 
@@ -21,7 +72,9 @@ app.get('/', (req, res) => {
 });
 
 
-// --- CONEXIÓN A LA BASE DE DATOS actualizada 31 marzo 2026 ---
+// ================================
+// CONEXIÓN MYSQL
+// ================================
 
 const conexion = mysql.createConnection({
     host: process.env.MYSQL_ADDON_HOST || 'b2epbzrhyannkkocholb-mysql.services.clever-cloud.com',
@@ -32,166 +85,395 @@ const conexion = mysql.createConnection({
 });
 
 conexion.connect(function(error){
+
     if(error){
         console.error('Error detallado:', error.message);
         return;
     }
+
     console.log('✅ Conexión exitosa a la base de datos en Clever Cloud');
 });
 
-// --- RUTAS API ---
 
-// 1. Obtener todos los emprendedores (Para cargar la tabla)
+// ================================
+// OBTENER TODOS LOS EMPRENDEDORES
+// ================================
+
 app.get('/api/emprendedores', (req, res) => {
+
     const sql = 'SELECT * FROM emprendedores';
+
     conexion.query(sql, (err, results) => {
+
         if (err) {
             console.error("Error al consultar:", err);
-            return res.status(500).json({ error: 'Error al obtener datos' });
+
+            return res.status(500).json({
+                error: 'Error al obtener datos'
+            });
         }
+
         res.json(results);
     });
 });
 
-// 2. Obtener UN emprendedor por ID (Para la función consultarPorId)
+
+// ================================
+// OBTENER EMPRENDEDOR POR ID
+// ================================
+
 app.get('/api/emprendedores/:id', (req, res) => {
+
     const { id } = req.params;
-    const sql = 'SELECT * FROM emprendedores WHERE id_emprendedor = ?';
+
+    const sql = `
+        SELECT * 
+        FROM emprendedores 
+        WHERE id_emprendedor = ?
+    `;
+
     conexion.query(sql, [id], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (result.length > 0) res.json(result[0]);
-        else res.status(404).json({ mensaje: 'No encontrado' });
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        if (result.length > 0) {
+            res.json(result[0]);
+        } else {
+            res.status(404).json({
+                mensaje: 'No encontrado'
+            });
+        }
     });
 });
 
 
-// 3. Registrar nuevo (POST) con validación de duplicados
+// ================================
+// REGISTRAR EMPRENDEDOR
+// ================================
+
 app.post('/api/emprendedores', (req, res) => {
+
     const { documento, correo } = req.body;
     const data = req.body;
 
-    // 1. Validar si el documento ya existe
-    const sqlCheckDoc = 'SELECT id_emprendedor FROM emprendedores WHERE documento = ?';
+    // VALIDAR DOCUMENTO
+    const sqlCheckDoc = `
+        SELECT id_emprendedor 
+        FROM emprendedores 
+        WHERE documento = ?
+    `;
+
     conexion.query(sqlCheckDoc, [documento], (errDoc, resDoc) => {
-        if (errDoc) return res.status(500).json({ error: 'Error interno del servidor' });
-        
-        if (resDoc.length > 0) {
-            return res.status(400).json({ error: 'duplicado_documento', mensaje: 'El número de documento ya está registrado.' });
+
+        if (errDoc) {
+            return res.status(500).json({
+                error: 'Error interno del servidor'
+            });
         }
 
-        // 2. Validar si el correo ya existe
-        const sqlCheckCorreo = 'SELECT id_emprendedor FROM emprendedores WHERE correo = ?';
-        conexion.query(sqlCheckCorreo, [correo], (errCorreo, resCorreo) => {
-            if (errCorreo) return res.status(500).json({ error: 'Error interno del servidor' });
+        if (resDoc.length > 0) {
+            return res.status(400).json({
+                error: 'duplicado_documento',
+                mensaje: 'El número de documento ya está registrado.'
+            });
+        }
 
-            if (resCorreo.length > 0) {
-                return res.status(400).json({ error: 'duplicado_correo', mensaje: 'El correo electrónico ya está registrado.' });
+        // VALIDAR CORREO
+        const sqlCheckCorreo = `
+            SELECT id_emprendedor 
+            FROM emprendedores 
+            WHERE correo = ?
+        `;
+
+        conexion.query(sqlCheckCorreo, [correo], (errCorreo, resCorreo) => {
+
+            if (errCorreo) {
+                return res.status(500).json({
+                    error: 'Error interno del servidor'
+                });
             }
 
-            // 3. Si no están duplicados, proceder con la inserción
+            if (resCorreo.length > 0) {
+                return res.status(400).json({
+                    error: 'duplicado_correo',
+                    mensaje: 'El correo electrónico ya está registrado.'
+                });
+            }
+
+            // INSERTAR
             const sqlInsert = 'INSERT INTO emprendedores SET ?';
+
             conexion.query(sqlInsert, data, (errInsert, result) => {
+
                 if (errInsert) {
+
                     console.error(errInsert);
-                    return res.status(500).json({ error: 'Error al insertar el usuario' });
+
+                    return res.status(500).json({
+                        error: 'Error al insertar usuario'
+                    });
                 }
-                res.status(201).json({ mensaje: '¡Usuario registrado!', id: result.insertId });
+
+                res.status(201).json({
+                    mensaje: '¡Usuario registrado!',
+                    id: result.insertId
+                });
             });
         });
     });
 });
 
-// 4. Actualizar emprendedor (PUT - Para la función actualizarRegistro)
+
+// ================================
+// ACTUALIZAR EMPRENDEDOR
+// ================================
+
 app.put('/api/emprendedores/:id', (req, res) => {
 
     const { id } = req.params;
-    const { nombre, telefono } = req.body; //<-- Solo actualizamos nombre y teléfono, pero puedes agregar más campos si quieres -->
-    const sql = 'UPDATE emprendedores SET  nombre = ?, telefono = ? where id_emprendedor = ?';
+    const { nombre, telefono } = req.body;
+
+    const sql = `
+        UPDATE emprendedores 
+        SET nombre = ?, telefono = ?
+        WHERE id_emprendedor = ?
+    `;
+
     conexion.query(sql, [nombre, telefono, id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ mensaje: 'Actualizado correctamente' });
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Actualizado correctamente'
+        });
     });
 });
 
-// Actualizar contraseña (Seguridad)
+
+// ================================
+// CAMBIAR CONTRASEÑA
+// ================================
+
 app.put('/api/perfil/password/:id', (req, res) => {
+
     const { id } = req.params;
-    const { password } = req.body; // Recibimos la nueva clave
-    const sql = 'UPDATE emprendedores SET password = ? WHERE id_emprendedor = ?';
+    const { password } = req.body;
+
+    const sql = `
+        UPDATE emprendedores
+        SET password = ?
+        WHERE id_emprendedor = ?
+    `;
 
     conexion.query(sql, [password, id], (err) => {
+
         if (err) {
+
             console.error("Error al cambiar contraseña:", err);
-            return res.status(500).json({ error: 'Error en la base de datos' });
+
+            return res.status(500).json({
+                error: 'Error en la base de datos'
+            });
         }
-        res.json({ mensaje: 'Contraseña actualizada correctamente' });
+
+        res.json({
+            mensaje: 'Contraseña actualizada correctamente'
+        });
     });
 });
 
 
-// 5. Eliminar emprendedor (DELETE - Para la función eliminar)
+// ================================
+// ELIMINAR EMPRENDEDOR
+// ================================
+
 app.delete('/api/emprendedores/:id', (req, res) => {
+
     const { id } = req.params;
-    const sql = 'DELETE FROM emprendedores WHERE id_emprendedor = ?';
+
+    const sql = `
+        DELETE FROM emprendedores
+        WHERE id_emprendedor = ?
+    `;
+
     conexion.query(sql, [id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ mensaje: 'Eliminado correctamente' });
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Eliminado correctamente'
+        });
     });
 });
 
 
+// ================================
+// LOGIN
+// ================================
 
-
-// RUTA PARA INICIAR SESIÓN (LOGIN)
-
-// RUTA PARA INICIAR SESIÓN (LOGIN) 2.0 - Ahora también devuelve el ID del usuario para que el frontend sepa QUIÉN es el usuario que inició sesión
 app.post('/api/login', (req, res) => {
+
     const { correo, password } = req.body;
 
-    // CAMBIO 1: Seleccionamos también el id_emprendedor (o como se llame tu PK)
-    const sql = 'SELECT id_emprendedor, nombre FROM emprendedores WHERE correo = ? AND password = ?';
+    const sql = `
+        SELECT id_emprendedor, nombre
+        FROM emprendedores
+        WHERE correo = ? AND password = ?
+    `;
 
     conexion.query(sql, [correo, password], (err, results) => {
+
         if (err) {
+
             console.error("Error en MySQL:", err);
-            return res.status(500).json({ error: 'Error en el servidor' });
+
+            return res.status(500).json({
+                error: 'Error en el servidor'
+            });
         }
 
         if (results.length > 0) {
-            // CAMBIO 2: Enviamos el ID al frontend para que sepa QUIÉN es el usuario
+
             res.json({
                 mensaje: '¡Inicio de sesión exitoso!',
-                id_emprendedor: results[0].id_emprendedor, // <-- Aquí está el ID del usuario
-                nombre: results[0].nombre // <-- También enviamos el nombre para mostrarlo en "Mi Cuenta"
+                id_emprendedor: results[0].id_emprendedor,
+                nombre: results[0].nombre
             });
+
         } else {
-            res.status(401).json({ error: 'Correo o contraseña incorrectos' });
+
+            res.status(401).json({
+                error: 'Correo o contraseña incorrectos'
+            });
         }
     });
 });
 
 
+// ================================
+// OBTENER PERFIL
+// ================================
 
-// RUTA PARA OBTENER DATOS DEL PERFIL
 app.get('/api/perfil/:id', (req, res) => {
+
     const id = req.params.id;
-    const query = 'SELECT nombre, correo, telefono FROM emprendedores WHERE id_emprendedor = ?';
+
+    const query = `
+        SELECT nombre, correo, telefono, foto_perfil, descripcion
+        FROM emprendedores
+        WHERE id_emprendedor = ?
+    `;
 
     conexion.query(query, [id], (err, result) => {
+
         if (err) {
-            return res.status(500).json({ error: "Error al obtener datos" });
+            return res.status(500).json({
+                error: "Error al obtener datos"
+            });
         }
+
         if (result.length > 0) {
-            res.json(result[0]); // Enviamos los datos del usuario encontrado
+            res.json(result[0]);
         } else {
-            res.status(404).json({ error: "Usuario no encontrado" });
+            res.status(404).json({
+                error: "Usuario no encontrado"
+            });
         }
     });
 });
 
-// --- MENSAJES ---
-// RUTA PARA ENVIAR MENSAJE ENTRE USUARIOS (SOLO SI TIENEN UNA SOLICITUD ACEPTADA ENTRE ELLOS)
+
+// ================================
+// SUBIR FOTO PERFIL
+// ================================
+
+app.put('/api/perfil/foto/:id', upload.single('foto'), (req, res) => {
+
+    const idEmprendedor = req.params.id;
+
+    if (!req.file) {
+
+        return res.status(400).json({
+            error: 'No se subió imagen'
+        });
+    }
+
+    const fotoURL = req.file.path;
+
+    const sql = `
+        UPDATE emprendedores
+        SET foto_perfil = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [fotoURL, idEmprendedor], (err) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.status(500).json({
+                error: 'Error al guardar foto'
+            });
+        }
+
+        res.json({
+            mensaje: 'Foto subida correctamente',
+            foto: fotoURL
+        });
+    });
+});
+
+
+// ================================
+// ACTUALIZAR DESCRIPCIÓN
+// ================================
+
+app.put('/api/perfil/descripcion/:id', (req, res) => {
+
+    const { id } = req.params;
+    const { descripcion } = req.body;
+
+    const sql = `
+        UPDATE emprendedores
+        SET descripcion = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [descripcion, id], (err) => {
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Descripción actualizada'
+        });
+    });
+});
+
+
+// ================================
+// MENSAJES
+// ================================
+
+// ENVIAR MENSAJE
 app.post('/api/mensajes', (req, res) => {
+
     const { emisor_id, receptor_id, mensaje } = req.body;
 
     const validar = `
@@ -205,278 +487,45 @@ app.post('/api/mensajes', (req, res) => {
 
     conexion.query(validar, [emisor_id, receptor_id, receptor_id, emisor_id], (err, result) => {
 
-        if (err) return res.status(500).json({ error: 'Error' });
+        if (err) {
+            return res.status(500).json({
+                error: 'Error'
+            });
+        }
 
         if (result.length === 0) {
-            return res.status(403).json({ error: 'No pueden chatear aún' });
-        }
-});
-
-
-        // GUARDAR MENSAJE
-const sql = `
-INSERT INTO mensajes 
-(emisor_id, receptor_id, mensaje) 
-VALUES (?, ?, ?)
-`;
-
-conexion.query(
-    sql,
-    [emisor_id, receptor_id, mensaje],
-    (err, result) => {
-
-        if (err) {
-            return res.status(500).json({
-                error:'Error al enviar mensaje'
+            return res.status(403).json({
+                error: 'No pueden chatear aún'
             });
         }
 
-        // CREAR NOTIFICACIÓN
-        const sqlNotificacion = `
-        INSERT INTO notificaciones
-        (usuario_id, tipo, contenido, referencia_id)
-        VALUES (?, ?, ?, ?)
+        const sql = `
+            INSERT INTO mensajes (emisor_id, receptor_id, mensaje)
+            VALUES (?, ?, ?)
         `;
 
-        conexion.query(
-            sqlNotificacion,
-            [
-                receptor_id,
-                'mensaje',
-                'Tienes un nuevo mensaje',
-                result.insertId
-            ]
-        );
+        conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
 
-        res.json({
-            mensaje:'Mensaje enviado'
-        });
-
-    });
-});
-
-// OBTENER MENSAJES ENTRE DOS USUARIOS
-app.get('/api/mensajes/:user1/:user2', (req, res) => {
-    const { user1, user2 } = req.params;
-
-    const sql = `
-        SELECT * FROM mensajes 
-        WHERE (emisor_id = ? AND receptor_id = ?)
-        OR (emisor_id = ? AND receptor_id = ?)
-        ORDER BY fecha ASC
-    `;
-
-    conexion.query(sql, [user1, user2, user2, user1], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error al obtener mensajes' });
-        }
-
-        res.json(results);
-    });
-});
-
-app.post('/api/solicitudes', (req, res) => {
-    const { emisor_id, receptor_id } = req.body;
-
-    // ❌ evitar auto solicitud
-    if (emisor_id == receptor_id) {
-        return res.status(400).json({ error: 'No puedes enviarte solicitud a ti mismo' });
-    }
-
-    const sql = `
-    INSERT INTO solicitudes (emisor_id, receptor_id)
-    SELECT ?, ?
-    WHERE NOT EXISTS (
-        SELECT 1 FROM solicitudes 
-        WHERE (
-            (emisor_id = ? AND receptor_id = ?) OR
-            (emisor_id = ? AND receptor_id = ?)
-        )
-    )
-    `;
-
-    conexion.query(
-        sql,
-        [emisor_id, receptor_id, emisor_id, receptor_id, receptor_id, emisor_id],
-        (err, result) => {
-
-            if (err) return res.status(500).json({ error: 'Error' });
-
-            if (result.affectedRows === 0) {
-                return res.json({ mensaje: 'Ya existe una solicitud o relación' });
+            if (err) {
+                return res.status(500).json({
+                    error: 'Error al enviar mensaje'
+                });
             }
 
-            res.json({ mensaje: 'Solicitud enviada' });
-        }
-    );
-});
-
-
-// OBTENER SOLICITUDES PENDIENTES PARA UN USUARIO
-app.get('/api/solicitudes/:id', (req, res) => {
-    const id = req.params.id;
-
-    const sql = `
-    SELECT s.*, e.nombre 
-    FROM solicitudes s
-    JOIN emprendedores e ON s.emisor_id = e.id_emprendedor
-    WHERE s.receptor_id = ? AND s.estado = 'pendiente'
-    `;
-
-    conexion.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error' });
-
-        res.json(results);
-    });
-});
-
-
-// ACEPTAR SOLICITUD
-app.put('/api/solicitudes/:id', (req, res) => {
-    const id = req.params.id;
-
-    const sql = `UPDATE solicitudes SET estado = 'aceptado' WHERE id = ?`;
-
-    conexion.query(sql, [id], (err) => {
-        if (err) return res.status(500).json({ error: 'Error' });
-
-        res.json({ mensaje: 'Aceptado' });
-    });
-});
-
-// RECHAZAR SOLICITUD
-app.put('/api/solicitudes/rechazar/:id', (req, res) => {
-    const id = req.params.id;
-
-    const sql = `UPDATE solicitudes SET estado = 'rechazado' WHERE id = ?`;
-
-    conexion.query(sql, [id], (err) => {
-        if (err) return res.status(500).json({ error: 'Error' });
-
-        res.json({ mensaje: 'Solicitud rechazada' });
-    });
-});
-
-
-// VERIFICAR SI DOS USUARIOS PUEDEN CHATEAR (SOLO SI TIENEN UNA SOLICITUD ACEPTADA ENTRE ELLOS)
-app.get('/api/chat-permitido/:user1/:user2', (req, res) => {
-    const { user1, user2 } = req.params;
-
-    const sql = `
-    SELECT * FROM solicitudes 
-    WHERE (
-        (emisor_id = ? AND receptor_id = ?) OR
-        (emisor_id = ? AND receptor_id = ?)
-    )
-    AND estado = 'aceptado'
-    `;
-
-
-
-    conexion.query(sql, [user1, user2, user2, user1], (err, result) => {
-        if (err) return res.status(500).json({ error: 'Error' });
-
-        res.json({ permitido: result.length > 0 });
-    });
-});
-
-
-
-
-
-// OBTENER NOTIFICACIONES PENDIENTES (Solicitudes y Mensajes no leídos)
-app.get('/api/conteo-notificaciones/:usuarioId', (req, res) => {
-    const usuarioId = req.params.usuarioId;
-
-    // Consulta para contar solicitudes pendientes y mensajes nuevos
-    const sql = `
-        SELECT 
-            (SELECT COUNT(*) FROM solicitudes WHERE receptor_id = ? AND estado = 'pendiente') AS solicitudes,
-            (SELECT COUNT(*) FROM mensajes WHERE receptor_id = ? AND leido = 0) AS mensajes
-    `;
-
-    conexion.query(sql, [usuarioId, usuarioId], (err, result) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener conteo' });
-        res.json(result[0]);
-    });
-});
-
-
-
-// OBTENER NOTIFICACIONES 17/05/2025
-app.get('/api/notificaciones/:id', (req, res) => {
-
-    const id = req.params.id;
-
-    const sql = `
-    SELECT *
-    FROM notificaciones
-    WHERE usuario_id = ?
-    ORDER BY fecha DESC
-    `;
-
-    conexion.query(sql, [id], (err, results) => {
-
-        if(err){
-
-            return res.status(500).json({
-                error:'Error al obtener notificaciones'
+            res.json({
+                mensaje: 'Mensaje enviado'
             });
-
-        }
-
-        res.json(results);
-
-    });
-
-});
-
-
-// MARCAR NOTIFICACIÓN COMO LEÍDA 17/05/2025
-app.put('/api/notificaciones/leida/:id', (req, res) => {
-
-    const id = req.params.id;
-
-    const sql = `
-    UPDATE notificaciones
-    SET leida = 1
-    WHERE id = ?
-    `;
-
-    conexion.query(sql, [id], (err) => {
-
-        if(err){
-
-            return res.status(500).json({
-                error:'Error'
-            });
-
-        }
-
-        res.json({
-            mensaje:'Notificación leída'
         });
-
     });
-
 });
 
 
+// ================================
+// SERVIDOR
+// ================================
 
-
-
-
-
-
-
-
-// --- AHORA (Listo para la nube) ---
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
 });
-
-
-
-
-
