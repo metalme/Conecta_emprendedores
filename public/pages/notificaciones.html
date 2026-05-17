@@ -1,0 +1,161 @@
+<!-- notificaciones.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificaciones</title>
+
+  <link rel="stylesheet" href="../css/notificaciones.css">
+
+  <!-- ICONOS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">
+      <i class="fa-solid fa-rocket"></i>
+      <span>Conecta<br>Emprendedores</span>
+    </div>
+
+    <div class="perfil">
+      <div class="foto"></div>
+      <h3>Emprendedor Pro</h3>
+    </div>
+
+    <nav class="menu">
+
+      <a href="inicio.html">
+        <i class="fa-solid fa-house"></i>
+        Inicio
+      </a>
+
+      <a href="proyectos.html">
+        <i class="fa-solid fa-folder"></i>
+        Proyectos
+      </a>
+
+      <a href="inversores.html">
+        <i class="fa-solid fa-sack-dollar"></i>
+        Inversionistas
+      </a>
+
+      <a href="emprendedores.html">
+        <i class="fa-solid fa-users"></i>
+        Emprendedores
+      </a>
+
+      <a href="biblioteca.html">
+        <i class="fa-solid fa-book"></i>
+        Biblioteca
+      </a>
+
+      <a href="noticias.html">
+        <i class="fa-solid fa-newspaper"></i>
+        Noticias
+      </a>
+
+      <a class="active" href="notificaciones.html">
+
+        <div class="menu-item">
+          <div class="left">
+            <i class="fa-solid fa-bell"></i>
+            Notificaciones
+          </div>
+
+          <span id="contador">3</span>
+        </div>
+
+      </a>
+
+      <a href="mensajes.html">
+        <i class="fa-solid fa-envelope"></i>
+        Mensajes
+      </a>
+
+      <a href="perfil.html">
+        <i class="fa-solid fa-user"></i>
+        Mi Cuenta
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="contenido">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <div>
+        <h1>Notificaciones de La Cuenta</h1>
+
+        <p>
+          Gestiona tus mensajes, noticias y solicitudes.
+        </p>
+      </div>
+
+      <div class="acciones-top">
+
+        <button class="icon-btn">
+          <i class="fa-solid fa-bell"></i>
+        </button>
+
+        <button class="salir">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Salir
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- PANEL -->
+    <section class="panel">
+
+      <!-- FILTROS -->
+      <div class="tabs">
+
+        <button class="tab active" data-tab="todas">
+          Todas
+        </button>
+
+        <button class="tab" data-tab="mensajes">
+          Mensajes
+        </button>
+
+        <button class="tab" data-tab="noticias">
+          Noticias
+        </button>
+
+        <button class="tab" data-tab="amistad">
+          Solicitudes
+        </button>
+
+      </div>
+
+      <!-- LISTA -->
+      <div id="listaNotificaciones" class="lista">
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="../js/notificaciones.js"></script>
+
+</body>
+</html>
