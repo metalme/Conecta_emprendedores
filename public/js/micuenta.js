@@ -243,28 +243,59 @@ if (inputFoto) {
 // EDITAR DESCRIPCIÓN HERO
 // ===============================
 
-function editarDescripcion() {
+async function editarDescripcion() {
+
+    const descripcionElemento =
+        document.getElementById('hero-descripcion');
 
     const descripcionActual =
-        document.getElementById('hero-descripcion').innerText;
+        descripcionElemento.innerText;
 
     const nuevaDescripcion = prompt(
         "Escribe tu nueva descripción profesional:",
         descripcionActual
     );
 
-    // Si cancela o deja vacío
-    if (!nuevaDescripcion || nuevaDescripcion.trim() === "") {
+    if (!nuevaDescripcion ||
+        nuevaDescripcion.trim() === "") {
         return;
     }
 
-    // Cambiar texto visualmente
-    document.getElementById('hero-descripcion').innerText =
-        nuevaDescripcion;
+    try {
 
-    // Guardar en navegador
-    localStorage.setItem(
-        'hero_descripcion',
-        nuevaDescripcion
-    );
+        const id =
+            localStorage.getItem('id_emprendedor');
+
+        const response = await fetch(
+            `/api/perfil/descripcion/${id}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    descripcion: nuevaDescripcion
+                })
+            }
+        );
+
+        if (response.ok) {
+
+            descripcionElemento.innerText =
+                nuevaDescripcion;
+
+            alert("Descripción actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar descripción");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("No se pudo conectar al servidor");
+    }
 }

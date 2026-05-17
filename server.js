@@ -455,8 +455,10 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
     conexion.query(sql, [descripcion, id], (err) => {
 
         if (err) {
+            console.error(err);
+
             return res.status(500).json({
-                error: err.message
+                error: 'Error al guardar descripción'
             });
         }
 
