@@ -18,6 +18,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(document.getElementById('nombre')) document.getElementById('nombre').value = datos.nombre;
             if(document.getElementById('correo')) document.getElementById('correo').value = datos.correo;
             if(document.getElementById('telefono')) document.getElementById('telefono').value = datos.telefono;
+
+
+
+// ===============================
+// CARGAR DESCRIPCIÓN HERO
+// ===============================
+
+const heroDescripcion = document.getElementById('hero-descripcion');
+
+if (heroDescripcion) {
+
+    // Si existe en BD usamos esa
+    if (datos.descripcion) {
+
+        heroDescripcion.innerText = datos.descripcion;
+
+    } else {
+
+        // Si no existe en BD usamos localStorage
+        const descripcionGuardada =
+            localStorage.getItem('hero_descripcion');
+
+        if (descripcionGuardada) {
+
+            heroDescripcion.innerText =
+                descripcionGuardada;
+        }
+    }
+}
+
+
        
        // === NUEVA LÓGICA PARA EL SALUDO HERO ===
             const heroNombre = document.getElementById('hero-nombre-usuario');
@@ -166,12 +197,6 @@ async function cambiarPassword() {
 }
 
 
-const heroDescripcion = document.getElementById('hero-descripcion');
-
-if (heroDescripcion && datos.descripcion) {
-    heroDescripcion.innerText = datos.descripcion;
-}
-
 
 
 
@@ -214,54 +239,32 @@ if (inputFoto) {
     });
 }
 
-// ================================
+// ===============================
 // EDITAR DESCRIPCIÓN HERO
-// ================================
+// ===============================
 
-const btnEditarDescripcion = document.getElementById('btn-editar-descripcion');
+function editarDescripcion() {
 
-if (btnEditarDescripcion) {
+    const descripcionActual =
+        document.getElementById('hero-descripcion').innerText;
 
-    btnEditarDescripcion.addEventListener('click', async () => {
+    const nuevaDescripcion = prompt(
+        "Escribe tu nueva descripción profesional:",
+        descripcionActual
+    );
 
-        const nuevaDescripcion = prompt("Escribe tu nueva descripción:");
+    // Si cancela o deja vacío
+    if (!nuevaDescripcion || nuevaDescripcion.trim() === "") {
+        return;
+    }
 
-        if (!nuevaDescripcion) return;
+    // Cambiar texto visualmente
+    document.getElementById('hero-descripcion').innerText =
+        nuevaDescripcion;
 
-        const id = localStorage.getItem('id_emprendedor');
-
-        try {
-
-            const response = await fetch(`/api/perfil/descripcion/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    descripcion: nuevaDescripcion
-                })
-            });
-
-            if (response.ok) {
-
-                document.getElementById('hero-descripcion').innerText = nuevaDescripcion;
-
-                alert("Descripción actualizada ✨");
-
-            } else {
-
-                alert("Error al actualizar descripción");
-
-            }
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert("Error de conexión");
-
-        }
-
-    });
-
+    // Guardar en navegador
+    localStorage.setItem(
+        'hero_descripcion',
+        nuevaDescripcion
+    );
 }
