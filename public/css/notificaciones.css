@@ -1,0 +1,298 @@
+/* notificaciones.css */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#050b18;
+    color:white;
+}
+
+/* LAYOUT */
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:290px;
+    background:#081225;
+    border-right:1px solid rgba(255,255,255,0.05);
+    padding:25px 18px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:white;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo i{
+    color:#00d084;
+    font-size:28px;
+}
+
+.perfil{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.foto{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:4px solid #00d084;
+    margin:auto;
+    background:#162033;
+    margin-bottom:15px;
+}
+
+.perfil h3{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#d1d5db;
+    padding:14px 15px;
+    border-radius:12px;
+    transition:0.3s;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:20px;
+}
+
+.menu a:hover{
+    background:#162033;
+}
+
+.menu a.active{
+    background:#162033;
+    color:#00d084;
+}
+
+.menu-item{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.left{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+#contador{
+    background:#00d084;
+    color:white;
+    min-width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+}
+
+/* CONTENIDO */
+
+.contenido{
+    flex:1;
+    padding:30px;
+}
+
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    font-size:60px;
+    font-weight:800;
+}
+
+.topbar p{
+    color:#9ca3af;
+    font-size:20px;
+    margin-top:10px;
+}
+
+.acciones-top{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.icon-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#111827;
+    color:white;
+    cursor:pointer;
+}
+
+.salir{
+    background:#111827;
+    border:none;
+    color:white;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* PANEL */
+
+.panel{
+    background:#1a2436;
+    border-radius:20px;
+    min-height:700px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    gap:10px;
+    padding:20px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.tab{
+    border:none;
+    background:#0f172a;
+    color:white;
+    padding:15px 28px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:#00d084;
+}
+
+/* LISTA */
+
+.lista{
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+/* NOTIFICACIONES */
+
+.notificacion{
+    background:#0f172a;
+    border-radius:15px;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:0.3s;
+    border-left:5px solid transparent;
+}
+
+.notificacion:hover{
+    transform:translateY(-2px);
+}
+
+.no-leida{
+    border-left:5px solid #00d084;
+}
+
+.info{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.icono{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#162033;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    color:#00d084;
+}
+
+.textos{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.tipo{
+    font-size:13px;
+    color:#00d084;
+    font-weight:bold;
+}
+
+.mensaje{
+    font-size:22px;
+        font-weight:600;
+}
+
+.fecha{
+    font-size:15px;
+    color:#9ca3af;
+}
+
+.botones{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    border:none;
+    padding:14px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    font-size: 16px;
+}
+
+.aceptar{
+    background:#00d084;
+}
+
+.rechazar{
+    background:#ef4444;
+}
+
+.leer{
+    background:#2563eb;
+}

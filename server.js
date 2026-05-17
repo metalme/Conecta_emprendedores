@@ -210,14 +210,46 @@ app.post('/api/mensajes', (req, res) => {
         if (result.length === 0) {
             return res.status(403).json({ error: 'No pueden chatear aún' });
         }
+});
 
-        // SI ESTÁ PERMITIDO → GUARDA MENSAJE
-        const sql = 'INSERT INTO mensajes (emisor_id, receptor_id, mensaje) VALUES (?, ?, ?)';
 
-        conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
-            if (err) return res.status(500).json({ error: 'Error al enviar mensaje' });
+        // GUARDAR MENSAJE
+const sql = `
+INSERT INTO mensajes 
+(emisor_id, receptor_id, mensaje) 
+VALUES (?, ?, ?)
+`;
 
-            res.json({ mensaje: 'Mensaje enviado' });
+conexion.query(
+    sql,
+    [emisor_id, receptor_id, mensaje],
+    (err, result) => {
+
+        if (err) {
+            return res.status(500).json({
+                error:'Error al enviar mensaje'
+            });
+        }
+
+        // CREAR NOTIFICACIÓN
+        const sqlNotificacion = `
+        INSERT INTO notificaciones
+        (usuario_id, tipo, contenido, referencia_id)
+        VALUES (?, ?, ?, ?)
+        `;
+
+        conexion.query(
+            sqlNotificacion,
+            [
+                receptor_id,
+                'mensaje',
+                'Tienes un nuevo mensaje',
+                result.insertId
+            ]
+        );
+
+        res.json({
+            mensaje:'Mensaje enviado'
         });
 
     });
@@ -371,7 +403,63 @@ app.get('/api/conteo-notificaciones/:usuarioId', (req, res) => {
 
 
 
+// OBTENER NOTIFICACIONES 17/05/2025
+app.get('/api/notificaciones/:id', (req, res) => {
 
+    const id = req.params.id;
+
+    const sql = `
+    SELECT *
+    FROM notificaciones
+    WHERE usuario_id = ?
+    ORDER BY fecha DESC
+    `;
+
+    conexion.query(sql, [id], (err, results) => {
+
+        if(err){
+
+            return res.status(500).json({
+                error:'Error al obtener notificaciones'
+            });
+
+        }
+
+        res.json(results);
+
+    });
+
+});
+
+
+// MARCAR NOTIFICACIÓN COMO LEÍDA 17/05/2025
+app.put('/api/notificaciones/leida/:id', (req, res) => {
+
+    const id = req.params.id;
+
+    const sql = `
+    UPDATE notificaciones
+    SET leida = 1
+    WHERE id = ?
+    `;
+
+    conexion.query(sql, [id], (err) => {
+
+        if(err){
+
+            return res.status(500).json({
+                error:'Error'
+            });
+
+        }
+
+        res.json({
+            mensaje:'Notificación leída'
+        });
+
+    });
+
+});
 
 
 
