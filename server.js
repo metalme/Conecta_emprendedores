@@ -520,6 +520,63 @@ app.post('/api/mensajes', (req, res) => {
 });
 
 
+
+// ================================
+// RUTAS DE NOTIFICACIONES Y SOLICITUDES 17/05/2026
+// ================================
+
+// 1. Obtener todas las notificaciones de un usuario
+app.get('/api/notificaciones/:id', (req, res) => {
+    const { id } = req.params;
+    // Trae las notificaciones del usuario (tanto mensajes informativos como solicitudes pendientes)
+    const sql = `
+        SELECT id_notificacion, tipo, icono, mensaje, fecha, leida 
+        FROM notificaciones 
+        WHERE id_usuario = ? 
+        ORDER BY fecha DESC
+    `;
+    conexion.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
+// 2. Marcar una notificación como leída
+app.put('/api/notificaciones/leida/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'UPDATE notificaciones SET leida = 1 WHERE id_notificacion = ?';
+    conexion.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ mensaje: 'Notificación leída' });
+    });
+});
+
+// 3. Responder a una solicitud de conexión (Aceptar/Rechazar)
+app.put('/api/solicitudes/:id', (req, res) => {
+    const { id } = req.params; // ID de la notificación o solicitud
+    const { accion } = req.body; // 'aceptado' o 'rechazado'
+
+    const estado = accion === 'aceptar' ? 'aceptado' : 'rechazado';
+
+    // Actualizamos el estado en la tabla de solicitudes vinculada
+    const sql = 'UPDATE solicitudes SET estado = ? WHERE id_solicitud = ?';
+    conexion.query(sql, [estado, id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ mensaje: `Solicitud con estado: ${estado}` });
+    });
+});
+
+// 4. Conteo para el número rojo del menú sidebar
+app.get('/api/conteo-notificaciones/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'SELECT COUNT(*) AS total FROM notificaciones WHERE id_usuario = ? AND leida = 0';
+    conexion.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ pendientes: results[0].total });
+    });
+});
+
+
 // ================================
 // SERVIDOR
 // ================================
