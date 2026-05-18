@@ -19,7 +19,64 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(document.getElementById('correo')) document.getElementById('correo').value = datos.correo;
             if(document.getElementById('telefono')) document.getElementById('telefono').value = datos.telefono;
 
+// ===============================
+    // CARGAR INFORMACIÓN EXTRA
+    // ===============================
 
+    if (datos.titulo_enfoque) {
+        document.getElementById('titulo-enfoque').innerText =
+            datos.titulo_enfoque;
+    }
+
+    if (datos.subtitulo1) {
+        document.getElementById('subtitulo1').innerText =
+            datos.subtitulo1;
+    }
+
+    if (datos.texto1) {
+        document.getElementById('texto1').innerText =
+            datos.texto1;
+    }
+
+    if (datos.subtitulo2) {
+        document.getElementById('subtitulo2').innerText =
+            datos.subtitulo2;
+    }
+
+    if (datos.texto2) {
+        document.getElementById('texto2').innerText =
+            datos.texto2;
+    }
+
+    if (datos.stat1_titulo) {
+        document.getElementById('stat1-titulo').innerText =
+            datos.stat1_titulo;
+    }
+
+    if (datos.stat1_texto) {
+        document.getElementById('stat1-texto').innerText =
+            datos.stat1_texto;
+    }
+
+    if (datos.stat2_titulo) {
+        document.getElementById('stat2-titulo').innerText =
+            datos.stat2_titulo;
+    }
+
+    if (datos.stat2_texto) {
+        document.getElementById('stat2-texto').innerText =
+            datos.stat2_texto;
+    }
+
+    if (datos.stat3_titulo) {
+        document.getElementById('stat3-titulo').innerText =
+            datos.stat3_titulo;
+    }
+
+    if (datos.stat3_texto) {
+        document.getElementById('stat3-texto').innerText =
+            datos.stat3_texto;
+    }
 
 // ===============================
 // CARGAR DESCRIPCIÓN HERO
@@ -297,5 +354,143 @@ async function editarDescripcion() {
         console.error(error);
 
         alert("No se pudo conectar al servidor");
+    }
+}
+
+// ===============================
+// EDITAR INFORMACIÓN EXTRA
+// ===============================
+
+async function editarInfoExtra() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const titulo_enfoque = prompt(
+        "Título principal:",
+        document.getElementById('titulo-enfoque').innerText
+    );
+
+    if (titulo_enfoque === null) return;
+
+    const subtitulo1 = prompt(
+        "Primer subtítulo:",
+        document.getElementById('subtitulo1').innerText
+    );
+
+    const texto1 = prompt(
+        "Primer texto:",
+        document.getElementById('texto1').innerText
+    );
+
+    const subtitulo2 = prompt(
+        "Segundo subtítulo:",
+        document.getElementById('subtitulo2').innerText
+    );
+
+    const texto2 = prompt(
+        "Segundo texto:",
+        document.getElementById('texto2').innerText
+    );
+
+    const stat1_titulo = prompt(
+        "Stat 1 título:",
+        document.getElementById('stat1-titulo').innerText
+    );
+
+    const stat1_texto = prompt(
+        "Stat 1 texto:",
+        document.getElementById('stat1-texto').innerText
+    );
+
+    const stat2_titulo = prompt(
+        "Stat 2 título:",
+        document.getElementById('stat2-titulo').innerText
+    );
+
+    const stat2_texto = prompt(
+        "Stat 2 texto:",
+        document.getElementById('stat2-texto').innerText
+    );
+
+    const stat3_titulo = prompt(
+        "Stat 3 título:",
+        document.getElementById('stat3-titulo').innerText
+    );
+
+    const stat3_texto = prompt(
+        "Stat 3 texto:",
+        document.getElementById('stat3-texto').innerText
+    );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo_enfoque,
+                subtitulo1,
+                texto1,
+                subtitulo2,
+                texto2,
+                stat1_titulo,
+                stat1_texto,
+                stat2_titulo,
+                stat2_texto,
+                stat3_titulo,
+                stat3_texto
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('titulo-enfoque').innerText =
+                titulo_enfoque;
+
+            document.getElementById('subtitulo1').innerText =
+                subtitulo1;
+
+            document.getElementById('texto1').innerText =
+                texto1;
+
+            document.getElementById('subtitulo2').innerText =
+                subtitulo2;
+
+            document.getElementById('texto2').innerText =
+                texto2;
+
+            document.getElementById('stat1-titulo').innerText =
+                stat1_titulo;
+
+            document.getElementById('stat1-texto').innerText =
+                stat1_texto;
+
+            document.getElementById('stat2-titulo').innerText =
+                stat2_titulo;
+
+            document.getElementById('stat2-texto').innerText =
+                stat2_texto;
+
+            document.getElementById('stat3-titulo').innerText =
+                stat3_titulo;
+
+            document.getElementById('stat3-texto').innerText =
+                stat3_texto;
+
+            alert("Información actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+
     }
 }

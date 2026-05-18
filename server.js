@@ -686,3 +686,71 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
 });
+
+// ===============================
+// ACTUALIZAR INFORMACIÓN EXTRA
+// ===============================
+
+app.put('/api/info-extra/:id', async (req, res) => {
+
+    const { id } = req.params;
+
+    const {
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        subtitulo2,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto
+    } = req.body;
+
+    try {
+
+        await pool.query(`
+            UPDATE emprendedores
+            SET
+                titulo_enfoque = ?,
+                subtitulo1 = ?,
+                texto1 = ?,
+                subtitulo2 = ?,
+                texto2 = ?,
+                stat1_titulo = ?,
+                stat1_texto = ?,
+                stat2_titulo = ?,
+                stat2_texto = ?,
+                stat3_titulo = ?,
+                stat3_texto = ?
+            WHERE id_emprendedor = ?
+        `, [
+            titulo_enfoque,
+            subtitulo1,
+            texto1,
+            subtitulo2,
+            texto2,
+            stat1_titulo,
+            stat1_texto,
+            stat2_titulo,
+            stat2_texto,
+            stat3_titulo,
+            stat3_texto,
+            id
+        ]);
+
+        res.json({
+            mensaje: 'Información actualizada'
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        res.status(500).json({
+            error: 'Error del servidor'
+        });
+
+    }
+});
