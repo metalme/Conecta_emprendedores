@@ -714,17 +714,16 @@ app.put('/api/info-extra/:id', async (req, res) => {
         await pool.query(`
             UPDATE emprendedores
             SET
-                titulo_enfoque = ?,
-                subtitulo1 = ?,
-                texto1 = ?,
-                subtitulo2 = ?,
-                texto2 = ?,
-                stat1_titulo = ?,
-                stat1_texto = ?,
-                stat2_titulo = ?,
-                stat2_texto = ?,
-                stat3_titulo = ?,
-                stat3_texto = ?
+            experiencia_titulo = ?,
+        experiencia_subtitulo = ?,
+        enfoque_colaborativo = ?,
+        enfoque_iterativo = ?,
+        estadistica_1_titulo = ?,
+        estadistica_1_texto = ?,
+        estadistica_2_titulo = ?,
+        estadistica_2_texto = ?,
+        estadistica_3_titulo = ?,
+        estadistica_3_texto = ?
             WHERE id_emprendedor = ?
         `, [
             titulo_enfoque,
