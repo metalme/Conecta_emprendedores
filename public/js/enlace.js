@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const formulario = document.getElementById('registro_formulario');
   const passwordInput = document.getElementById('password'); 
+  
+  // ==========================================
+  // ¡AQUÍ ESTABA EL ERROR! Faltaba declarar esta constante:
+  // ==========================================
   const togglePassword = document.getElementById('toggle-password'); 
 
   // Elementos de la interfaz para los requisitos de contraseña
@@ -26,54 +30,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }   
   
   // ==========================================
-  // VALIDACIÓN VISUAL EN TIEMPO REAL
+  // CAMBIO 1: VALIDACIÓN VISUAL EN TIEMPO REAL
   // ==========================================
   if (passwordInput) {
     passwordInput.addEventListener("input", () => {
       const value = passwordInput.value;
 
       // Validar largo (mínimo 10)
-      if (reqLength) {
-        if (value.length >= 10) {
-          reqLength.textContent = "✔ Mínimo 10 caracteres";
-          reqLength.className = "valid";
-        } else {
-          reqLength.textContent = "❌ Mínimo 10 caracteres";
-          reqLength.className = "invalid";
-        }
+      if (value.length >= 10) {
+        reqLength.textContent = "✔ Mínimo 10 caracteres";
+        reqLength.className = "valid";
+      } else {
+        reqLength.textContent = "❌ Mínimo 10 caracteres";
+        reqLength.className = "invalid";
       }
 
       // Validar Mayúscula
-      if (reqUpper) {
-        if (/[A-Z]/.test(value)) {
-          reqUpper.textContent = "✔ Al menos una letra mayúscula";
-          reqUpper.className = "valid";
-        } else {
-          reqUpper.textContent = "❌ Al menos una letra mayúscula";
-          reqUpper.className = "invalid";
-        }
+      if (/[A-Z]/.test(value)) {
+        reqUpper.textContent = "✔ Al menos una letra mayúscula";
+        reqUpper.className = "valid";
+      } else {
+        reqUpper.textContent = "❌ Al menos una letra mayúscula";
+        reqUpper.className = "invalid";
       }
 
       // Validar Número
-      if (reqNumber) {
-        if (/\d/.test(value)) {
-          reqNumber.textContent = "✔ Al menos un número";
-          reqNumber.className = "valid";
-        } else {
-          reqNumber.textContent = "❌ Al menos un número";
-          reqNumber.className = "invalid";
-        }
+      if (/\d/.test(value)) {
+        reqNumber.textContent = "✔ Al menos un número";
+        reqNumber.className = "valid";
+      } else {
+        reqNumber.textContent = "❌ Al menos un número";
+        reqNumber.className = "invalid";
       }
 
       // Validar Carácter Especial
-      if (reqSpecial) {
-        if (/[@$!%*?&]/.test(value)) {
-          reqSpecial.textContent = "✔ Al menos un carácter especial (@$!%*?&)";
-          reqSpecial.className = "valid";
-        } else {
-          reqSpecial.textContent = "❌ Al menos un carácter especial (@$!%*?&)";
-          reqSpecial.className = "invalid";
-        }
+      if (/[@$!%*?&]/.test(value)) {
+        reqSpecial.textContent = "✔ Al menos un carácter especial (@$!%*?&)";
+        reqSpecial.className = "valid";
+      } else {
+        reqSpecial.textContent = "❌ Al menos un carácter especial (@$!%*?&)";
+        reqSpecial.className = "invalid";
       }
     });
   }
@@ -86,17 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       // ==========================================
-      // CORRECCIÓN 1: EXPRESIÓN REGULAR CORREGIDA
+      // CAMBIO 2: VALIDACIÓN ANTES DE ENVIAR
       // ==========================================
-      const pass = passwordInput ? passwordInput.value : '';
+      const pass = passwordInput.value;
+      const exprSegura = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
       
-      // Validaciones lógicas manuales equivalentes y robustas
-      const tieneLargo = pass.length >= 10;
-      const tieneMayuscula = /[A-Z]/.test(pass);
-      const tieneNumero = /\d/.test(pass);
-      const tieneEspecial = /[@$!%*?&]/.test(pass);
-      
-      if (!tieneLargo || !tieneMayuscula || !tieneNumero || !tieneEspecial) {
+      if (!exprSegura.test(pass)) {
         alert("⚠️ Por favor, asegúrate de cumplir con todos los requisitos de la contraseña antes de registrarte.");
         return; 
       }
@@ -119,10 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("🎉 ¡Usuario registrado con éxito!");
           formulario.reset();
           
-          // CORRECCIÓN 2: Reseteo controlado previniendo elementos null
-          [reqLength, reqUpper, reqNumber, reqSpecial].forEach(el => {
-            if (el) el.className = "invalid";
-          });
+          if(reqLength) {
+            [reqLength, reqUpper, reqNumber, reqSpecial].forEach(el => el.className = "invalid");
+          }
           
           window.location.href = "/pages/login.html";
         } else {
@@ -141,3 +131,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
