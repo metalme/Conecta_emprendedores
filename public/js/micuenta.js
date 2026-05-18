@@ -20,63 +20,58 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(document.getElementById('telefono')) document.getElementById('telefono').value = datos.telefono;
 
 // ===============================
-    // CARGAR INFORMACIÓN EXTRA
-    // ===============================
+// CARGAR INFORMACIÓN EXTRA
+// ===============================
 
-    if (datos.titulo_enfoque) {
-        document.getElementById('titulo-enfoque').innerText =
-            datos.titulo_enfoque;
-    }
+if (datos.experiencia_titulo) {
+    document.getElementById('titulo-enfoque').innerText =
+        datos.experiencia_titulo;
+}
 
-    if (datos.subtitulo1) {
-        document.getElementById('subtitulo1').innerText =
-            datos.subtitulo1;
-    }
+if (datos.experiencia_subtitulo) {
+    document.getElementById('subtitulo1').innerText =
+        datos.experiencia_subtitulo;
+}
 
-    if (datos.texto1) {
-        document.getElementById('texto1').innerText =
-            datos.texto1;
-    }
+if (datos.enfoque_colaborativo) {
+    document.getElementById('texto1').innerText =
+        datos.enfoque_colaborativo;
+}
 
-    if (datos.subtitulo2) {
-        document.getElementById('subtitulo2').innerText =
-            datos.subtitulo2;
-    }
+if (datos.enfoque_iterativo) {
+    document.getElementById('texto2').innerText =
+        datos.enfoque_iterativo;
+}
 
-    if (datos.texto2) {
-        document.getElementById('texto2').innerText =
-            datos.texto2;
-    }
+if (datos.estadistica_1_titulo) {
+    document.getElementById('stat1-titulo').innerText =
+        datos.estadistica_1_titulo;
+}
 
-    if (datos.stat1_titulo) {
-        document.getElementById('stat1-titulo').innerText =
-            datos.stat1_titulo;
-    }
+if (datos.estadistica_1_texto) {
+    document.getElementById('stat1-texto').innerText =
+        datos.estadistica_1_texto;
+}
 
-    if (datos.stat1_texto) {
-        document.getElementById('stat1-texto').innerText =
-            datos.stat1_texto;
-    }
+if (datos.estadistica_2_titulo) {
+    document.getElementById('stat2-titulo').innerText =
+        datos.estadistica_2_titulo;
+}
 
-    if (datos.stat2_titulo) {
-        document.getElementById('stat2-titulo').innerText =
-            datos.stat2_titulo;
-    }
+if (datos.estadistica_2_texto) {
+    document.getElementById('stat2-texto').innerText =
+        datos.estadistica_2_texto;
+}
 
-    if (datos.stat2_texto) {
-        document.getElementById('stat2-texto').innerText =
-            datos.stat2_texto;
-    }
+if (datos.estadistica_3_titulo) {
+    document.getElementById('stat3-titulo').innerText =
+        datos.estadistica_3_titulo;
+}
 
-    if (datos.stat3_titulo) {
-        document.getElementById('stat3-titulo').innerText =
-            datos.stat3_titulo;
-    }
-
-    if (datos.stat3_texto) {
-        document.getElementById('stat3-texto').innerText =
-            datos.stat3_texto;
-    }
+if (datos.estadistica_3_texto) {
+    document.getElementById('stat3-texto').innerText =
+        datos.estadistica_3_texto;
+}
 
 // ===============================
 // CARGAR DESCRIPCIÓN HERO
