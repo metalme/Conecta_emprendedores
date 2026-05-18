@@ -16,17 +16,17 @@ async function obtenerRelacion(userId) {
         const chatData = await chatRes.json();
         if (chatData.permitido) return { estado: "aceptado" };
 
-        // 2. Solicitudes que YO recibo (me enviaron a mí)
-        const resRecibidas = await fetch(`/api/solicitudes/${miId}`);
-        const recibidas = await resRecibidas.json();
-        if (recibidas.find(s => s.emisor_id == userId)) return { estado: "pendiente_recibida" };
 
-        // 3. Solicitudes que YO envié (el otro las recibió)
-        const resEnviadas = await fetch(`/api/solicitudes/${userId}`);
-        const enviadas = await resEnviadas.json();
-        if (enviadas.find(s => s.emisor_id == miId)) return { estado: "pendiente_enviada" };
+// 2. Solicitudes que YO recibo (me enviaron a mí)
+const resRecibidas = await fetch(`/api/solicitudes/pendientes/${miId}`); 
+const recibidas = await resRecibidas.json();
+if (recibidas.find(s => s.emisor_id == userId)) return { estado: "pendiente_recibida" };
 
-        return null;
+// 3. Solicitudes que YO envié (el otro las recibió)
+const resEnviadas = await fetch(`/api/solicitudes/pendientes/${userId}`); 
+if (enviadas.find(s => s.emisor_id == miId)) return { estado: "pendiente_enviada" };
+        
+return null;
     } catch (error) {
         console.error("Error relación:", error);
         return null;
@@ -134,43 +134,62 @@ async function enviarSolicitud(boton, receptorId) {
 }
 
 /* ================================
-   CARGAR SOLICITUDES RECIBIDAS (LADO DERECHO)
+   CARGAR SOLICITUDES RECIBIDAS (LADO DERECHO) - CORREGIDO
 ================================ */
 async function cargarSolicitudes() {
     try {
-        const res = await fetch(`/api/solicitudes/${miId}`);
+        // CORRECCIÓN 1: Se cambió a la ruta real del servidor para pendientes
+        const res = await fetch(`/api/solicitudes/pendientes/${miId}`);
         const solicitudes = await res.json();
 
         const contenedor = document.getElementById("listaSolicitudes");
         if (!contenedor) return;
         contenedor.innerHTML = "";
 
+        if (solicitudes.length === 0) {
+            contenedor.innerHTML = `<p style="color: #888; font-size: 0.9rem; margin-top: 10px;">No tienes solicitudes pendientes.</p>`;
+            return;
+        }
+
         solicitudes.forEach(s => {
             const div = document.createElement("div");
             div.classList.add("project-item");
+            
+            // CORRECCIÓN 2: s.nombre es correcto por el JOIN, pero verificamos estructura
             div.innerHTML = `
                 <span class="project-name">${s.nombre}</span>
-                <div class="actions-gap">
+                <div class="actions-gap" style="display: flex; gap: 8px;">
                     <button class="aceptar btn-primary-small">Aceptar</button>
                     <button class="rechazar btn-secondary-small">Rechazar</button>
                 </div>
             `;
 
+            // CORRECCIÓN 3: Ajuste para enviar el body esperado ('aceptar') usando id_solicitud
             div.querySelector(".aceptar").onclick = async () => {
-                await fetch(`/api/solicitudes/${s.id}`, { method: "PUT" });
+                await fetch(`/api/solicitudes/${s.id_solicitud}`, { 
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ accion: "aceptar" })
+                });
                 cargarSolicitudes();
                 cargarEmprendedores();
             };
 
+            // CORRECCIÓN 4: Ajuste para enviar el body esperado ('rechazar') usando id_solicitud
             div.querySelector(".rechazar").onclick = async () => {
-                await fetch(`/api/solicitudes/rechazar/${s.id}`, { method: "PUT" });
+                await fetch(`/api/solicitudes/${s.id_solicitud}`, { 
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ accion: "rechazar" })
+                });
                 cargarSolicitudes();
+                cargarEmprendedores();
             };
 
             contenedor.appendChild(div);
         });
     } catch (error) {
-        console.error("Error solicitudes:", error);
+        console.error("Error al cargar solicitudes en el front:", error);
     }
 }
 
