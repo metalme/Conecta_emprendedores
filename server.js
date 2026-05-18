@@ -557,9 +557,6 @@ app.post('/api/mensajes', (req, res) => {
 
 
 // ================================
-// RUTAS DE NOTIFICACIONES Y SOLICITUDES 17/05/2026
-// ================================
-// ================================
 // RUTAS DE NOTIFICACIONES Y SOLICITUDES (ACTUALIZADO)
 // ================================
 
@@ -589,9 +586,7 @@ app.post('/api/solicitudes', (req, res) => {
 
             const idSolicitud = resultIns.insertId;
 
-            // 3. Crear una notificación para el receptor (para que le aparezca en su lista)
-            // Asegúrate de que el campo 'mensaje' o la lógica relacione el id_solicitud si es necesario.
-            // Para simplificar, guardamos una notificación de tipo 'solicitud'
+            // 3. Crear una notificación para el receptor
             const insertNotif = `
                 INSERT INTO notificaciones (id_usuario, tipo, icono, mensaje, leida) 
                 VALUES (?, 'solicitud', 'fa-user-plus', ?, 0)
@@ -640,6 +635,41 @@ app.put('/api/solicitudes/:id', (req, res) => {
     conexion.query(sql, [estado, id], (err) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ mensaje: `Solicitud respondida: ${estado}` });
+    });
+});
+
+
+// ================================
+// COMPLEMENTOS DE NOTIFICACIONES REQUERIDOS POR EL FRONTEND
+// ================================
+
+// Obtener todas las notificaciones de un usuario para la vista del componente
+app.get('/api/notificaciones/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'SELECT id_notificacion, tipo, icono, mensaje, fecha, leida FROM notificaciones WHERE id_usuario = ? ORDER BY fecha DESC';
+    conexion.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
+// Marcar una notificación individual como leída
+app.put('/api/notificaciones/leida/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'UPDATE notificaciones SET leida = 1 WHERE id_notificacion = ?';
+    conexion.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ mensaje: 'Notificación leída correctamente' });
+    });
+});
+
+// Conteo rápido de notificaciones sin leer para la burbuja roja de la campana
+app.get('/api/conteo-notificaciones/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'SELECT COUNT(*) AS pendientes FROM notificaciones WHERE id_usuario = ? AND leida = 0';
+    conexion.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ pendientes: results[0].pendientes });
     });
 });
 
