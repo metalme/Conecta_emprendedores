@@ -1,36 +1,34 @@
-
-
 const lista = document.getElementById("listaNotificaciones");
 const tabs = document.querySelectorAll(".tab");
-const idUsuario = localStorage.getItem('id_emprendedor'); // ID guardado en Login
+const idUsuario = localStorage.getItem('id_emprendedor'); 
 
-// Variable global que guardará lo que venga del servidor
 let notificaciones = [];
 
-// Redirigir si no está logueado
+// Redirigir al login si el usuario no ha iniciado sesión
 if (!idUsuario) {
     window.location.href = "login.html";
 }
 
-// FUNCIÓN PRINCIPAL: Cargar datos desde el Servidor
+// 1. CARGAR DATOS DESDE EL SERVIDOR
 function cargarNotificaciones() {
     fetch(`/api/notificaciones/${idUsuario}`)
         .then(res => res.json())
         .then(data => {
             notificaciones = data;
-            renderizar(document.querySelector(".tab.active").dataset.tab);
+            const tabActiva = document.querySelector(".tab.active");
+            renderizar(tabActiva ? tabActiva.dataset.tab : "todas");
             actualizarContadorMenu();
         })
         .catch(err => console.error("Error al obtener notificaciones:", err));
 }
 
-// FUNCIÓN: Pintar los elementos en el HTML
+// 2. PINTAR LAS NOTIFICACIONES EN EL HTML
 function renderizar(filtro = "todas") {
     lista.innerHTML = "";
 
     let filtradas = notificaciones.filter(n => {
         if (filtro === "todas") return true;
-        return n.type === filtro || n.tipo === filtro; // Valida ambas nomenclaturas
+        return n.type === filtro || n.tipo === filtro; 
     });
 
     if (filtradas.length === 0) {
@@ -43,11 +41,14 @@ function renderizar(filtro = "todas") {
         div.className = `notificacion ${!n.leida ? "no-leida" : ""}`;
 
         let botones = "";
-        // Identificar si requiere acciones de amistad/solicitud
+        
+        // CORRECCIÓN CLAVE: Si la base de datos vincula la solicitud usa ese ID, si no, usa el de la notificación
+        const idTransaccion = n.id_solicitud_vinculada || n.id_notificacion;
+
         if (n.tipo === "amistad" || n.tipo === "solicitud") {
             botones = `
-                <button class="btn aceptar" data-id="${n.id_notificacion}">Aceptar</button>
-                <button class="btn rechazar" data-id="${n.id_notificacion}">Rechazar</button>
+                <button class="btn aceptar" data-id="${idTransaccion}">Aceptar</button>
+                <button class="btn rechazar" data-id="${idTransaccion}">Rechazar</button>
             `;
         } else {
             botones = `
@@ -76,8 +77,7 @@ function renderizar(filtro = "todas") {
         if (btnLeer) {
             btnLeer.addEventListener("click", () => {
                 fetch(`/api/notificaciones/leida/${n.id_notificacion}`, { method: 'PUT' })
-                    .then(() => cargarNotificaciones())
-                    .catch(err => console.error(err));
+                    .then(() => cargarNotificaciones());
             });
         }
 
@@ -85,13 +85,13 @@ function renderizar(filtro = "todas") {
         const btnAceptar = div.querySelector(".aceptar");
         if (btnAceptar) {
             btnAceptar.addEventListener("click", () => {
-                fetch(`/api/solicitudes/${n.id_notificacion}`, {
+                fetch(`/api/solicitudes/${idTransaccion}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ accion: 'aceptar' })
                 })
                 .then(() => {
-                    // Marcar leída la notificación de paso
+                    // Automáticamente la marca como leída para que desaparezca del contador
                     fetch(`/api/notificaciones/leida/${n.id_notificacion}`, { method: 'PUT' })
                         .then(() => cargarNotificaciones());
                 });
@@ -102,7 +102,7 @@ function renderizar(filtro = "todas") {
         const btnRechazar = div.querySelector(".rechazar");
         if (btnRechazar) {
             btnRechazar.addEventListener("click", () => {
-                fetch(`/api/solicitudes/${n.id_notificacion}`, {
+                fetch(`/api/solicitudes/${idTransaccion}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ accion: 'rechazar' })
@@ -118,20 +118,22 @@ function renderizar(filtro = "todas") {
     });
 }
 
-// FUNCIÓN: Actualizar dinámicamente el contador del Sidebar
+// 3. ACTUALIZAR EL CONTADOR ROJO DEL SIDEBAR (Aquí se cortaba tu código anterior)
 function actualizarContadorMenu() {
     fetch(`/api/conteo-notificaciones/${idUsuario}`)
         .then(res => res.json())
         .then(data => {
             const contador = document.getElementById("contador");
             if (contador) {
-                contador.innerText = data.pendientes;
+                contador.textContent = data.pendientes;
+                // Si no hay notificaciones, esconde el círculo rojo
                 contador.style.display = data.pendientes > 0 ? "inline-block" : "none";
             }
-        });
+        })
+        .catch(err => console.error("Error al actualizar el contador:", err));
 }
 
-// Control de las pestañas (Filtros)
+// 4. INTERRUPTORES DE LAS PESTAÑAS (Tabs)
 tabs.forEach(tab => {
     tab.addEventListener("click", () => {
         tabs.forEach(t => t.classList.remove("active"));
@@ -140,5 +142,7 @@ tabs.forEach(tab => {
     });
 });
 
-// Carga Inicial al entrar a la página
-cargarNotificaciones();
+// Inicializar la carga cuando la página esté lista
+document.addEventListener("DOMContentLoaded", () => {
+    cargarNotificaciones();
+});

@@ -470,8 +470,39 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
 
 
 // ================================
-// MENSAJES
+// MENSAJES actualizado el 17/05/2026 para incluir validación de chat permitido y carga de historial de mensajes
 // ================================
+
+// NUEVO: Validar si el chat está permitido (Evita el error 404 en la lista de chats)
+app.get('/api/chat-permitido/:miId/:otroId', (req, res) => {
+    const { miId, otroId } = req.params;
+    const sql = `
+        SELECT * FROM solicitudes 
+        WHERE ((emisor_id = ? AND receptor_id = ?) OR (emisor_id = ? AND receptor_id = ?))
+        AND estado = 'aceptado'
+    `;
+    conexion.query(sql, [miId, otroId, otroId, miId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ permitido: result.length > 0 });
+    });
+});
+
+// NUEVO: Obtener el historial de mensajes (Evita el error al cargar la conversación)
+app.get('/api/mensajes/:emisor_id/:receptor_id', (req, res) => {
+    const { emisor_id, receptor_id } = req.params;
+    const sql = `
+        SELECT emisor_id, receptor_id, mensaje, fecha 
+        FROM mensajes 
+        WHERE (emisor_id = ? AND receptor_id = ?) OR (emisor_id = ? AND receptor_id = ?)
+        ORDER BY fecha ASC
+    `;
+    conexion.query(sql, [emisor_id, receptor_id, receptor_id, emisor_id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
+
 
 // ENVIAR MENSAJE
 app.post('/api/mensajes', (req, res) => {
@@ -505,6 +536,8 @@ app.post('/api/mensajes', (req, res) => {
             INSERT INTO mensajes (emisor_id, receptor_id, mensaje)
             VALUES (?, ?, ?)
         `;
+
+        
 
         conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
 
