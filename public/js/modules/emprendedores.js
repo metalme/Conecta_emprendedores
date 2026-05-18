@@ -11,22 +11,22 @@ if (!miId) {
 ================================ */
 async function obtenerRelacion(userId) {
     try {
-        // 1. Verificar si son amigos (chat permitido)
+        // 1. Verificar si ya son amigos
         const chatRes = await fetch(`/api/chat-permitido/${miId}/${userId}`);
         const chatData = await chatRes.json();
         if (chatData.permitido) return { estado: "aceptado" };
 
+        // 2. Solicitudes que YO recibí y están pendientes por aceptar
+        const resRecibidas = await fetch(`/api/solicitudes/pendientes/${miId}`);
+        const recibidas = await resRecibidas.json();
+        if (recibidas.find(s => s.emisor_id == userId)) return { estado: "pendiente_recibida" };
 
-// 2. Solicitudes que YO recibo (me enviaron a mí)
-const resRecibidas = await fetch(`/api/solicitudes/pendientes/${miId}`); 
-const recibidas = await resRecibidas.json();
-if (recibidas.find(s => s.emisor_id == userId)) return { estado: "pendiente_recibida" };
+        // 3. Solicitudes que el OTRO recibió (Significa que YO se la envié)
+        const resEnviadas = await fetch(`/api/solicitudes/pendientes/${userId}`);
+        const enviadas = await resEnviadas.json();
+        if (enviadas.find(s => s.emisor_id == miId)) return { estado: "pendiente_enviada" };
 
-// 3. Solicitudes que YO envié (el otro las recibió)
-const resEnviadas = await fetch(`/api/solicitudes/pendientes/${userId}`); 
-if (enviadas.find(s => s.emisor_id == miId)) return { estado: "pendiente_enviada" };
-        
-return null;
+        return null;
     } catch (error) {
         console.error("Error relación:", error);
         return null;

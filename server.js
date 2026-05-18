@@ -613,13 +613,16 @@ app.post('/api/solicitudes', (req, res) => {
 app.get('/api/solicitudes/pendientes/:id', (req, res) => {
     const { id } = req.params;
     const sql = `
-        SELECT s.id_solicitud, s.emisor_id, e.nombre, e.foto_perfil 
+        SELECT s.id AS id_solicitud, s.emisor_id, e.nombre, e.foto_perfil
         FROM solicitudes s
         JOIN emprendedores e ON s.emisor_id = e.id_emprendedor
         WHERE s.receptor_id = ? AND s.estado = 'pendiente'
     `;
     conexion.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error("Error en solicitudes pendientes:", err);
+            return res.status(500).json({ error: err.message });
+        }
         res.json(results);
     });
 });
@@ -631,7 +634,7 @@ app.put('/api/solicitudes/:id', (req, res) => {
 
     const estado = accion === 'aceptar' ? 'aceptado' : 'rechazado';
 
-    const sql = 'UPDATE solicitudes SET estado = ? WHERE id_solicitud = ?';
+    const sql = 'UPDATE solicitudes SET estado = ? WHERE id = ?'; // <-- Cambiado id_solicitud por id
     conexion.query(sql, [estado, id], (err) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ mensaje: `Solicitud respondida: ${estado}` });
