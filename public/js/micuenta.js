@@ -353,39 +353,122 @@ async function editarDescripcion() {
 }
 
 // ===============================
-// EDITAR INFORMACIÓN EXTRA
+// EDITAR EXPERIENCIA
 // ===============================
 
-async function editarInfoExtra() {
+async function editarExperiencia() {
 
     const id = localStorage.getItem('id_emprendedor');
 
-    const titulo_enfoque = prompt(
-        "Título principal:",
+    const experiencia_titulo = prompt(
+        "Título experiencia:",
         document.getElementById('titulo-enfoque').innerText
     );
 
-    if (titulo_enfoque === null) return;
+    if (experiencia_titulo === null) return;
 
-    const subtitulo1 = prompt(
-        "Primer subtítulo:",
+    const experiencia_subtitulo = prompt(
+        "Subtítulo:",
         document.getElementById('subtitulo1').innerText
     );
 
-    const texto1 = prompt(
-        "Primer texto:",
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo_enfoque: experiencia_titulo,
+                subtitulo1: experiencia_subtitulo
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('titulo-enfoque').innerText =
+                experiencia_titulo;
+
+            document.getElementById('subtitulo1').innerText =
+                experiencia_subtitulo;
+
+            alert("Experiencia actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ENFOQUE
+// ===============================
+
+async function editarEnfoque() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const enfoque_colaborativo = prompt(
+        "Texto colaborativo:",
         document.getElementById('texto1').innerText
     );
 
-    const subtitulo2 = prompt(
-        "Segundo subtítulo:",
-        document.getElementById('subtitulo2').innerText
-    );
-
-    const texto2 = prompt(
-        "Segundo texto:",
+    const enfoque_iterativo = prompt(
+        "Texto iterativo:",
         document.getElementById('texto2').innerText
     );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                texto1: enfoque_colaborativo,
+                texto2: enfoque_iterativo
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('texto1').innerText =
+                enfoque_colaborativo;
+
+            document.getElementById('texto2').innerText =
+                enfoque_iterativo;
+
+            alert("Enfoque actualizado ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ESTADÍSTICAS
+// ===============================
+
+async function editarEstadisticas() {
+
+    const id = localStorage.getItem('id_emprendedor');
 
     const stat1_titulo = prompt(
         "Stat 1 título:",
@@ -425,11 +508,6 @@ async function editarInfoExtra() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                titulo_enfoque,
-                subtitulo1,
-                texto1,
-                subtitulo2,
-                texto2,
                 stat1_titulo,
                 stat1_texto,
                 stat2_titulo,
@@ -440,21 +518,6 @@ async function editarInfoExtra() {
         });
 
         if (response.ok) {
-
-            document.getElementById('titulo-enfoque').innerText =
-                titulo_enfoque;
-
-            document.getElementById('subtitulo1').innerText =
-                subtitulo1;
-
-            document.getElementById('texto1').innerText =
-                texto1;
-
-            document.getElementById('subtitulo2').innerText =
-                subtitulo2;
-
-            document.getElementById('texto2').innerText =
-                texto2;
 
             document.getElementById('stat1-titulo').innerText =
                 stat1_titulo;
@@ -474,7 +537,7 @@ async function editarInfoExtra() {
             document.getElementById('stat3-texto').innerText =
                 stat3_texto;
 
-            alert("Información actualizada ✨");
+            alert("Estadísticas actualizadas ✨");
 
         } else {
 
@@ -486,6 +549,165 @@ async function editarInfoExtra() {
 
         console.error(error);
         alert("Error de conexión");
+    }
+}
 
+
+// ===============================
+// EDITAR STATS INDIVIDUALES
+// ===============================
+
+async function editarStat(numero) {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const tituloActual =
+        document.getElementById(`stat${numero}-titulo`).innerText;
+
+    const textoActual =
+        document.getElementById(`stat${numero}-texto`).innerText;
+
+    const nuevoTitulo = prompt(
+        "Nuevo título:",
+        tituloActual
+    );
+
+    if (nuevoTitulo === null) return;
+
+    const nuevoTexto = prompt(
+        "Nuevo texto:",
+        textoActual
+    );
+
+    try {
+
+        const datos = {};
+
+        datos[`stat${numero}_titulo`] = nuevoTitulo;
+        datos[`stat${numero}_texto`] = nuevoTexto;
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datos)
+        });
+
+        if (response.ok) {
+
+            document.getElementById(`stat${numero}-titulo`).innerText =
+                nuevoTitulo;
+
+            document.getElementById(`stat${numero}-texto`).innerText =
+                nuevoTexto;
+
+            alert("Stat actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ENFOQUE
+// ===============================
+
+async function editarEnfoque() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const titulo =
+        prompt(
+            "Título:",
+            document.getElementById('titulo-enfoque').innerText
+        );
+
+    if (titulo === null) return;
+
+    const subtitulo1 =
+        prompt(
+            "Primer subtítulo:",
+            document.getElementById('subtitulo1').innerText
+        );
+
+    const texto1 =
+        prompt(
+            "Primer texto:",
+            document.getElementById('texto1').innerText
+        );
+
+    const subtitulo2 =
+        prompt(
+            "Segundo subtítulo:",
+            document.getElementById('subtitulo2').innerText
+        );
+
+    const texto2 =
+        prompt(
+            "Segundo texto:",
+            document.getElementById('texto2').innerText
+        );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+
+            method: 'PUT',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+                titulo_enfoque: titulo,
+                subtitulo1,
+                texto1,
+                subtitulo2,
+                texto2
+
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('titulo-enfoque').innerText =
+                titulo;
+
+            document.getElementById('subtitulo1').innerText =
+                subtitulo1;
+
+            document.getElementById('texto1').innerText =
+                texto1;
+
+            document.getElementById('subtitulo2').innerText =
+                subtitulo2;
+
+            document.getElementById('texto2').innerText =
+                texto2;
+
+            alert("Enfoque actualizado ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Error de conexión");
     }
 }

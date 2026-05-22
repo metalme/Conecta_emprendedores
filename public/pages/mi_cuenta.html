@@ -73,22 +73,43 @@
 </section>
 
         <section class="stats-section">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-mouse-pointer"></i></div>
-                <h4 id="stat1-titulo">Más de 5 sitios web creados</h4>
-                <p style="color: var(--text-subtle);" id="stat1-texto">Para 4 clientes satisfechos</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-heart"></i></div>
-                <h4 id="stat2-titulo">Más de 3 años de experiencia</h4>
-                <p style="color: var(--text-subtle);" id="stat2-texto">En web y dispositivos móviles</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-                <h4 id="stat3-titulo">Activista</h4>
-                <p style="color: var(--text-subtle);" id="stat3-texto">Por un mundo más inclusivo</p>
-            </div>
-            <button onclick="editarInfoExtra()" class="btn-editar">Editar información</button>
+        <div class="stat-card">
+        <div class="stat-icon">
+        <i class="fa-solid fa-mouse-pointer"></i>
+        </div>
+        <h4 id="stat1-titulo">Más de 5 sitios web creados</h4>
+        <p style="color: var(--text-subtle);" id="stat1-texto">
+        Para 4 clientes satisfechos</p>
+        <button onclick="editarStat(1)" class="btn-mini-editar">
+        Editar
+        </button>
+        </div>
+
+        <div class="stat-card">
+        <div class="stat-icon">
+        <i class="fa-solid fa-heart"></i>
+        </div>
+        <h4 id="stat2-titulo">Más de 3 años de experiencia</h4>
+        <p style="color: var(--text-subtle);" id="stat2-texto">
+        En web y dispositivos móviles
+        </p>
+        <button onclick="editarStat(2)" class="btn-mini-editar">
+        Editar
+        </button>
+        </div>
+
+        <div class="stat-card">
+        <div class="stat-icon">
+        <i class="fa-solid fa-users"></i>
+        </div>
+        <h4 id="stat3-titulo">Activista</h4>
+        <p style="color: var(--text-subtle);" id="stat3-texto">
+        Por un mundo más inclusivo
+        </p>
+        <button onclick="editarStat(3)" class="btn-mini-editar">
+        Editar
+        </button>
+        </div>>
         </section>
 
         <section class="approach-section">
@@ -101,6 +122,7 @@
                 <p style="color: var(--text-subtle);" id="texto1">Creo en el poder de la colaboración para crear sitios web excepcionales. Colaboro estrechamente contigo para desarrollar un sitio que no solo refleje tu marca sino que exceda expectativas.</p>
                 <h3 id="subtitulo2">Iterativo</h3>
                 <p style="color: var(--text-subtle);" id="texto2">Adopto un enfoque iterativo en mi trabajo para garantizar que el resultado final se alinee con tu visión creativa y refleje tu identidad única.</p>
+                <button onclick="editarEnfoque()" class="btn-editar-enfoque">Editar enfoque</button>
             </div>
         </section>
 

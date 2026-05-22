@@ -410,61 +410,39 @@ app.get('/api/perfil/:id', (req, res) => {
     });
 });
 
-// ===============================
-// ACTUALIZAR INFORMACIÓN EXTRA
-// ===============================
+// ================================
+// ACTUALIZAR INFORMACIÓN EXTRA (ESTADÍSTICAS Y ENFOQUE)
+// ================================
+
+
 
 app.put('/api/info-extra/:id', (req, res) => {
 
     const { id } = req.params;
 
-    const {
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        subtitulo2,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto
-    } = req.body;
+    const campos = [];
+    const valores = [];
+
+    for (const key in req.body) {
+
+        campos.push(`${key} = ?`);
+        valores.push(req.body[key]);
+
+    }
+
+    valores.push(id);
 
     const sql = `
         UPDATE emprendedores
-        SET
-            experiencia_titulo = ?,
-            experiencia_subtitulo = ?,
-            enfoque_colaborativo = ?,
-            enfoque_iterativo = ?,
-            estadistica_1_titulo = ?,
-            estadistica_1_texto = ?,
-            estadistica_2_titulo = ?,
-            estadistica_2_texto = ?,
-            estadistica_3_titulo = ?,
-            estadistica_3_texto = ?
+        SET ${campos.join(', ')}
         WHERE id_emprendedor = ?
     `;
 
-    conexion.query(sql, [
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto,
-        id
-    ], (err) => {
+    conexion.query(sql, valores, (err) => {
 
         if (err) {
 
-            console.error("ERROR SQL:", err);
+            console.error(err);
 
             return res.status(500).json({
                 error: err.message
