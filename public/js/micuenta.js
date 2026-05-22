@@ -583,15 +583,20 @@ async function editarStat(numero) {
 
         const datos = {};
 
-        datos[`stat${numero}_titulo`] = nuevoTitulo;
-        datos[`stat${numero}_texto`] = nuevoTexto;
+        // ✅ NOMBRES REALES DE MYSQL
+        datos[`estadistica_${numero}_titulo`] = nuevoTitulo;
+        datos[`estadistica_${numero}_texto`] = nuevoTexto;
 
         const response = await fetch(`/api/info-extra/${id}`, {
+
             method: 'PUT',
+
             headers: {
                 'Content-Type': 'application/json'
             },
+
             body: JSON.stringify(datos)
+
         });
 
         if (response.ok) {
