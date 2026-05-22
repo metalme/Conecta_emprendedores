@@ -371,7 +371,23 @@ app.get('/api/perfil/:id', (req, res) => {
     const id = req.params.id;
 
     const query = `
-        SELECT nombre, correo, telefono, foto_perfil, descripcion
+        SELECT nombre,
+        correo, telefono,
+        foto_perfil,
+        descripcion,
+        experiencia_titulo,
+        experiencia_subtitulo,
+        enfoque_colaborativo,
+        enfoque_iterativo,
+
+        estadistica_1_titulo,
+        estadistica_1_texto,
+
+        estadistica_2_titulo,
+        estadistica_2_texto,
+
+        estadistica_3_titulo,
+        estadistica_3_texto
         FROM emprendedores
         WHERE id_emprendedor = ?
     `;
@@ -394,12 +410,27 @@ app.get('/api/perfil/:id', (req, res) => {
     });
 });
 
+// ===============================
+// ACTUALIZAR INFORMACIÓN EXTRA
+// ===============================
 
 app.put('/api/info-extra/:id', (req, res) => {
 
-    console.log("ENTRÓ A INFO EXTRA");
+    const { id } = req.params;
 
-    const id = req.params.id;
+    const {
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        subtitulo2,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto
+    } = req.body;
 
     const sql = `
         UPDATE emprendedores
@@ -418,39 +449,33 @@ app.put('/api/info-extra/:id', (req, res) => {
     `;
 
     conexion.query(sql, [
-
-        req.body.titulo_enfoque,
-        req.body.subtitulo1,
-        req.body.texto1,
-        req.body.subtitulo2,
-        req.body.texto2,
-        req.body.stat1_titulo,
-        req.body.stat1_texto,
-        req.body.stat2_titulo,
-        req.body.stat2_texto,
-        req.body.stat3_titulo,
-        req.body.stat3_texto,
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto,
         id
+    ], (err) => {
 
-    ], (error, result) => {
+        if (err) {
 
-        if (error) {
-
-            console.error(error);
+            console.error("ERROR SQL:", err);
 
             return res.status(500).json({
-                error: error.message
+                error: err.message
             });
         }
 
         res.json({
             mensaje: 'Información actualizada'
         });
-
     });
-
 });
-
 
 
 // ================================
