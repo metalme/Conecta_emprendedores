@@ -395,6 +395,64 @@ app.get('/api/perfil/:id', (req, res) => {
 });
 
 
+app.put('/api/info-extra/:id', (req, res) => {
+
+    console.log("ENTRÓ A INFO EXTRA");
+
+    const id = req.params.id;
+
+    const sql = `
+        UPDATE emprendedores
+        SET
+            experiencia_titulo = ?,
+            experiencia_subtitulo = ?,
+            enfoque_colaborativo = ?,
+            enfoque_iterativo = ?,
+            estadistica_1_titulo = ?,
+            estadistica_1_texto = ?,
+            estadistica_2_titulo = ?,
+            estadistica_2_texto = ?,
+            estadistica_3_titulo = ?,
+            estadistica_3_texto = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [
+
+        req.body.titulo_enfoque,
+        req.body.subtitulo1,
+        req.body.texto1,
+        req.body.subtitulo2,
+        req.body.texto2,
+        req.body.stat1_titulo,
+        req.body.stat1_texto,
+        req.body.stat2_titulo,
+        req.body.stat2_texto,
+        req.body.stat3_titulo,
+        req.body.stat3_texto,
+        id
+
+    ], (error, result) => {
+
+        if (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+                error: error.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Información actualizada'
+        });
+
+    });
+
+});
+
+
+
 // ================================
 // SUBIR FOTO PERFIL
 // ================================
@@ -470,76 +528,6 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
 
 
 
-// ===============================
-// ACTUALIZAR INFORMACIÓN EXTRA
-// ===============================
-
-app.put('/api/info-extra/:id', (req, res) => {
-
-    console.log(req.body);
-    const { id } = req.params;
-
-    const {
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        subtitulo2,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto
-    } = req.body;
-
-    const sql = `
-        UPDATE emprendedores
-        SET
-            experiencia_titulo = ?,
-            experiencia_subtitulo = ?,
-            enfoque_colaborativo = ?,
-            enfoque_iterativo = ?,
-            estadistica_1_titulo = ?,
-            estadistica_1_texto = ?,
-            estadistica_2_titulo = ?,
-            estadistica_2_texto = ?,
-            estadistica_3_titulo = ?,
-            estadistica_3_texto = ?
-        WHERE id_emprendedor = ?
-    `;
-
-    conexion.query(sql, [
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        subtitulo2,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto,
-        id
-    ], (error, result) => {
-
-        if (error) {
-
-            console.error("ERROR SQL:", error);
-
-            return res.status(500).json({
-                error: error.message
-            });
-        }
-
-        res.json({
-            mensaje: 'Información actualizada'
-        });
-
-    });
-
-});
 
 
 
