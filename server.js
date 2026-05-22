@@ -691,7 +691,7 @@ app.listen(PORT, () => {
 // ACTUALIZAR INFORMACIÓN EXTRA
 // ===============================
 
-app.put('/api/info-extra/:id', async (req, res) => {
+app.put('/api/info-extra/:id', (req, res) => {
 
     const { id } = req.params;
 
@@ -709,11 +709,9 @@ app.put('/api/info-extra/:id', async (req, res) => {
         stat3_texto
     } = req.body;
 
-    try {
-
-        await pool.query(`
-            UPDATE emprendedores
-            SET
+    const sql = `
+        UPDATE emprendedores
+        SET
             experiencia_titulo = ?,
             experiencia_subtitulo = ?,
             enfoque_colaborativo = ?,
@@ -724,32 +722,37 @@ app.put('/api/info-extra/:id', async (req, res) => {
             estadistica_2_texto = ?,
             estadistica_3_titulo = ?,
             estadistica_3_texto = ?
-            WHERE id_emprendedor = ?
-        `, [
-            titulo_enfoque,
-            subtitulo1,
-            texto1,
-            subtitulo2,
-            texto2,
-            stat1_titulo,
-            stat1_texto,
-            stat2_titulo,
-            stat2_texto,
-            stat3_titulo,
-            stat3_texto,
-            id
-        ]);
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        subtitulo2,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto,
+        id
+    ], (error, result) => {
+
+        if (error) {
+
+            console.error("ERROR SQL:", error);
+
+            return res.status(500).json({
+                error: error.message
+            });
+        }
 
         res.json({
             mensaje: 'Información actualizada'
         });
 
-    } catch (error) {
+    });
 
-        console.error(error);
-        res.status(500).json({
-            error: 'Error del servidor'
-        });
-
-    }
 });
