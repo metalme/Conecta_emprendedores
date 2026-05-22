@@ -715,15 +715,15 @@ app.put('/api/info-extra/:id', async (req, res) => {
             UPDATE emprendedores
             SET
             experiencia_titulo = ?,
-        experiencia_subtitulo = ?,
-        enfoque_colaborativo = ?,
-        enfoque_iterativo = ?,
-        estadistica_1_titulo = ?,
-        estadistica_1_texto = ?,
-        estadistica_2_titulo = ?,
-        estadistica_2_texto = ?,
-        estadistica_3_titulo = ?,
-        estadistica_3_texto = ?
+            experiencia_subtitulo = ?,
+            enfoque_colaborativo = ?,
+            enfoque_iterativo = ?,
+            estadistica_1_titulo = ?,
+            estadistica_1_texto = ?,
+            estadistica_2_titulo = ?,
+            estadistica_2_texto = ?,
+            estadistica_3_titulo = ?,
+            estadistica_3_texto = ?
             WHERE id_emprendedor = ?
         `, [
             titulo_enfoque,
