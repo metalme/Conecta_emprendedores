@@ -469,6 +469,81 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
 });
 
 
+
+// ===============================
+// ACTUALIZAR INFORMACIÓN EXTRA
+// ===============================
+
+app.put('/api/info-extra/:id', (req, res) => {
+
+    console.log(req.body);
+    const { id } = req.params;
+
+    const {
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        subtitulo2,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto
+    } = req.body;
+
+    const sql = `
+        UPDATE emprendedores
+        SET
+            experiencia_titulo = ?,
+            experiencia_subtitulo = ?,
+            enfoque_colaborativo = ?,
+            enfoque_iterativo = ?,
+            estadistica_1_titulo = ?,
+            estadistica_1_texto = ?,
+            estadistica_2_titulo = ?,
+            estadistica_2_texto = ?,
+            estadistica_3_titulo = ?,
+            estadistica_3_texto = ?
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, [
+        titulo_enfoque,
+        subtitulo1,
+        texto1,
+        subtitulo2,
+        texto2,
+        stat1_titulo,
+        stat1_texto,
+        stat2_titulo,
+        stat2_texto,
+        stat3_titulo,
+        stat3_texto,
+        id
+    ], (error, result) => {
+
+        if (error) {
+
+            console.error("ERROR SQL:", error);
+
+            return res.status(500).json({
+                error: error.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Información actualizada'
+        });
+
+    });
+
+});
+
+
+
+
 // ================================
 // MENSAJES actualizado el 17/05/2026 para incluir validación de chat permitido y carga de historial de mensajes
 // ================================
@@ -687,72 +762,3 @@ app.listen(PORT, () => {
     console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
 });
 
-// ===============================
-// ACTUALIZAR INFORMACIÓN EXTRA
-// ===============================
-
-app.put('/api/info-extra/:id', (req, res) => {
-
-    const { id } = req.params;
-
-    const {
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        subtitulo2,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto
-    } = req.body;
-
-    const sql = `
-        UPDATE emprendedores
-        SET
-            experiencia_titulo = ?,
-            experiencia_subtitulo = ?,
-            enfoque_colaborativo = ?,
-            enfoque_iterativo = ?,
-            estadistica_1_titulo = ?,
-            estadistica_1_texto = ?,
-            estadistica_2_titulo = ?,
-            estadistica_2_texto = ?,
-            estadistica_3_titulo = ?,
-            estadistica_3_texto = ?
-        WHERE id_emprendedor = ?
-    `;
-
-    conexion.query(sql, [
-        titulo_enfoque,
-        subtitulo1,
-        texto1,
-        subtitulo2,
-        texto2,
-        stat1_titulo,
-        stat1_texto,
-        stat2_titulo,
-        stat2_texto,
-        stat3_titulo,
-        stat3_texto,
-        id
-    ], (error, result) => {
-
-        if (error) {
-
-            console.error("ERROR SQL:", error);
-
-            return res.status(500).json({
-                error: error.message
-            });
-        }
-
-        res.json({
-            mensaje: 'Información actualizada'
-        });
-
-    });
-
-});
