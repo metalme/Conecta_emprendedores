@@ -19,7 +19,59 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(document.getElementById('correo')) document.getElementById('correo').value = datos.correo;
             if(document.getElementById('telefono')) document.getElementById('telefono').value = datos.telefono;
 
+// ===============================
+// CARGAR INFORMACIÓN EXTRA
+// ===============================
 
+if (datos.experiencia_titulo) {
+    document.getElementById('titulo-enfoque').innerText =
+        datos.experiencia_titulo;
+}
+
+if (datos.experiencia_subtitulo) {
+    document.getElementById('subtitulo1').innerText =
+        datos.experiencia_subtitulo;
+}
+
+if (datos.enfoque_colaborativo) {
+    document.getElementById('texto1').innerText =
+        datos.enfoque_colaborativo;
+}
+
+if (datos.enfoque_iterativo) {
+    document.getElementById('texto2').innerText =
+        datos.enfoque_iterativo;
+}
+
+if (datos.estadistica_1_titulo) {
+    document.getElementById('stat1-titulo').innerText =
+        datos.estadistica_1_titulo;
+}
+
+if (datos.estadistica_1_texto) {
+    document.getElementById('stat1-texto').innerText =
+        datos.estadistica_1_texto;
+}
+
+if (datos.estadistica_2_titulo) {
+    document.getElementById('stat2-titulo').innerText =
+        datos.estadistica_2_titulo;
+}
+
+if (datos.estadistica_2_texto) {
+    document.getElementById('stat2-texto').innerText =
+        datos.estadistica_2_texto;
+}
+
+if (datos.estadistica_3_titulo) {
+    document.getElementById('stat3-titulo').innerText =
+        datos.estadistica_3_titulo;
+}
+
+if (datos.estadistica_3_texto) {
+    document.getElementById('stat3-texto').innerText =
+        datos.estadistica_3_texto;
+}
 
 // ===============================
 // CARGAR DESCRIPCIÓN HERO
@@ -297,5 +349,370 @@ async function editarDescripcion() {
         console.error(error);
 
         alert("No se pudo conectar al servidor");
+    }
+}
+
+// ===============================
+// EDITAR EXPERIENCIA
+// ===============================
+
+async function editarExperiencia() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const experiencia_titulo = prompt(
+        "Título experiencia:",
+        document.getElementById('titulo-enfoque').innerText
+    );
+
+    if (experiencia_titulo === null) return;
+
+    const experiencia_subtitulo = prompt(
+        "Subtítulo:",
+        document.getElementById('subtitulo1').innerText
+    );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo_enfoque: experiencia_titulo,
+                subtitulo1: experiencia_subtitulo
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('titulo-enfoque').innerText =
+                experiencia_titulo;
+
+            document.getElementById('subtitulo1').innerText =
+                experiencia_subtitulo;
+
+            alert("Experiencia actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ENFOQUE
+// ===============================
+
+async function editarEnfoque() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const enfoque_colaborativo = prompt(
+        "Texto colaborativo:",
+        document.getElementById('texto1').innerText
+    );
+
+    const enfoque_iterativo = prompt(
+        "Texto iterativo:",
+        document.getElementById('texto2').innerText
+    );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                texto1: enfoque_colaborativo,
+                texto2: enfoque_iterativo
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('texto1').innerText =
+                enfoque_colaborativo;
+
+            document.getElementById('texto2').innerText =
+                enfoque_iterativo;
+
+            alert("Enfoque actualizado ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ESTADÍSTICAS
+// ===============================
+
+async function editarEstadisticas() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const stat1_titulo = prompt(
+        "Stat 1 título:",
+        document.getElementById('stat1-titulo').innerText
+    );
+
+    const stat1_texto = prompt(
+        "Stat 1 texto:",
+        document.getElementById('stat1-texto').innerText
+    );
+
+    const stat2_titulo = prompt(
+        "Stat 2 título:",
+        document.getElementById('stat2-titulo').innerText
+    );
+
+    const stat2_texto = prompt(
+        "Stat 2 texto:",
+        document.getElementById('stat2-texto').innerText
+    );
+
+    const stat3_titulo = prompt(
+        "Stat 3 título:",
+        document.getElementById('stat3-titulo').innerText
+    );
+
+    const stat3_texto = prompt(
+        "Stat 3 texto:",
+        document.getElementById('stat3-texto').innerText
+    );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                stat1_titulo,
+                stat1_texto,
+                stat2_titulo,
+                stat2_texto,
+                stat3_titulo,
+                stat3_texto
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('stat1-titulo').innerText =
+                stat1_titulo;
+
+            document.getElementById('stat1-texto').innerText =
+                stat1_texto;
+
+            document.getElementById('stat2-titulo').innerText =
+                stat2_titulo;
+
+            document.getElementById('stat2-texto').innerText =
+                stat2_texto;
+
+            document.getElementById('stat3-titulo').innerText =
+                stat3_titulo;
+
+            document.getElementById('stat3-texto').innerText =
+                stat3_texto;
+
+            alert("Estadísticas actualizadas ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Error de conexión");
+    }
+}
+
+
+// ===============================
+// EDITAR STATS INDIVIDUALES
+// ===============================
+
+async function editarStat(numero) {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const tituloActual =
+        document.getElementById(`stat${numero}-titulo`).innerText;
+
+    const textoActual =
+        document.getElementById(`stat${numero}-texto`).innerText;
+
+    const nuevoTitulo = prompt(
+        "Nuevo título:",
+        tituloActual
+    );
+
+    if (nuevoTitulo === null) return;
+
+    const nuevoTexto = prompt(
+        "Nuevo texto:",
+        textoActual
+    );
+
+    try {
+
+        const datos = {};
+
+        // ✅ NOMBRES REALES DE MYSQL
+        datos[`estadistica_${numero}_titulo`] = nuevoTitulo;
+        datos[`estadistica_${numero}_texto`] = nuevoTexto;
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+
+            method: 'PUT',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(datos)
+
+        });
+
+        if (response.ok) {
+
+            document.getElementById(`stat${numero}-titulo`).innerText =
+                nuevoTitulo;
+
+            document.getElementById(`stat${numero}-texto`).innerText =
+                nuevoTexto;
+
+            alert("Stat actualizada ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Error de conexión");
+    }
+}
+
+// ===============================
+// EDITAR ENFOQUE
+// ===============================
+
+async function editarEnfoque() {
+
+    const id = localStorage.getItem('id_emprendedor');
+
+    const titulo =
+        prompt(
+            "Título:",
+            document.getElementById('titulo-enfoque').innerText
+        );
+
+    if (titulo === null) return;
+
+    const subtitulo1 =
+        prompt(
+            "Primer subtítulo:",
+            document.getElementById('subtitulo1').innerText
+        );
+
+    const texto1 =
+        prompt(
+            "Primer texto:",
+            document.getElementById('texto1').innerText
+        );
+
+    const subtitulo2 =
+        prompt(
+            "Segundo subtítulo:",
+            document.getElementById('subtitulo2').innerText
+        );
+
+    const texto2 =
+        prompt(
+            "Segundo texto:",
+            document.getElementById('texto2').innerText
+        );
+
+    try {
+
+        const response = await fetch(`/api/info-extra/${id}`, {
+
+            method: 'PUT',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+                titulo_enfoque: titulo,
+                subtitulo1,
+                texto1,
+                subtitulo2,
+                texto2
+
+            })
+        });
+
+        if (response.ok) {
+
+            document.getElementById('titulo-enfoque').innerText =
+                titulo;
+
+            document.getElementById('subtitulo1').innerText =
+                subtitulo1;
+
+            document.getElementById('texto1').innerText =
+                texto1;
+
+            document.getElementById('subtitulo2').innerText =
+                subtitulo2;
+
+            document.getElementById('texto2').innerText =
+                texto2;
+
+            alert("Enfoque actualizado ✨");
+
+        } else {
+
+            alert("Error al guardar");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Error de conexión");
     }
 }

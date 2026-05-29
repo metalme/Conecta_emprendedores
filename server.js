@@ -371,7 +371,23 @@ app.get('/api/perfil/:id', (req, res) => {
     const id = req.params.id;
 
     const query = `
-        SELECT nombre, correo, telefono, foto_perfil, descripcion
+        SELECT nombre,
+        correo, telefono,
+        foto_perfil,
+        descripcion,
+        experiencia_titulo,
+        experiencia_subtitulo,
+        enfoque_colaborativo,
+        enfoque_iterativo,
+
+        estadistica_1_titulo,
+        estadistica_1_texto,
+
+        estadistica_2_titulo,
+        estadistica_2_texto,
+
+        estadistica_3_titulo,
+        estadistica_3_texto
         FROM emprendedores
         WHERE id_emprendedor = ?
     `;
@@ -391,6 +407,51 @@ app.get('/api/perfil/:id', (req, res) => {
                 error: "Usuario no encontrado"
             });
         }
+    });
+});
+
+// ================================
+// ACTUALIZAR INFORMACIÓN EXTRA (ESTADÍSTICAS Y ENFOQUE)
+// ================================
+
+
+
+app.put('/api/info-extra/:id', (req, res) => {
+
+    const { id } = req.params;
+
+    const campos = [];
+    const valores = [];
+
+    for (const key in req.body) {
+
+        campos.push(`${key} = ?`);
+        valores.push(req.body[key]);
+
+    }
+
+    valores.push(id);
+
+    const sql = `
+        UPDATE emprendedores
+        SET ${campos.join(', ')}
+        WHERE id_emprendedor = ?
+    `;
+
+    conexion.query(sql, valores, (err) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json({
+            mensaje: 'Información actualizada'
+        });
     });
 });
 
@@ -467,6 +528,11 @@ app.put('/api/perfil/descripcion/:id', (req, res) => {
         });
     });
 });
+
+
+
+
+
 
 
 // ================================
@@ -771,3 +837,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
 });
+
