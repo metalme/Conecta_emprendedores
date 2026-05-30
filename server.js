@@ -571,59 +571,114 @@ app.get('/api/mensajes/:emisor_id/:receptor_id', (req, res) => {
 
 
 // ENVIAR MENSAJE
+
+// ENVIAR MENSAJE
 app.post('/api/mensajes', (req, res) => {
 
     const { emisor_id, receptor_id, mensaje } = req.body;
 
     const validar = `
-    SELECT * FROM solicitudes
-    WHERE (
-        (emisor_id = ? AND receptor_id = ?) OR
-        (emisor_id = ? AND receptor_id = ?)
-    )
-    AND estado = 'aceptado'
+        SELECT * FROM solicitudes
+        WHERE (
+            (emisor_id = ? AND receptor_id = ?) OR
+            (emisor_id = ? AND receptor_id = ?)
+        )
+        AND estado = 'aceptado'
     `;
 
-    conexion.query(validar, [emisor_id, receptor_id, receptor_id, emisor_id], (err, result) => {
+    conexion.query(
 
-        if (err) {
-            return res.status(500).json({
-                error: 'Error'
-            });
-        }
+        validar,
 
-        if (result.length === 0) {
-            return res.status(403).json({
-                error: 'No pueden chatear aún'
-            });
-        }
+        [emisor_id, receptor_id, receptor_id, emisor_id],
 
-        const sql = `
-            INSERT INTO mensajes (emisor_id, receptor_id, mensaje)
-            VALUES (?, ?, ?)
-        `;
-
-        
-
-        conexion.query(sql, [emisor_id, receptor_id, mensaje], (err) => {
+        (err, result) => {
 
             if (err) {
+
                 return res.status(500).json({
-                    error: 'Error al enviar mensaje'
+                    error: 'Error'
                 });
             }
 
-            res.json({
-                mensaje: 'Mensaje enviado'
-            });
-        });
-    });
+            if (result.length === 0) {
+
+                return res.status(403).json({
+                    error: 'No pueden chatear aún'
+                });
+            }
+
+            const sql = `
+                INSERT INTO mensajes (
+                    emisor_id,
+                    receptor_id,
+                    mensaje
+                )
+                VALUES (?, ?, ?)
+            `;
+
+            conexion.query(
+
+                sql,
+
+                [emisor_id, receptor_id, mensaje],
+
+                (err, result) => {
+
+                    if (err) {
+
+                        return res.status(500).json({
+                            error: 'Error al enviar mensaje'
+                        });
+                    }
+
+                    // CREAR NOTIFICACIÓN
+
+                    const notifMensaje = `
+                        INSERT INTO notificaciones (
+                            usuario_id,
+                            tipo,
+                            contenido,
+                            referencia_id,
+                            leida
+                        )
+                        VALUES (?, 'mensajes', ?, ?, 0)
+                    `;
+
+                    const textoNotif =
+                        'Tienes un nuevo mensaje';
+
+                    conexion.query(
+
+                        notifMensaje,
+
+                        [
+                            receptor_id,
+                            textoNotif,
+                            result.insertId
+                        ],
+
+                        (errNotif) => {
+
+                            if (errNotif) {
+
+                                console.error(
+                                    'Error creando notificación:',
+                                    errNotif
+                                );
+                            }
+
+                            res.json({
+                                mensaje: 'Mensaje enviado'
+                            });
+                        }
+                    );
+                }
+            );
+        }
+    );
 });
 
-
-
-// ================================
-// RUTAS DE NOTIFICACIONES Y SOLICITUDES (ACTUALIZADO)
 // ================================
 
 // NUEVO: Enviar una solicitud de amistad/conexión y generar notificación automáticamente
@@ -654,15 +709,23 @@ app.post('/api/solicitudes', (req, res) => {
 
             // 3. Crear una notificación para el receptor
             const insertNotif = `
-                INSERT INTO notificaciones (id_usuario, tipo, icono, mensaje, leida) 
-                VALUES (?, 'solicitud', 'fa-user-plus', ?, 0)
+            INSERT INTO notificaciones (
+            usuario_id,
+            tipo,
+            contenido,
+            referencia_id,
+            leida
+            )
+            VALUES (?, 'solicitud', ?, ?, 0)
             `;
+
+
             // Obtenemos el nombre del emisor para el mensaje de la notificación
             conexion.query('SELECT nombre FROM emprendedores WHERE id_emprendedor = ?', [emisor_id], (errUser, resUser) => {
                 const nombreEmisor = resUser.length > 0 ? resUser[0].nombre : 'Un emprendedor';
                 const mensajeNotif = `${nombreEmisor} te ha enviado una solicitud de conexión.`;
 
-                conexion.query(insertNotif, [receptor_id, mensajeNotif], (errNot) => {
+                conexion.query(insertNotif, [receptor_id,mensajeNotif,idSolicitud], (errNot) => {
                     if (errNot) console.error("Error al crear notificación:", errNot);
                     
                     res.status(201).json({ 
@@ -713,11 +776,33 @@ app.put('/api/solicitudes/:id', (req, res) => {
 // ================================
 
 // Obtener todas las notificaciones de un usuario para la vista del componente
+// Obtener todas las notificaciones
 app.get('/api/notificaciones/:id', (req, res) => {
+
     const { id } = req.params;
-    const sql = 'SELECT id_notificacion, tipo, icono, mensaje, fecha, leida FROM notificaciones WHERE id_usuario = ? ORDER BY fecha DESC';
+
+    const sql = `
+        SELECT
+            id,
+            tipo,
+            contenido,
+            referencia_id,
+            leida,
+            fecha
+        FROM notificaciones
+        WHERE usuario_id = ?
+        ORDER BY fecha DESC
+    `;
+
     conexion.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+
+        if (err) {
+
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
         res.json(results);
     });
 });
@@ -725,7 +810,7 @@ app.get('/api/notificaciones/:id', (req, res) => {
 // Marcar una notificación individual como leída
 app.put('/api/notificaciones/leida/:id', (req, res) => {
     const { id } = req.params;
-    const sql = 'UPDATE notificaciones SET leida = 1 WHERE id_notificacion = ?';
+    const sql = 'UPDATE notificaciones SET leida = 1 WHERE id = ?';
     conexion.query(sql, [id], (err) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ mensaje: 'Notificación leída correctamente' });
@@ -735,7 +820,7 @@ app.put('/api/notificaciones/leida/:id', (req, res) => {
 // Conteo rápido de notificaciones sin leer para la burbuja roja de la campana
 app.get('/api/conteo-notificaciones/:id', (req, res) => {
     const { id } = req.params;
-    const sql = 'SELECT COUNT(*) AS pendientes FROM notificaciones WHERE id_usuario = ? AND leida = 0';
+    const sql = 'SELECT COUNT(*) AS pendientes FROM notificaciones WHERE usuario_id = ? AND leida = 0';
     conexion.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ pendientes: results[0].pendientes });
