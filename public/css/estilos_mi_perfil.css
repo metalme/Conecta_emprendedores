@@ -23,7 +23,15 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 
     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --sidebar-width: 250px;
+    --content-gap: 28px;
 
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 
@@ -55,7 +63,7 @@ body {
 
 .sidebar {
 
-    width: 250px;
+    width: var(--sidebar-width);
 
     background-color: var(--sidebar-bg);
 
@@ -253,7 +261,7 @@ body {
 
 .main-content {
 
-    margin-left: 250px;
+    margin-left: calc(var(--sidebar-width) + var(--content-gap));
 
     flex: 1;
 
@@ -679,7 +687,7 @@ margin: 10px 0 0 0 !important; /* Espacio controlado solo arriba */
 
     .main-content {
 
-        margin-left: 80px;
+        margin-left: 96px;
 
     }
 

@@ -17,12 +17,14 @@ body{
 .layout{
     display:flex;
     min-height:100vh;
+    gap:28px;
 }
 
 /* SIDEBAR */
 
 .sidebar{
     width:290px;
+    flex:0 0 290px;
     background:#081225;
     border-right:1px solid rgba(255,255,255,0.05);
     padding:25px 18px;

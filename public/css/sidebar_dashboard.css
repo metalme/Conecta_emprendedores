@@ -1,0 +1,229 @@
+:root {
+    --dashboard-sidebar-width: 250px;
+    --dashboard-sidebar-gap: 28px;
+    --dashboard-sidebar-bg: #0f172a;
+    --dashboard-main-bg: #030712;
+    --dashboard-panel-bg: #1f2937;
+    --dashboard-text-main: #f1f5f9;
+    --dashboard-text-muted: #9ca3af;
+    --dashboard-accent: #10b981;
+    --dashboard-border: rgba(255, 255, 255, 0.1);
+    --dashboard-glass: rgba(255, 255, 255, 0.05);
+    --dashboard-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--dashboard-main-bg);
+    color: var(--dashboard-text-main);
+    font-family: var(--dashboard-font);
+}
+
+.app-container,
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--dashboard-sidebar-width) !important;
+    height: 100vh;
+    padding: 22px 18px !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    overflow-y: auto;
+    background: var(--dashboard-sidebar-bg) !important;
+    border-right: 1px solid var(--dashboard-border);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.sidebar h2 {
+    margin: 0 0 18px;
+    color: var(--dashboard-accent);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.logo-area,
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    color: var(--dashboard-text-main);
+    text-align: center;
+}
+
+.logo-area .large-logo,
+.logo i {
+    color: var(--dashboard-accent);
+    font-size: 2rem;
+}
+
+.logo-area p,
+.logo span {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.user-profile-sidebar,
+.perfil {
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.user-avatar,
+.foto {
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 auto 10px !important;
+    border: 2px solid var(--dashboard-accent) !important;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--dashboard-panel-bg);
+}
+
+.usuarioNombre,
+.user-name,
+.perfil h3 {
+    margin: 0;
+    color: var(--dashboard-text-main);
+    font-size: 1rem !important;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.user-role {
+    color: var(--dashboard-text-muted);
+    font-size: 0.82rem;
+}
+
+.sidebar ul,
+.menu {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+}
+
+.sidebar li {
+    margin: 0;
+    padding: 0 !important;
+    color: var(--dashboard-text-muted);
+    border-radius: 8px;
+}
+
+.sidebar li a,
+.menu a {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 14px !important;
+    display: flex !important;
+    align-items: center;
+    gap: 12px !important;
+    color: var(--dashboard-text-muted) !important;
+    text-decoration: none !important;
+    border-radius: 8px !important;
+    font-size: 0.96rem !important;
+    font-weight: 650;
+    line-height: 1.2;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li.active > a,
+.sidebar li:hover > a,
+.menu a.active,
+.menu a:hover {
+    background: var(--dashboard-glass) !important;
+    color: var(--dashboard-accent) !important;
+}
+
+.sidebar i,
+.menu i {
+    width: 20px;
+    margin: 0 !important;
+    text-align: center;
+    flex: 0 0 20px;
+}
+
+.menu-item,
+.left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-item {
+    justify-content: space-between;
+}
+
+#contador {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dashboard-accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.main-content,
+.contenido {
+    margin-left: calc(var(--dashboard-sidebar-width) + var(--dashboard-sidebar-gap)) !important;
+    min-width: 0;
+    flex: 1;
+}
+
+.btn-logout,
+.salir {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 760px) {
+    .app-container,
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100% !important;
+        height: auto;
+        min-height: 0;
+        position: static;
+    }
+
+    .sidebar ul,
+    .menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .main-content,
+    .contenido {
+        margin-left: 0 !important;
+        padding: 22px !important;
+    }
+}

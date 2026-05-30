@@ -11,6 +11,14 @@
     --glass: rgba(255, 255, 255, 0.05); /* Semi-transparent white */
     --glass-border: rgba(255, 255, 255, 0.1);
     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --sidebar-width: 250px;
+    --content-gap: 28px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -28,7 +36,7 @@ body {
 
 /* --- SIDEBAR --- */
 .sidebar {
-    width: 250px;
+    width: var(--sidebar-width);
     background-color: var(--sidebar-bg);
     padding: 30px;
     display: flex;
@@ -133,7 +141,7 @@ body {
 
 /* --- MAIN CONTENT --- */
 .main-content {
-    margin-left: 250px; /* Offset for sidebar */
+    margin-left: calc(var(--sidebar-width) + var(--content-gap));
     flex: 1;
     padding: 30px calc(2vw + 10px); /* Padding scales with viewport */
     background-color: var(--main-bg);

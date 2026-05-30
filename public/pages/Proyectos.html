@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos - Conecta Emprendedores</title>
+    <link rel="stylesheet" href="../css/estilos_main.css">
+    <link rel="stylesheet" href="../css/proyectos.css">
+    <link rel="stylesheet" href="../css/sidebar_dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <div class="logo-area">
+            <i class="fa-solid fa-rocket large-logo"></i>
+            <p style="text-align: center;">Conecta <br/> Emprendedores</p>
+        </div>
+        <div class="user-profile-sidebar">
+            <img src="https://via.placeholder.com/60" alt="Usuario" class="user-avatar">
+            <p class="usuarioNombre">Emprendedor Pro</p>
+        </div>
+        <ul>
+            <li><a href="/pages/main.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li class="active"><a href="/pages/Proyectos.html"><i class="fa-solid fa-folder"></i> Proyectos</a></li>
+            <li><a href="/pages/inversor_exploracion.html"><i class="fa-solid fa-hand-holding-dollar"></i> Inversionistas</a></li>
+            <li><a href="/pages/Conexion_Emprendedores.html"><i class="fa-solid fa-rocket"></i> Emprendedores</a></li>
+            <li><a href="/pages/biblioteca.html"><i class="fa-solid fa-book"></i> Biblioteca</a></li>
+            <li><a href=""><i class="fa-solid fa-newspaper"></i> Noticias</a></li>
+            <li><a href="/pages/notificaciones.html"><i class="fa-solid fa-bell"></i> Notificaciones</a></li>
+            <li><a href="/pages/mensajes.html"><i class="fa-solid fa-envelope"></i> Mensajes</a></li>
+            <li><a href="/pages/mi_cuenta.html"><i class="fa-solid fa-user"></i> Mi Cuenta</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-container">
+                <span class="search-icon"><i class="fa-solid fa-search"></i></span>
+                <input type="text" id="buscadorProyectos" placeholder="Buscar por proyecto, sector o etapa">
+            </div>
+            <div class="top-actions">
+                <button class="btn-icon" aria-label="Notificaciones"><i class="fa-solid fa-bell"></i></button>
+                <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+            </div>
+        </header>
+
+        <section class="hero-section project-hero">
+            <div class="hero-card project-hero-card">
+                <div class="hero-copy">
+                    <span class="eyebrow"><i class="fa-solid fa-diagram-project"></i> Portafolio activo</span>
+                    <h1>Gestion de <span>Proyectos</span></h1>
+                    <p>Organiza tus iniciativas, revisa el avance y prepara cada proyecto para conectar con aliados e inversionistas.</p>
+                </div>
+                <div class="hero-actions">
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Nuevo proyecto</button>
+                    <button class="btn-secondary"><i class="fa-solid fa-chart-simple"></i> Ver oportunidades</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-container project-stats" aria-label="Resumen de proyectos">
+            <div class="stat-card">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Proyectos: <strong>6</strong></span>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>En validacion: <strong>3</strong></span>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-handshake"></i>
+                <span>Interesados: <strong>18</strong></span>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Avance medio: <strong>72%</strong></span>
+            </div>
+        </section>
+
+        <section class="project-toolbar" aria-label="Filtros de proyectos">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="activo">Activos</button>
+                <button class="filter-btn" data-filter="validacion">Validacion</button>
+                <button class="filter-btn" data-filter="inversion">Inversion</button>
+            </div>
+            <button class="btn-secondary compact"><i class="fa-solid fa-sliders"></i> Filtros</button>
+        </section>
+
+        <section class="projects-grid" id="listaProyectos">
+            <article class="project-card" data-status="activo" data-search="agrotech cultivo verde agricultura sostenible">
+                <div class="project-card-header">
+                    <span class="project-icon green"><i class="fa-solid fa-seedling"></i></span>
+                    <span class="status-badge active-status">Activo</span>
+                </div>
+                <h2>AgroTech Cultivo Verde</h2>
+                <p>Sensores y analitica para optimizar cultivos de pequenos productores.</p>
+                <div class="project-meta">
+                    <span><i class="fa-solid fa-briefcase"></i> Agrotech</span>
+                    <span><i class="fa-solid fa-users"></i> 7 aliados</span>
+                </div>
+                <div class="progress-block">
+                    <div class="progress-label"><span>Preparacion</span><strong>82%</strong></div>
+                    <div class="progress-track"><span style="width:82%"></span></div>
+                </div>
+                <div class="card-actions">
+                    <button><i class="fa-solid fa-eye"></i> Ver</button>
+                    <button><i class="fa-solid fa-pen"></i> Editar</button>
+                </div>
+            </article>
+
+            <article class="project-card" data-status="validacion" data-search="edunova educacion cursos plataforma aprendizaje">
+                <div class="project-card-header">
+                    <span class="project-icon blue"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <span class="status-badge review-status">Validacion</span>
+                </div>
+                <h2>EduNova Lab</h2>
+                <p>Plataforma de aprendizaje practico para emprendedores en etapa temprana.</p>
+                <div class="project-meta">
+                    <span><i class="fa-solid fa-briefcase"></i> Educacion</span>
+                    <span><i class="fa-solid fa-users"></i> 4 aliados</span>
+                </div>
+                <div class="progress-block">
+                    <div class="progress-label"><span>Preparacion</span><strong>64%</strong></div>
+                    <div class="progress-track"><span style="width:64%"></span></div>
+                </div>
+                <div class="card-actions">
+                    <button><i class="fa-solid fa-eye"></i> Ver</button>
+                    <button><i class="fa-solid fa-pen"></i> Editar</button>
+                </div>
+            </article>
+
+            <article class="project-card" data-status="inversion" data-search="healthlink salud citas telemedicina inversion">
+                <div class="project-card-header">
+                    <span class="project-icon violet"><i class="fa-solid fa-heart-pulse"></i></span>
+                    <span class="status-badge investment-status">Inversion</span>
+                </div>
+                <h2>HealthLink Express</h2>
+                <p>Gestion de citas y seguimiento remoto para centros de salud locales.</p>
+                <div class="project-meta">
+                    <span><i class="fa-solid fa-briefcase"></i> Salud</span>
+                    <span><i class="fa-solid fa-users"></i> 11 aliados</span>
+                </div>
+                <div class="progress-block">
+                    <div class="progress-label"><span>Preparacion</span><strong>91%</strong></div>
+                    <div class="progress-track"><span style="width:91%"></span></div>
+                </div>
+                <div class="card-actions">
+                    <button><i class="fa-solid fa-eye"></i> Ver</button>
+                    <button><i class="fa-solid fa-pen"></i> Editar</button>
+                </div>
+            </article>
+        </section>
+
+        <section class="pipeline-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-timeline"></i> Ruta de avance</h2>
+            </div>
+            <div class="pipeline-grid">
+                <div class="pipeline-column">
+                    <h3>Idea</h3>
+                    <p>Definir problema, cliente y propuesta de valor.</p>
+                    <span>2 pendientes</span>
+                </div>
+                <div class="pipeline-column">
+                    <h3>Validacion</h3>
+                    <p>Medir demanda, prototipo y primeras conversaciones.</p>
+                    <span>3 en curso</span>
+                </div>
+                <div class="pipeline-column">
+                    <h3>Pitch</h3>
+                    <p>Consolidar modelo, traccion y presentacion ejecutiva.</p>
+                    <span>1 listo</span>
+                </div>
+                <div class="pipeline-column">
+                    <h3>Inversion</h3>
+                    <p>Preparar reuniones, seguimiento y acuerdos.</p>
+                    <span>1 oportunidad</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="../js/proyectos.js"></script>
+<script src="../js/sidebar_dashboard.js"></script>
+</body>
+</html>
