@@ -47,11 +47,7 @@ body {
 }
 
 .sidebar h2 {
-    margin: 0 0 18px;
-    color: var(--dashboard-accent);
-    font-size: 1.35rem;
-    line-height: 1.2;
-    text-align: center;
+    display: none;
 }
 
 .logo-area,
@@ -59,29 +55,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 24px;
+    gap: 12px;
+    margin: 0 0 28px;
     color: var(--dashboard-text-main);
-    text-align: center;
+    text-align: left;
 }
 
 .logo-area .large-logo,
 .logo i {
     color: var(--dashboard-accent);
-    font-size: 2rem;
+    font-size: 2.15rem;
 }
 
 .logo-area p,
+.logo-area span,
 .logo span {
     margin: 0;
-    font-weight: 700;
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
     line-height: 1.2;
 }
 
 .user-profile-sidebar,
 .perfil {
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
     text-align: center;
 }
 
@@ -99,11 +98,13 @@ body {
 .usuarioNombre,
 .user-name,
 .perfil h3 {
-    margin: 0;
+    max-width: 190px;
+    margin: 0 auto;
     color: var(--dashboard-text-main);
     font-size: 1rem !important;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.25;
+    text-align: center;
 }
 
 .user-role {

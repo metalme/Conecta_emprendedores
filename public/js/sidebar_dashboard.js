@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    normalizarMarcaSidebar();
     pintarSidebarDesdeLocalStorage();
 
     await cargarPerfilSidebar();
@@ -8,6 +9,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             boton.addEventListener("click", cerrarSesion);
         });
 });
+
+function normalizarMarcaSidebar() {
+    document.querySelectorAll(".logo-area, .logo")
+        .forEach((contenedor) => {
+            const textoMarca = contenedor.querySelector("p, span");
+
+            if (textoMarca) {
+                textoMarca.innerHTML = "Conecta<br>Emprendedores";
+            }
+        });
+}
 
 function pintarSidebarDesdeLocalStorage() {
     const nombreUsuario = localStorage.getItem("usuarioNombre") || localStorage.getItem("nombre_usuario");
@@ -45,7 +57,7 @@ async function cargarPerfilSidebar() {
 function pintarNombreSidebar(nombre) {
     const nombreFormateado = nombre.charAt(0).toUpperCase() + nombre.slice(1);
 
-    document.querySelectorAll(".sidebar h2, .usuarioNombre, .user-name, .perfil h3")
+    document.querySelectorAll(".usuarioNombre, .user-name, .perfil h3")
         .forEach((elemento) => {
             elemento.textContent = nombreFormateado;
         });
