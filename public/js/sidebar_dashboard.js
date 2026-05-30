@@ -57,7 +57,7 @@ async function cargarPerfilSidebar() {
 function pintarNombreSidebar(nombre) {
     const nombreFormateado = nombre.charAt(0).toUpperCase() + nombre.slice(1);
 
-    document.querySelectorAll(".usuarioNombre, .user-name, .perfil h3")
+    document.querySelectorAll(".usuarioNombre, .user-name, .user-profile-sidebar p, .perfil h3")
         .forEach((elemento) => {
             elemento.textContent = nombreFormateado;
         });

@@ -72,9 +72,10 @@ body {
 .logo span {
     margin: 0;
     color: white;
-    font-size: 1rem;
-    font-weight: 800;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
     line-height: 1.2;
+    text-align: center !important;
 }
 
 .user-profile-sidebar,
@@ -97,6 +98,7 @@ body {
 
 .usuarioNombre,
 .user-name,
+.user-profile-sidebar p,
 .perfil h3 {
     max-width: 190px;
     margin: 0 auto;
