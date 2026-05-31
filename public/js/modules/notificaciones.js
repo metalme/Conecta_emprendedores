@@ -43,6 +43,73 @@ async function abrirNotificacionMensaje(notificacion) {
     window.location.href = construirUrlMensajes(notificacion);
 }
 
+function formatearFechaHora(fecha) {
+    if (!fecha) {
+        return {
+            fecha: "Fecha no disponible",
+            hora: ""
+        };
+    }
+
+    const fechaMensaje = new Date(fecha);
+
+    if (Number.isNaN(fechaMensaje.getTime())) {
+        return {
+            fecha: fecha,
+            hora: ""
+        };
+    }
+
+    return {
+        fecha: fechaMensaje.toLocaleDateString("es-CO", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }),
+        hora: fechaMensaje.toLocaleTimeString("es-CO", {
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+    };
+}
+
+function normalizarFotoRemitente(foto) {
+    if (!foto) {
+        return "/assets/img/logo2.png";
+    }
+
+    if (
+        foto.startsWith("http://") ||
+        foto.startsWith("https://") ||
+        foto.startsWith("/")
+    ) {
+        return foto;
+    }
+
+    return `/${foto}`;
+}
+
+function obtenerDetalleMensaje(notificacion) {
+    const nombreRemitente =
+        notificacion.mensaje_remitente_nombre ||
+        "Emprendedor";
+    const fotoRemitente = normalizarFotoRemitente(
+        notificacion.mensaje_remitente_foto
+    );
+    const momentoMensaje = formatearFechaHora(
+        notificacion.mensaje_fecha ||
+        notificacion.fecha
+    );
+
+    return {
+        nombreRemitente,
+        fotoRemitente,
+        fechaHoraTexto: momentoMensaje.hora
+            ? `${momentoMensaje.fecha} - ${momentoMensaje.hora}`
+            : momentoMensaje.fecha
+    };
+}
+
 
 // ======================================
 // VALIDAR SESIÓN
@@ -122,6 +189,10 @@ function renderizar(filtro = "todas") {
     filtradas.forEach(n => {
 
         const div = document.createElement("div");
+        const esMensaje = n.tipo === "mensajes";
+        const detalleMensaje = esMensaje
+            ? obtenerDetalleMensaje(n)
+            : null;
 
         div.className = `
             notificacion
@@ -208,22 +279,49 @@ function renderizar(filtro = "todas") {
 
             <div class="info">
 
-                <div class="icono">
-                    <i class="fa-solid ${icono}"></i>
-                </div>
+                ${
+                    esMensaje
+                        ? `
+                            <img
+                                src="${detalleMensaje.fotoRemitente}"
+                                alt="Foto de ${detalleMensaje.nombreRemitente}"
+                                class="notificacion-avatar"
+                                onerror="this.onerror=null;this.src='/assets/img/logo2.png';"
+                            >
+                        `
+                        : `
+                            <div class="icono">
+                                <i class="fa-solid ${icono}"></i>
+                            </div>
+                        `
+                }
 
                 <div class="textos">
 
                     <span class="tipo">
-                        ${n.tipo.toUpperCase()}
+                        ${esMensaje ? "MENSAJE" : n.tipo.toUpperCase()}
                     </span>
+
+                    ${
+                        esMensaje
+                            ? `
+                                <span class="remitente">
+                                    De: ${detalleMensaje.nombreRemitente}
+                                </span>
+                            `
+                            : ""
+                    }
 
                     <span class="mensaje">
                         ${n.contenido}
                     </span>
 
                     <span class="fecha">
-                        ${n.fecha}
+                        ${
+                            esMensaje
+                                ? detalleMensaje.fechaHoraTexto
+                                : n.fecha
+                        }
                     </span>
 
                 </div>

@@ -259,6 +259,16 @@ body{
     color:#00d084;
 }
 
+.notificacion-avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #00d084;
+    background:#162033;
+    flex:0 0 auto;
+}
+
 .textos{
     display:flex;
     flex-direction:column;
@@ -274,6 +284,12 @@ body{
 .mensaje{
     font-size:22px;
         font-weight:600;
+}
+
+.remitente{
+    font-size:18px;
+    color:#ffffff;
+    font-weight:700;
 }
 
 .fecha{

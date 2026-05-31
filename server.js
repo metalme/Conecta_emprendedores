@@ -792,11 +792,16 @@ app.get('/api/notificaciones/:id', (req, res) => {
             CASE
                 WHEN n.tipo = 'mensajes' THEN m.emisor_id
                 ELSE NULL
-            END AS chat_usuario_id
+            END AS chat_usuario_id,
+            m.fecha AS mensaje_fecha,
+            remitente.nombre AS mensaje_remitente_nombre,
+            remitente.foto_perfil AS mensaje_remitente_foto
         FROM notificaciones n
         LEFT JOIN mensajes m
             ON n.tipo = 'mensajes'
             AND n.referencia_id = m.id
+        LEFT JOIN emprendedores remitente
+            ON m.emisor_id = remitente.id_emprendedor
         WHERE n.usuario_id = ?
         ORDER BY n.fecha DESC
     `;
