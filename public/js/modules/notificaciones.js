@@ -5,6 +5,44 @@ const idUsuario = localStorage.getItem("id_emprendedor");
 
 let notificaciones = [];
 
+function marcarNotificacionLeida(idNotificacion) {
+    return fetch(`/api/notificaciones/leida/${idNotificacion}`, {
+        method: "PUT"
+    });
+}
+
+function construirUrlMensajes(notificacion) {
+    const params = new URLSearchParams();
+    const chatUsuarioId =
+        notificacion.chat_usuario_id ||
+        notificacion.emisor_id ||
+        notificacion.receptor_id;
+
+    if (chatUsuarioId) {
+        params.set("user", chatUsuarioId);
+    }
+
+    if (notificacion.referencia_id) {
+        params.set("mensaje", notificacion.referencia_id);
+    }
+
+    const queryString = params.toString();
+
+    return queryString
+        ? `/pages/mensajes.html?${queryString}`
+        : "/pages/mensajes.html";
+}
+
+async function abrirNotificacionMensaje(notificacion) {
+    try {
+        await marcarNotificacionLeida(notificacion.id);
+    } catch (error) {
+        console.error("Error al marcar mensaje como leido:", error);
+    }
+
+    window.location.href = construirUrlMensajes(notificacion);
+}
+
 
 // ======================================
 // VALIDAR SESIÓN
@@ -137,6 +175,17 @@ function renderizar(filtro = "todas") {
                 </button>
             `;
 
+        } else if (n.tipo === "mensajes") {
+
+            botones = `
+                <button
+                    class="btn abrir-mensaje"
+                    data-id="${n.id}"
+                >
+                    Leer mensaje
+                </button>
+            `;
+
         } else {
 
             botones = `
@@ -191,18 +240,44 @@ function renderizar(filtro = "todas") {
         // MARCAR LEÍDA
         // ======================================
 
+        if (n.tipo === "mensajes") {
+
+            div.classList.add("notificacion-clickable");
+            div.tabIndex = 0;
+
+            div.addEventListener("click", (event) => {
+                if (event.target.closest(".botones")) {
+                    return;
+                }
+
+                abrirNotificacionMensaje(n);
+            });
+
+            div.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    abrirNotificacionMensaje(n);
+                }
+            });
+        }
+
+        const btnAbrirMensaje =
+            div.querySelector(".abrir-mensaje");
+
+        if (btnAbrirMensaje) {
+
+            btnAbrirMensaje.addEventListener("click", () => {
+                abrirNotificacionMensaje(n);
+            });
+        }
+
         const btnLeer = div.querySelector(".leer");
 
         if (btnLeer) {
 
             btnLeer.addEventListener("click", () => {
 
-                fetch(
-                    `/api/notificaciones/leida/${n.id}`,
-                    {
-                        method: "PUT"
-                    }
-                )
+                marcarNotificacionLeida(n.id)
 
                 .then(() => {
                     cargarNotificaciones();
@@ -241,12 +316,7 @@ function renderizar(filtro = "todas") {
 
                 .then(() => {
 
-                    fetch(
-                        `/api/notificaciones/leida/${n.id}`,
-                        {
-                            method: "PUT"
-                        }
-                    )
+                    marcarNotificacionLeida(n.id)
 
                     .then(() => {
                         cargarNotificaciones();
@@ -286,12 +356,7 @@ function renderizar(filtro = "todas") {
 
                 .then(() => {
 
-                    fetch(
-                        `/api/notificaciones/leida/${n.id}`,
-                        {
-                            method: "PUT"
-                        }
-                    )
+                    marcarNotificacionLeida(n.id)
 
                     .then(() => {
                         cargarNotificaciones();

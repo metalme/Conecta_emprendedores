@@ -783,15 +783,22 @@ app.get('/api/notificaciones/:id', (req, res) => {
 
     const sql = `
         SELECT
-            id,
-            tipo,
-            contenido,
-            referencia_id,
-            leida,
-            fecha
-        FROM notificaciones
-        WHERE usuario_id = ?
-        ORDER BY fecha DESC
+            n.id,
+            n.tipo,
+            n.contenido,
+            n.referencia_id,
+            n.leida,
+            n.fecha,
+            CASE
+                WHEN n.tipo = 'mensajes' THEN m.emisor_id
+                ELSE NULL
+            END AS chat_usuario_id
+        FROM notificaciones n
+        LEFT JOIN mensajes m
+            ON n.tipo = 'mensajes'
+            AND n.referencia_id = m.id
+        WHERE n.usuario_id = ?
+        ORDER BY n.fecha DESC
     `;
 
     conexion.query(sql, [id], (err, results) => {

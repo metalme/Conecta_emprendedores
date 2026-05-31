@@ -228,6 +228,15 @@ body{
     transform:translateY(-2px);
 }
 
+.notificacion-clickable{
+    cursor:pointer;
+}
+
+.notificacion-clickable:focus{
+    outline:2px solid #00d084;
+    outline-offset:3px;
+}
+
 .no-leida{
     border-left:5px solid #00d084;
 }
@@ -296,5 +305,9 @@ body{
 }
 
 .leer{
+    background:#2563eb;
+}
+
+.abrir-mensaje{
     background:#2563eb;
 }

@@ -3,6 +3,8 @@
 // ==========================================
 const miId = localStorage.getItem("id_emprendedor");
 let receptorId = null;
+const parametrosUrl = new URLSearchParams(window.location.search);
+const receptorInicialId = parametrosUrl.get("user");
 
 console.log("Mi ID configurado:", miId);
 
@@ -64,16 +66,25 @@ async function cargarChats() {
                 `;
 
                 // Evento para seleccionar la conversación
-                div.addEventListener("click", () => {
+                const seleccionarChat = () => {
                     document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
                     div.classList.add("active");
                     
                     receptorId = user.id_emprendedor;
                     chatHeader.textContent = user.nombre;
                     renderMensajes();
-                });
+                };
+
+                div.addEventListener("click", seleccionarChat);
 
                 chatList.appendChild(div);
+
+                if (
+                    receptorInicialId &&
+                    String(user.id_emprendedor) === String(receptorInicialId)
+                ) {
+                    seleccionarChat();
+                }
             }
         }
 
